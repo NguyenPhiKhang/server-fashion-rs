@@ -1,5 +1,6 @@
 package com.khangse616.serverfashionrs.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -17,13 +18,13 @@ public class OptionProductInteger implements Serializable {
     @Column(name="value")
     private int value;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "attribute_id")
-//    @JsonIgnore
-//    private Attribute attribute;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "attribute_id")
+    @JsonIgnore
+    private Attribute attribute;
 
-    @Column(name = "attribute_id")
-    private int attribute;
+//    @Column(name = "attribute_id")
+//    private int attribute;
 
     @ManyToMany(targetEntity = Product.class, mappedBy = "optionProductIntegers", cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<>();
@@ -47,22 +48,22 @@ public class OptionProductInteger implements Serializable {
         this.value = value;
     }
 
-//    public Attribute getAttribute() {
-//        return attribute;
-//    }
-//
-//    public void setAttribute(Attribute attribute) {
-//        this.attribute = attribute;
-//    }
-
-
-    public int getAttribute() {
+    public Attribute getAttribute() {
         return attribute;
     }
 
-    public void setAttribute(int attribute) {
+    public void setAttribute(Attribute attribute) {
         this.attribute = attribute;
     }
+
+
+//    public int getAttribute() {
+//        return attribute;
+//    }
+//
+//    public void setAttribute(int attribute) {
+//        this.attribute = attribute;
+//    }
 
     public Set<Product> getProducts() {
         return products;

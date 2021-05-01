@@ -24,7 +24,15 @@ public class Attribute {
 
     @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<OptionProductVarchar> options;
+    private Set<OptionProductVarchar> optionProductVarchars;
+
+    @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<OptionProductInteger> optionProductIntegers;
+
+    @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<OptionProductDecimal> optionProductDecimals;
 
     public Attribute(){}
 
@@ -58,5 +66,29 @@ public class Attribute {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Set<OptionProductVarchar> getOptionProductVarchars() {
+        return optionProductVarchars;
+    }
+
+    public void setOptionProductVarchars(Set<OptionProductVarchar> optionProductVarchars) {
+        this.optionProductVarchars = optionProductVarchars;
+    }
+
+    public Set<OptionProductInteger> getOptionProductIntegers() {
+        return optionProductIntegers;
+    }
+
+    public void setOptionProductIntegers(Set<OptionProductInteger> optionProductIntegers) {
+        this.optionProductIntegers = optionProductIntegers;
+    }
+
+    public Set<OptionProductDecimal> getOptionProductDecimals() {
+        return optionProductDecimals;
+    }
+
+    public void setOptionProductDecimals(Set<OptionProductDecimal> optionProductDecimals) {
+        this.optionProductDecimals = optionProductDecimals;
     }
 }

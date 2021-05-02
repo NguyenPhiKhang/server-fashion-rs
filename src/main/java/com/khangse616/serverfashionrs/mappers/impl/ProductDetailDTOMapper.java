@@ -55,6 +55,8 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                     } else {
                         List<OptionProductVarchar> optionProductVarchars = attributeDTOStream.getOptions();
                         if(optionProductVarchars.stream().noneMatch(i->i.getId() == optionProductVarchar.getId())){
+                            if(attr.getCode().equals("image"))
+
                             optionProductVarchars.add(optionProductVarchar);
                         }
                         attributeDTOStream.setOptions(optionProductVarchars);

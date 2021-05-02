@@ -4,6 +4,7 @@ import com.khangse616.serverfashionrs.mappers.RowMapper;
 import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.AttributeDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
+import com.khangse616.serverfashionrs.repositories.ImageDataRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -15,6 +16,11 @@ import java.util.stream.Collectors;
 public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Product> {
     @Override
     public ProductDetailDTO mapRow(Product product) {
+        return null;
+    }
+
+    @Override
+    public ProductDetailDTO mapRow(Product product, ImageDataRepository repository) {
         try {
             ProductDetailDTO productDetailDTO = new ProductDetailDTO();
             productDetailDTO.setId(product.getId());
@@ -41,6 +47,8 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
 //            List<AttributeDTO<OptionProductDecimal>> attributeDTODecimal = new ArrayList<>();
 //            List<AttributeDTO<OptionProductInteger>> attributeDTOInt = new ArrayList<>();
 
+            List<String> listIdImage = new ArrayList<>();
+
             product.getProductLinks().forEach(pd -> {
                 pd.getOptionProductVarchars().forEach(optionProductVarchar -> {
                     Attribute attr = optionProductVarchar.getAttribute();
@@ -49,19 +57,25 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                         AttributeDTO<OptionProductVarchar> attr1 = new AttributeDTO<OptionProductVarchar>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
                         List<OptionProductVarchar> optionProductVarchars = new ArrayList<>();
                         optionProductVarchars.add(optionProductVarchar);
+                        if (attr.getCode().equals("image")) {
+                            listIdImage.add(optionProductVarchar.getValue());
+                        }
                         attr1.setOptions(optionProductVarchars);
 
                         attributeDTOVarchar.add(attr1);
                     } else {
                         List<OptionProductVarchar> optionProductVarchars = attributeDTOStream.getOptions();
-                        if(optionProductVarchars.stream().noneMatch(i->i.getId() == optionProductVarchar.getId())){
-                            if(attr.getCode().equals("image"))
-
+                        if (optionProductVarchars.stream().noneMatch(i -> i.getId() == optionProductVarchar.getId())) {
                             optionProductVarchars.add(optionProductVarchar);
+                            if (attr.getCode().equals("image")) {
+                                listIdImage.add(optionProductVarchar.getValue());
+                            }
                         }
                         attributeDTOStream.setOptions(optionProductVarchars);
                     }
                 });
+
+
 //
 //                pd.getOptionProductDecimals().forEach(optionProductDecimal -> {
 //                    Attribute attr = optionProductDecimal.getAttribute();
@@ -173,6 +187,4 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             return null;
         }
     }
-
-
 }

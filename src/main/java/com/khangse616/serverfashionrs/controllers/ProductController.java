@@ -2,7 +2,10 @@ package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.controllers.impl.IProductController;
 import com.khangse616.serverfashionrs.mappers.impl.ProductDetailDTOMapper;
+import com.khangse616.serverfashionrs.models.OptionProductVarchar;
+import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
+import com.khangse616.serverfashionrs.services.IOptionProductVarcharService;
 import com.khangse616.serverfashionrs.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController implements IProductController {
     @Autowired
     private IProductService productService;
+
+    @Autowired
+    private IOptionProductVarcharService optionProductVarcharService;
 
     @GetMapping("/product/{id}")
     public ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id) {

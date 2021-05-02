@@ -27,6 +27,7 @@ public class OptionProductInteger implements Serializable {
 //    private int attribute;
 
     @ManyToMany(targetEntity = Product.class, mappedBy = "optionProductIntegers", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
     public OptionProductInteger() {

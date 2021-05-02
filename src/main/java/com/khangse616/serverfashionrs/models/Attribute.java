@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "attributes")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Attribute {
+public class Attribute{
     @Id
     private int id;
 
@@ -22,19 +23,26 @@ public class Attribute {
     @Column(name = "type")
     private String type;
 
-    @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = OptionProductVarchar.class, mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<OptionProductVarchar> optionProductVarchars;
 
-    @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = OptionProductInteger.class, mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<OptionProductInteger> optionProductIntegers;
 
-    @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = OptionProductDecimal.class, mappedBy = "attribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<OptionProductDecimal> optionProductDecimals;
 
     public Attribute(){}
+
+    public Attribute(int id, String code, String label, String type) {
+        this.id = id;
+        this.code = code;
+        this.label = label;
+        this.type = type;
+    }
 
     public int getId() {
         return id;

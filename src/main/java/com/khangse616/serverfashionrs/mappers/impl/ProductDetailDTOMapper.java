@@ -1,9 +1,11 @@
 package com.khangse616.serverfashionrs.mappers.impl;
 
 import com.khangse616.serverfashionrs.mappers.RowMapper;
-import com.khangse616.serverfashionrs.models.Product;
+import com.khangse616.serverfashionrs.models.*;
+import com.khangse616.serverfashionrs.models.dto.AttributeDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -35,9 +37,69 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
 
             Set<Product> listProductAttr = product.getProductLinks();
 
-            listProductAttr.forEach(pd -> {
+            List<AttributeDTO<OptionProductVarchar>> attributeDTOVarchar = new ArrayList<>();
+            List<AttributeDTO<OptionProductDecimal>> attributeDTODecimal = new ArrayList<>();
+            List<AttributeDTO<OptionProductInteger>> attributeDTOInt = new ArrayList<>();
 
+            product.getProductLinks().forEach(pd -> {
+                pd.getOptionProductVarchars().forEach(optionProductVarchar -> {
+                    Attribute attr = optionProductVarchar.getAttribute();
+                    AttributeDTO<OptionProductVarchar> attributeDTOStream = attributeDTOVarchar.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
+                    if (attributeDTOStream == null) {
+                        AttributeDTO<OptionProductVarchar> attr1 = new AttributeDTO<OptionProductVarchar>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
+                        List<OptionProductVarchar> optionProductVarchars = new ArrayList<>();
+                        optionProductVarchars.add(optionProductVarchar);
+                        attr1.setOptions(optionProductVarchars);
+
+                        attributeDTOVarchar.add(attr1);
+                    } else {
+                        List<OptionProductVarchar> optionProductVarchars = attributeDTOStream.getOptions();
+                        optionProductVarchars.add(optionProductVarchar);
+                        attributeDTOStream.setOptions(optionProductVarchars);
+                    }
+                });
+
+                pd.getOptionProductDecimals().forEach(optionProductDecimal -> {
+                    Attribute attr = optionProductDecimal.getAttribute();
+                    AttributeDTO<OptionProductDecimal> attributeDTOStream = attributeDTODecimal.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
+                    if (attributeDTOStream == null) {
+                        AttributeDTO<OptionProductDecimal> attr1 = new AttributeDTO<OptionProductDecimal>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
+                        List<OptionProductDecimal> optionProductDecimals = new ArrayList<>();
+                        optionProductDecimals.add(optionProductDecimal);
+                        attr1.setOptions(optionProductDecimals);
+
+                        attributeDTODecimal.add(attr1);
+                    } else {
+                        List<OptionProductDecimal> optionProductDecimals = attributeDTOStream.getOptions();
+                        if (optionProductDecimals.stream().noneMatch(c -> c.getValue().equals(optionProductDecimal.getValue()))) {
+                            optionProductDecimals.add(optionProductDecimal);
+                        }
+                        attributeDTOStream.setOptions(optionProductDecimals);
+                    }
+                });
+
+                pd.getOptionProductIntegers().forEach(optionProductInteger -> {
+                    Attribute attr = optionProductInteger.getAttribute();
+                    AttributeDTO<OptionProductInteger> attributeDTOStream = attributeDTOInt.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
+                    if (attributeDTOStream == null) {
+                        AttributeDTO<OptionProductInteger> attr1 = new AttributeDTO<OptionProductInteger>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
+                        List<OptionProductInteger> optionProductIntegers = new ArrayList<>();
+                        optionProductIntegers.add(optionProductInteger);
+                        attr1.setOptions(optionProductIntegers);
+
+                        attributeDTOInt.add(attr1);
+                    } else {
+                        List<OptionProductInteger> optionProductIntegers = attributeDTOStream.getOptions();
+                        optionProductIntegers.add(optionProductInteger);
+                        attributeDTOStream.setOptions(optionProductIntegers);
+                    }
+                });
             });
+
+            productDetailDTO.setListAttributeVarchar(attributeDTOVarchar);
+            productDetailDTO.setListAttributeInteger(attributeDTOInt);
+            productDetailDTO.setListAttributeDecimal(attributeDTODecimal);
+
 
 //            productDetailDTO.set(product.getPrice());
 //            productDetailDTO.setFinalPrice(product.getFinalPrice());
@@ -106,4 +168,6 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             return null;
         }
     }
+
+
 }

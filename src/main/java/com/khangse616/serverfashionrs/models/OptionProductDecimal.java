@@ -28,6 +28,7 @@ public class OptionProductDecimal implements Serializable {
 //    private int attribute;
 
     @ManyToMany(targetEntity = Product.class, mappedBy = "optionProductDecimals", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
     public OptionProductDecimal() {

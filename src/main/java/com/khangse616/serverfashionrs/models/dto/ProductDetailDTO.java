@@ -2,6 +2,9 @@ package com.khangse616.serverfashionrs.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.khangse616.serverfashionrs.models.OptionProductDecimal;
+import com.khangse616.serverfashionrs.models.OptionProductInteger;
+import com.khangse616.serverfashionrs.models.OptionProductVarchar;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,6 +32,10 @@ public class ProductDetailDTO {
     private String price;
     private int promotionPercent;
     private boolean stockStatus;
+
+    private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
+    private List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal;
+    private List<AttributeDTO<OptionProductInteger>> listAttributeInteger;
 
     public ProductDetailDTO() {
     }
@@ -207,6 +214,30 @@ public class ProductDetailDTO {
 
     public void setStockStatus(boolean stockStatus) {
         this.stockStatus = stockStatus;
+    }
+
+    public List<AttributeDTO<OptionProductVarchar>> getListAttributeVarchar() {
+        return listAttributeVarchar;
+    }
+
+    public void setListAttributeVarchar(List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar) {
+        this.listAttributeVarchar = listAttributeVarchar;
+    }
+
+    public List<AttributeDTO<OptionProductDecimal>> getListAttributeDecimal() {
+        return listAttributeDecimal;
+    }
+
+    public void setListAttributeDecimal(List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal) {
+        this.listAttributeDecimal = listAttributeDecimal;
+    }
+
+    public List<AttributeDTO<OptionProductInteger>> getListAttributeInteger() {
+        return listAttributeInteger;
+    }
+
+    public void setListAttributeInteger(List<AttributeDTO<OptionProductInteger>> listAttributeInteger) {
+        this.listAttributeInteger = listAttributeInteger;
     }
 }
 

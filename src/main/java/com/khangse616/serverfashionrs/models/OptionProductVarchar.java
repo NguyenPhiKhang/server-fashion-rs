@@ -19,12 +19,13 @@ public class OptionProductVarchar implements Serializable {
     @Column(name="value")
     private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "attribute_id")
     @JsonIgnore
-    private Attribute attribute;
+    private Attribute attribute = new Attribute();
 
     @ManyToMany(targetEntity = Product.class, mappedBy = "optionProductVarchars", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
     public OptionProductVarchar() {

@@ -23,7 +23,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setPromotionPercent(product.getPromotionPercent());
             productDetailDTO.setPromotion(product.getPromotionPercent() > 0);
             productDetailDTO.setActive(product.isActive());
-            productDetailDTO.setBrand(product.getBrand() != null ? product.getBrand().getName() : null);
+            productDetailDTO.setBrand(product.getBrand() != null ? product.getBrand().getName() : "khác");
             productDetailDTO.setDescription(product.getDescription());
             productDetailDTO.setShortDescription(product.getShortDescription());
             productDetailDTO.setHighlight(product.getHighlight());
@@ -38,8 +38,8 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             Set<Product> listProductAttr = product.getProductLinks();
 
             List<AttributeDTO<OptionProductVarchar>> attributeDTOVarchar = new ArrayList<>();
-            List<AttributeDTO<OptionProductDecimal>> attributeDTODecimal = new ArrayList<>();
-            List<AttributeDTO<OptionProductInteger>> attributeDTOInt = new ArrayList<>();
+//            List<AttributeDTO<OptionProductDecimal>> attributeDTODecimal = new ArrayList<>();
+//            List<AttributeDTO<OptionProductInteger>> attributeDTOInt = new ArrayList<>();
 
             product.getProductLinks().forEach(pd -> {
                 pd.getOptionProductVarchars().forEach(optionProductVarchar -> {
@@ -54,51 +54,54 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                         attributeDTOVarchar.add(attr1);
                     } else {
                         List<OptionProductVarchar> optionProductVarchars = attributeDTOStream.getOptions();
-                        optionProductVarchars.add(optionProductVarchar);
+                        if(optionProductVarchars.stream().noneMatch(i->i.getId() == optionProductVarchar.getId())){
+                            optionProductVarchars.add(optionProductVarchar);
+                        }
                         attributeDTOStream.setOptions(optionProductVarchars);
                     }
                 });
-
-                pd.getOptionProductDecimals().forEach(optionProductDecimal -> {
-                    Attribute attr = optionProductDecimal.getAttribute();
-                    AttributeDTO<OptionProductDecimal> attributeDTOStream = attributeDTODecimal.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
-                    if (attributeDTOStream == null) {
-                        AttributeDTO<OptionProductDecimal> attr1 = new AttributeDTO<OptionProductDecimal>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
-                        List<OptionProductDecimal> optionProductDecimals = new ArrayList<>();
-                        optionProductDecimals.add(optionProductDecimal);
-                        attr1.setOptions(optionProductDecimals);
-
-                        attributeDTODecimal.add(attr1);
-                    } else {
-                        List<OptionProductDecimal> optionProductDecimals = attributeDTOStream.getOptions();
-                        if (optionProductDecimals.stream().noneMatch(c -> c.getValue().equals(optionProductDecimal.getValue()))) {
-                            optionProductDecimals.add(optionProductDecimal);
-                        }
-                        attributeDTOStream.setOptions(optionProductDecimals);
-                    }
-                });
-
-                pd.getOptionProductIntegers().forEach(optionProductInteger -> {
-                    Attribute attr = optionProductInteger.getAttribute();
-                    AttributeDTO<OptionProductInteger> attributeDTOStream = attributeDTOInt.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
-                    if (attributeDTOStream == null) {
-                        AttributeDTO<OptionProductInteger> attr1 = new AttributeDTO<OptionProductInteger>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
-                        List<OptionProductInteger> optionProductIntegers = new ArrayList<>();
-                        optionProductIntegers.add(optionProductInteger);
-                        attr1.setOptions(optionProductIntegers);
-
-                        attributeDTOInt.add(attr1);
-                    } else {
-                        List<OptionProductInteger> optionProductIntegers = attributeDTOStream.getOptions();
-                        optionProductIntegers.add(optionProductInteger);
-                        attributeDTOStream.setOptions(optionProductIntegers);
-                    }
-                });
+//
+//                pd.getOptionProductDecimals().forEach(optionProductDecimal -> {
+//                    Attribute attr = optionProductDecimal.getAttribute();
+//                    AttributeDTO<OptionProductDecimal> attributeDTOStream = attributeDTODecimal.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
+//                    if (attributeDTOStream == null) {
+//                        AttributeDTO<OptionProductDecimal> attr1 = new AttributeDTO<OptionProductDecimal>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
+//                        List<OptionProductDecimal> optionProductDecimals = new ArrayList<>();
+//                        optionProductDecimals.add(optionProductDecimal);
+//                        attr1.setOptions(optionProductDecimals);
+//
+//                        attributeDTODecimal.add(attr1);
+//                    } else {
+//                        List<OptionProductDecimal> optionProductDecimals = attributeDTOStream.getOptions();
+//                        if (optionProductDecimals.stream().noneMatch(c -> c.getValue().equals(optionProductDecimal.getValue()))) {
+//                            optionProductDecimals.add(optionProductDecimal);
+//                        }
+//                        attributeDTOStream.setOptions(optionProductDecimals);
+//                    }
+//                });
+//
+//                pd.getOptionProductIntegers().forEach(optionProductInteger -> {
+//                    Attribute attr = optionProductInteger.getAttribute();
+//                    AttributeDTO<OptionProductInteger> attributeDTOStream = attributeDTOInt.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
+//                    if (attributeDTOStream == null) {
+//                        AttributeDTO<OptionProductInteger> attr1 = new AttributeDTO<OptionProductInteger>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
+//                        List<OptionProductInteger> optionProductIntegers = new ArrayList<>();
+//                        optionProductIntegers.add(optionProductInteger);
+//                        attr1.setOptions(optionProductIntegers);
+//
+//                        attributeDTOInt.add(attr1);
+//                    } else {
+//                        List<OptionProductInteger> optionProductIntegers = attributeDTOStream.getOptions();
+//                        optionProductIntegers.add(optionProductInteger);
+//                        attributeDTOStream.setOptions(optionProductIntegers);
+//                    }
+//                }
+//                );
             });
 
             productDetailDTO.setListAttributeVarchar(attributeDTOVarchar);
-            productDetailDTO.setListAttributeInteger(attributeDTOInt);
-            productDetailDTO.setListAttributeDecimal(attributeDTODecimal);
+//            productDetailDTO.setListAttributeInteger(attributeDTOInt);
+//            productDetailDTO.setListAttributeDecimal(attributeDTODecimal);
 
 
 //            productDetailDTO.set(product.getPrice());

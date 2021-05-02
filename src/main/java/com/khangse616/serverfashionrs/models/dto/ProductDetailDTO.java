@@ -34,8 +34,8 @@ public class ProductDetailDTO {
     private boolean stockStatus;
 
     private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
-    private List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal;
-    private List<AttributeDTO<OptionProductInteger>> listAttributeInteger;
+//    private List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal;
+//    private List<AttributeDTO<OptionProductInteger>> listAttributeInteger;
 
     public ProductDetailDTO() {
     }
@@ -216,6 +216,7 @@ public class ProductDetailDTO {
         this.stockStatus = stockStatus;
     }
 
+    @JsonProperty(value = "attributes")
     public List<AttributeDTO<OptionProductVarchar>> getListAttributeVarchar() {
         return listAttributeVarchar;
     }
@@ -224,20 +225,20 @@ public class ProductDetailDTO {
         this.listAttributeVarchar = listAttributeVarchar;
     }
 
-    public List<AttributeDTO<OptionProductDecimal>> getListAttributeDecimal() {
-        return listAttributeDecimal;
-    }
-
-    public void setListAttributeDecimal(List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal) {
-        this.listAttributeDecimal = listAttributeDecimal;
-    }
-
-    public List<AttributeDTO<OptionProductInteger>> getListAttributeInteger() {
-        return listAttributeInteger;
-    }
-
-    public void setListAttributeInteger(List<AttributeDTO<OptionProductInteger>> listAttributeInteger) {
-        this.listAttributeInteger = listAttributeInteger;
-    }
+//    public List<AttributeDTO<OptionProductDecimal>> getListAttributeDecimal() {
+//        return listAttributeDecimal;
+//    }
+//
+//    public void setListAttributeDecimal(List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal) {
+//        this.listAttributeDecimal = listAttributeDecimal;
+//    }
+//
+//    public List<AttributeDTO<OptionProductInteger>> getListAttributeInteger() {
+//        return listAttributeInteger;
+//    }
+//
+//    public void setListAttributeInteger(List<AttributeDTO<OptionProductInteger>> listAttributeInteger) {
+//        this.listAttributeInteger = listAttributeInteger;
+//    }
 }
 

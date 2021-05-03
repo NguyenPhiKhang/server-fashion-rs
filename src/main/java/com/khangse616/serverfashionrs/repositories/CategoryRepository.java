@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
@@ -19,5 +20,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     List<Category> findByLevel(int level);
 
     @Query(value = "select * from categories where parent_id=:parentId", nativeQuery = true)
-    List<Category> findByParentId(@Param("parentId") int parentId);
+    Set<Category> findByParentId(@Param("parentId") int parentId);
 }

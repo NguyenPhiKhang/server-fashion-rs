@@ -5,7 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ICategoryController {
-    ResponseEntity<List<Category>> getCategoriesByParentCategory(int parentId);
+    ResponseEntity<Set<Category>> getCategoriesByParentCategory(int parentId);
 }

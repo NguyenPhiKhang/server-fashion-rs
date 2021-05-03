@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -17,11 +18,10 @@ public class CategoryController implements ICategoryController {
     @Autowired
     private ICategoryService categoryService;
 
-
     @GetMapping("/categories/{parentId}/sub-categories")
     @Override
-    public ResponseEntity<List<Category>> getCategoriesByParentCategory(@PathVariable("parentId") int parentId){
-        List<Category> categoryScreenDTO = categoryService.findCategoriesByParentId(parentId);
+    public ResponseEntity<Set<Category>> getCategoriesByParentCategory(@PathVariable("parentId") int parentId){
+        Set<Category> categoryScreenDTO = categoryService.findCategoriesByParentId(parentId);
         return ResponseEntity.ok().body(categoryScreenDTO);
     }
 

@@ -7,11 +7,16 @@ import com.khangse616.serverfashionrs.models.Category;
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
+import com.khangse616.serverfashionrs.repositories.CategoryRepository;
+import com.khangse616.serverfashionrs.repositories.ProductRepository;
 import com.khangse616.serverfashionrs.services.ICategoryService;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 import com.khangse616.serverfashionrs.services.IOptionProductVarcharService;
 import com.khangse616.serverfashionrs.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +46,7 @@ public class ProductController implements IProductController {
 
     @GetMapping("/cat/{idCategory}/products")
     @Override
-    public ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("p") int page) {
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("p") int page) {
 //        List<ProductItemDTO> list = productService.findProductByCategory(path, (page - 1) * 20).stream().map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
 //        return ResponseEntity.ok().body(list);
         Set<Category> list =  categoryService.findCategoriesByParentId(idCategory);
@@ -49,12 +54,16 @@ public class ProductController implements IProductController {
         List<Integer> listId = new ArrayList<>();
         getListIdCategory(list, listId);
 
-        List<ProductItemDTO> listProduct = productService.getProductsByCategories(listId).stream()
-                .map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
+//        List<ProductItemDTO> listProduct = productService.getProductsByCategories(listId).stream()
+//                .map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
 
+        Pageable pageable = PageRequest.of(page-1, 20);
 
-        return null;
+        Page<Product> pageProduct = productService.getProductsByCategories(listId, pageable);
 
+        List<Product> listProduct = pageProduct.getContent();
+
+        return  ResponseEntity.ok().body(listProduct);
     }
 
     private void getListIdCategory(Set<Category> list, List<Integer> listId){

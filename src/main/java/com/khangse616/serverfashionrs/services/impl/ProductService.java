@@ -4,6 +4,8 @@ import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
 import com.khangse616.serverfashionrs.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getProductsByCategories(List<Integer> idCategories) {
-        return productRepository.findProductByCategories(idCategories);
+    public Page<Product> getProductsByCategories(List<Integer> idCategories, Pageable pageable) {
+        return productRepository.findProductByCategories(idCategories, pageable);
     }
 }

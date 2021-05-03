@@ -2,6 +2,8 @@ package com.khangse616.serverfashionrs.repositories;
 
 
 import com.khangse616.serverfashionrs.models.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +15,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Product findByIdAndTypeId(int id, String typeId);
 
-    @Query("select u from Product u where u.category.id in (:idCategories)")
-    List<Product> findProductByCategories(@Param("idCategories") List<Integer> idCategories);
+    @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.purpose")
+    Page<Product> findProductByCategories(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
 }

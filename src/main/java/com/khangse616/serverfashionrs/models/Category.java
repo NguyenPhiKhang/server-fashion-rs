@@ -33,7 +33,7 @@ public class Category implements Serializable, Cloneable{
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude // không sử dụng trường này trong equals và hashcode
     @ToString.Exclude // Không sử dụng trong toString()
-    @JsonIgnore
+//    @JsonIgnore
     private Set<Category> categories = new HashSet<>();
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

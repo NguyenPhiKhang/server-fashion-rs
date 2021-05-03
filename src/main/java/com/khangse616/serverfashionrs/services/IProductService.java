@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface IProductService {
     Product findProductById(int id);
-    Page<Product> getProductsByCategories(List<Integer> idCategories, Pageable pageable);
+    Page<Product> getProductsByCategoriesOrderByNew(List<Integer> idCategories, Pageable pageable);
+    Page<Product> getProductsByCategoriesOrderByPopular(List<Integer> idCategories, Pageable pageable);
 }

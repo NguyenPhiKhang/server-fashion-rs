@@ -20,7 +20,12 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Page<Product> getProductsByCategories(List<Integer> idCategories, Pageable pageable) {
-        return productRepository.findProductByCategories(idCategories, pageable);
+    public Page<Product> getProductsByCategoriesOrderByNew(List<Integer> idCategories, Pageable pageable) {
+        return productRepository.findProductByCategoriesOrderByNew(idCategories, pageable);
+    }
+
+    @Override
+    public Page<Product> getProductsByCategoriesOrderByPopular(List<Integer> idCategories, Pageable pageable) {
+        return productRepository.findProductByCategoriesOrderByPopular(idCategories, pageable);
     }
 }

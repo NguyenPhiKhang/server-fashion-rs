@@ -46,9 +46,7 @@ public class ProductController implements IProductController {
 
     @GetMapping("/cat/{idCategory}/products")
     @Override
-    public ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("p") int page) {
-//        List<ProductItemDTO> list = productService.findProductByCategory(path, (page - 1) * 20).stream().map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
-//        return ResponseEntity.ok().body(list);
+    public ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam(defaultValue = "popular",value = "filter") String filter, @RequestParam("p") int page) {
         Set<Category> list =  categoryService.findCategoriesByParentId(idCategory);
 
         List<Integer> listId = new ArrayList<>();
@@ -56,10 +54,19 @@ public class ProductController implements IProductController {
 
         Pageable pageable = PageRequest.of(page-1, 20);
 
-        Page<Product> pageProduct = productService.getProductsByCategories(listId, pageable);
+        List<ProductItemDTO> listProduct = new ArrayList<>();
 
-        List<ProductItemDTO> listProduct = pageProduct.getContent().stream()
-                .map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
+        if(filter.equals("popular")) {
+            Page<Product> pageProduct = productService.getProductsByCategoriesOrderByPopular(listId, pageable);
+            listProduct = pageProduct.getContent().stream()
+                    .map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
+        }else{
+            if(filter.equals("new")){
+                Page<Product> pageProduct = productService.getProductsByCategoriesOrderByNew(listId, pageable);
+                listProduct = pageProduct.getContent().stream()
+                        .map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
+            }
+        }
 
         return  ResponseEntity.ok().body(listProduct);
     }

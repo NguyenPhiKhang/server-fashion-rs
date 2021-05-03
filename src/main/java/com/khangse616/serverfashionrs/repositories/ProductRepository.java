@@ -15,6 +15,15 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     Product findByIdAndTypeId(int id, String typeId);
 
+    @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.updatedAt desc")
+    Page<Product> findProductByCategoriesOrderByNew(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
+
     @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.purpose")
-    Page<Product> findProductByCategories(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
+    Page<Product> findProductByCategoriesOrderByPopular(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
+
+    @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.updatedAt desc")
+    Page<Product> findProductByCategoriesOrderByPriceUp(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
+
+    @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.updatedAt desc")
+    Page<Product> findProductByCategoriesOrderByPriceDown(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
 }

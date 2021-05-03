@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.khangse616.serverfashionrs.models.Category;
 import com.khangse616.serverfashionrs.models.OptionProductDecimal;
 import com.khangse616.serverfashionrs.models.OptionProductInteger;
 import com.khangse616.serverfashionrs.models.OptionProductVarchar;
@@ -22,7 +23,8 @@ public class ProductDetailDTO {
     private boolean promotion;
     private int orderCount;
     private boolean freeShip;
-    private String category;
+    private Category category;
+    private String categories;
     private String brand;
     private String material;
     private String purpose;
@@ -31,8 +33,6 @@ public class ProductDetailDTO {
     private int promotionPercent;
 
     private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
-//    private List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal;
-//    private List<AttributeDTO<OptionProductInteger>> listAttributeInteger;
 
     private List<OptionProductDTO> optionProductDTOList;
 
@@ -135,11 +135,11 @@ public class ProductDetailDTO {
         this.freeShip = freeShip;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -207,6 +207,14 @@ public class ProductDetailDTO {
 
     public void setOptionProductDTOList(List<OptionProductDTO> optionProductDTOList) {
         this.optionProductDTOList = optionProductDTOList;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
     }
 }
 

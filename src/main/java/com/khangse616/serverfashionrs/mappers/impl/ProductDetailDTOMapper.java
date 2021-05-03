@@ -80,6 +80,19 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setOptionProductDTOList(optionProductDTOList);
             productDetailDTO.setListAttributeVarchar(attributeDTOVarchar);
 
+            productDetailDTO.setCategory(product.getCategory());
+
+            Category category = product.getCategory();
+            StringBuilder categoriesStr = new StringBuilder();
+
+            for(int i = product.getCategory().getLevel();i>=0;i--){
+                categoriesStr.insert(0, "/"+category.getId());
+                category = category.getParentCategory();
+            }
+            categoriesStr.insert(0, 0);
+
+            productDetailDTO.setCategories(categoriesStr.toString());
+
             return productDetailDTO;
         } catch (
                 Exception ex) {

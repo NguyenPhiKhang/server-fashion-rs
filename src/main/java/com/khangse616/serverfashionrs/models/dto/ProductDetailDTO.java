@@ -31,6 +31,7 @@ public class ProductDetailDTO {
     private String suitable_season;
     private String madeIn;
     private int promotionPercent;
+    private int totalQuantity;
 
     private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
 
@@ -215,6 +216,15 @@ public class ProductDetailDTO {
 
     public void setCategories(String categories) {
         this.categories = categories;
+    }
+
+    @JsonProperty(value = "total_quantity")
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 }
 

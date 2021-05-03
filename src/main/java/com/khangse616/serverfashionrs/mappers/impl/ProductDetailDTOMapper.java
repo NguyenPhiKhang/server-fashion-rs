@@ -6,6 +6,7 @@ import com.khangse616.serverfashionrs.models.dto.AttributeDTO;
 import com.khangse616.serverfashionrs.models.dto.OptionProductDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.services.IImageDataService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,34 +42,45 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             List<OptionProductDTO> optionProductDTOList = new ArrayList<>();
             List<String> listIdImage = new ArrayList<>();
 
+            int quantity = 0;
+
             if (product.getProductLinks().size() > 0) {
-                product.getProductLinks().forEach(pd -> {
+                for (Product pd : product.getProductLinks()) {
                     OptionProductDTO optionProductDTO = new OptionProductDTO();
-                    pd.getOptionProductVarchars().forEach(optionProductVarchar -> {
-                        boolean isImage = optionProductDTO.getOptionProductVarcharList().stream().noneMatch(c->c.getAttribute().getCode().equals("image"));
+                    for(OptionProductVarchar optionProductVarchar: pd.getOptionProductVarchars()) {
+                        boolean isImage = optionProductDTO.getOptionProductVarcharList().stream().noneMatch(c -> c.getAttribute().getCode().equals("image"));
                         createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, optionProductDTO, isImage);
-                    });
-                    pd.getOptionProductIntegers().forEach(optionProductInteger -> {
+                    }
+                    for (OptionProductInteger optionProductInteger : pd.getOptionProductIntegers()) {
+                        quantity += optionProductInteger.getValue();
                         createAttributeInteger(optionProductInteger, optionProductDTO);
-                    });
+                    }
                     pd.getOptionProductDecimals().forEach(optionProductDecimal -> {
                         createAttributeDecimal(optionProductDecimal, optionProductDTO);
                     });
 
                     optionProductDTOList.add(optionProductDTO);
-                });
+                }
             } else {
                 OptionProductDTO optionProductDTO = new OptionProductDTO();
                 product.getOptionProductVarchars().forEach(optionProductVarchar -> {
                     createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false);
                 });
-                product.getOptionProductIntegers().forEach(optionProductInteger -> {
+                for (OptionProductInteger optionProductInteger : product.getOptionProductIntegers()) {
+                    quantity += optionProductInteger.getValue();
                     createAttributeInteger(optionProductInteger, optionProductDTO);
-                });
+                }
                 product.getOptionProductDecimals().forEach(optionProductDecimal -> {
                     createAttributeDecimal(optionProductDecimal, optionProductDTO);
                 });
                 optionProductDTOList.add(optionProductDTO);
+            }
+
+            boolean checkHaveImages = attributeDTOVarchar.stream().anyMatch(img->img.getCode().equals("image"));
+            if(!checkHaveImages){
+                product.getOptionProductVarchars().forEach(optionProductVarchar -> {
+                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false);
+                });
             }
 
             List<ImageData> listImageData = imageDataService.findListImageDataByIds(listIdImage);
@@ -77,6 +89,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                 o.setValue(imgData != null ? "http:" + imgData.getLink().replace("fill_size", "700x817") : "");
             }));
 
+            productDetailDTO.setTotalQuantity(quantity);
             productDetailDTO.setOptionProductDTOList(optionProductDTOList);
             productDetailDTO.setListAttributeVarchar(attributeDTOVarchar);
 
@@ -85,8 +98,8 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             Category category = product.getCategory();
             StringBuilder categoriesStr = new StringBuilder();
 
-            for(int i = product.getCategory().getLevel();i>=0;i--){
-                categoriesStr.insert(0, "/"+category.getId());
+            for (int i = product.getCategory().getLevel(); i >= 0; i--) {
+                categoriesStr.insert(0, "/" + category.getId());
                 category = category.getParentCategory();
             }
             categoriesStr.insert(0, 0);
@@ -125,7 +138,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                 attributeDTOStream.setOptions(optionProductVarchars);
             }
         }
-        if (optionProductDTO != null && (!attr.getCode().equals("image")|| (attr.getCode().equals("image")&&isImage))) {
+        if (optionProductDTO != null && (!attr.getCode().equals("image") || (attr.getCode().equals("image") && isImage))) {
             List<OptionProductVarchar> list = optionProductDTO.getOptionProductVarcharList();
             list.add(optionProductVarchar);
             optionProductDTO.setOptionProductVarcharList(list);

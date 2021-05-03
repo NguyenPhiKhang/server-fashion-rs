@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface IProductController {
     ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id);
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("p") int page);
+    public ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("p") int page);
 }

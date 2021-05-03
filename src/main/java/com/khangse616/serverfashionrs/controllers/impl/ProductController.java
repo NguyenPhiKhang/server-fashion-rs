@@ -46,7 +46,7 @@ public class ProductController implements IProductController {
 
     @GetMapping("/cat/{idCategory}/products")
     @Override
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("p") int page) {
+    public ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("p") int page) {
 //        List<ProductItemDTO> list = productService.findProductByCategory(path, (page - 1) * 20).stream().map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
 //        return ResponseEntity.ok().body(list);
         Set<Category> list =  categoryService.findCategoriesByParentId(idCategory);
@@ -54,14 +54,12 @@ public class ProductController implements IProductController {
         List<Integer> listId = new ArrayList<>();
         getListIdCategory(list, listId);
 
-//        List<ProductItemDTO> listProduct = productService.getProductsByCategories(listId).stream()
-//                .map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
-
         Pageable pageable = PageRequest.of(page-1, 20);
 
         Page<Product> pageProduct = productService.getProductsByCategories(listId, pageable);
 
-        List<Product> listProduct = pageProduct.getContent();
+        List<ProductItemDTO> listProduct = pageProduct.getContent().stream()
+                .map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
 
         return  ResponseEntity.ok().body(listProduct);
     }

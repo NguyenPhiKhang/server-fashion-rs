@@ -21,7 +21,6 @@ public class ProductDetailDTO {
     private boolean visibility;
     private boolean promotion;
     private int orderCount;
-    private int quantity;
     private boolean freeShip;
     private String category;
     private String brand;
@@ -29,9 +28,7 @@ public class ProductDetailDTO {
     private String purpose;
     private String suitable_season;
     private String madeIn;
-    private String price;
     private int promotionPercent;
-    private boolean stockStatus;
 
     private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
 //    private List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal;
@@ -130,14 +127,6 @@ public class ProductDetailDTO {
         this.orderCount = orderCount;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public boolean isFreeShip() {
         return freeShip;
     }
@@ -194,28 +183,12 @@ public class ProductDetailDTO {
         this.madeIn = madeIn;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public int getPromotionPercent() {
         return promotionPercent;
     }
 
     public void setPromotionPercent(int promotionPercent) {
         this.promotionPercent = promotionPercent;
-    }
-
-    public boolean isStockStatus() {
-        return stockStatus;
-    }
-
-    public void setStockStatus(boolean stockStatus) {
-        this.stockStatus = stockStatus;
     }
 
     @JsonProperty(value = "attributes")
@@ -235,21 +208,5 @@ public class ProductDetailDTO {
     public void setOptionProductDTOList(List<OptionProductDTO> optionProductDTOList) {
         this.optionProductDTOList = optionProductDTOList;
     }
-
-    //    public List<AttributeDTO<OptionProductDecimal>> getListAttributeDecimal() {
-//        return listAttributeDecimal;
-//    }
-//
-//    public void setListAttributeDecimal(List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal) {
-//        this.listAttributeDecimal = listAttributeDecimal;
-//    }
-//
-//    public List<AttributeDTO<OptionProductInteger>> getListAttributeInteger() {
-//        return listAttributeInteger;
-//    }
-//
-//    public void setListAttributeInteger(List<AttributeDTO<OptionProductInteger>> listAttributeInteger) {
-//        this.listAttributeInteger = listAttributeInteger;
-//    }
 }
 

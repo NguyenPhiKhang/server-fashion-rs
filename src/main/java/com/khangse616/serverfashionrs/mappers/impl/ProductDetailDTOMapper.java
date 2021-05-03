@@ -5,15 +5,9 @@ import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.AttributeDTO;
 import com.khangse616.serverfashionrs.models.dto.OptionProductDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
-import com.khangse616.serverfashionrs.repositories.ImageDataRepository;
 import com.khangse616.serverfashionrs.services.IImageDataService;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Product> {
     @Override
@@ -43,18 +37,16 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setSuitable_season(product.getSuitableSeason());
             productDetailDTO.setTypeId(product.getTypeId());
 
-            Set<Product> listProductAttr = product.getProductLinks();
-
             List<AttributeDTO<OptionProductVarchar>> attributeDTOVarchar = new ArrayList<>();
             List<OptionProductDTO> optionProductDTOList = new ArrayList<>();
-
             List<String> listIdImage = new ArrayList<>();
 
             if (product.getProductLinks().size() > 0) {
                 product.getProductLinks().forEach(pd -> {
                     OptionProductDTO optionProductDTO = new OptionProductDTO();
                     pd.getOptionProductVarchars().forEach(optionProductVarchar -> {
-                        createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, optionProductDTO);
+                        boolean isImage = optionProductDTO.getOptionProductVarcharList().stream().noneMatch(c->c.getAttribute().getCode().equals("image"));
+                        createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, optionProductDTO, isImage);
                     });
                     pd.getOptionProductIntegers().forEach(optionProductInteger -> {
                         createAttributeInteger(optionProductInteger, optionProductDTO);
@@ -68,7 +60,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             } else {
                 OptionProductDTO optionProductDTO = new OptionProductDTO();
                 product.getOptionProductVarchars().forEach(optionProductVarchar -> {
-                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null);
+                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false);
                 });
                 product.getOptionProductIntegers().forEach(optionProductInteger -> {
                     createAttributeInteger(optionProductInteger, optionProductDTO);
@@ -78,7 +70,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                 });
                 optionProductDTOList.add(optionProductDTO);
             }
-//
+
             List<ImageData> listImageData = imageDataService.findListImageDataByIds(listIdImage);
             attributeDTOVarchar.stream().filter(c -> c.getCode().equals("image")).findFirst().ifPresent(attributeImage -> attributeImage.getOptions().forEach(o -> {
                 ImageData imgData = listImageData.stream().filter(i -> i.getId().equals(o.getValue())).findFirst().orElse(null);
@@ -96,7 +88,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
     }
 
     private void createAttributeVarchar(OptionProductVarchar optionProductVarchar, List<AttributeDTO<OptionProductVarchar>> attributeDTOVarchar
-            , List<String> listIdImage, OptionProductDTO optionProductDTO) {
+            , List<String> listIdImage, OptionProductDTO optionProductDTO, boolean isImage) {
         Attribute attr = optionProductVarchar.getAttribute();
         AttributeDTO<OptionProductVarchar> attributeDTOStream = attributeDTOVarchar.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
         if (attributeDTOStream == null) {
@@ -120,7 +112,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                 attributeDTOStream.setOptions(optionProductVarchars);
             }
         }
-        if (optionProductDTO != null) {
+        if (optionProductDTO != null && (!attr.getCode().equals("image")|| (attr.getCode().equals("image")&&isImage))) {
             List<OptionProductVarchar> list = optionProductDTO.getOptionProductVarcharList();
             list.add(optionProductVarchar);
             optionProductDTO.setOptionProductVarcharList(list);

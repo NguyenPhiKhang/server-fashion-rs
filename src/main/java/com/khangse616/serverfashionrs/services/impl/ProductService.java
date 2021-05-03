@@ -12,6 +12,6 @@ public class ProductService implements IProductService {
     private ProductRepository productRepository;
 
     public Product findProductById(int id) {
-        return productRepository.findById(id).orElseThrow(null);
+        return productRepository.findByIdAndTypeId(id, "configurable");
     }
 }

@@ -22,7 +22,6 @@ public class Category implements Serializable, Cloneable{
     private String name;
     @Column(name = "icon")
     private String icon;
-    @JsonIgnore
     @Column(name="level")
     private int level;
 

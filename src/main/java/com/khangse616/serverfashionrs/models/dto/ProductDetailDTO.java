@@ -37,6 +37,8 @@ public class ProductDetailDTO {
 //    private List<AttributeDTO<OptionProductDecimal>> listAttributeDecimal;
 //    private List<AttributeDTO<OptionProductInteger>> listAttributeInteger;
 
+    private List<OptionProductDTO> optionProductDTOList;
+
     public ProductDetailDTO() {
     }
 
@@ -225,7 +227,16 @@ public class ProductDetailDTO {
         this.listAttributeVarchar = listAttributeVarchar;
     }
 
-//    public List<AttributeDTO<OptionProductDecimal>> getListAttributeDecimal() {
+    @JsonProperty(value ="option_products")
+    public List<OptionProductDTO> getOptionProductDTOList() {
+        return optionProductDTOList;
+    }
+
+    public void setOptionProductDTOList(List<OptionProductDTO> optionProductDTOList) {
+        this.optionProductDTOList = optionProductDTOList;
+    }
+
+    //    public List<AttributeDTO<OptionProductDecimal>> getListAttributeDecimal() {
 //        return listAttributeDecimal;
 //    }
 //

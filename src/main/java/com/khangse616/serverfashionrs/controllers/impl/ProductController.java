@@ -24,7 +24,7 @@ public class ProductController implements IProductController {
 
     @GetMapping("/product/{id}")
     public ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id) {
-        ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(productService.findProductById(id));
+        ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(productService.findProductById(id), imageDataService);
         return ResponseEntity.ok().body(productDetailDTO);
     }
 }

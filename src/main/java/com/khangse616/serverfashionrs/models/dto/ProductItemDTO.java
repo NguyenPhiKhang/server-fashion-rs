@@ -10,7 +10,7 @@ public class ProductItemDTO {
     private String name;
     private Category category;
     private boolean freeShip;
-    private BigDecimal price;
+    private PriceResultDTO price;
     private int promotionPercent;
     private int orderCount;
     private String imgUrl;
@@ -82,11 +82,11 @@ public class ProductItemDTO {
         this.freeShip = freeShip;
     }
 
-    public BigDecimal getPrice() {
+    public PriceResultDTO getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(PriceResultDTO price) {
         this.price = price;
     }
 

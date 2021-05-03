@@ -1,5 +1,7 @@
 package com.khangse616.serverfashionrs.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
 public class PriceResultDTO {
@@ -14,6 +16,7 @@ public class PriceResultDTO {
         this.priceMin = priceMin;
     }
 
+    @JsonProperty("price_max")
     public BigDecimal getPriceMax() {
         return priceMax;
     }
@@ -22,6 +25,7 @@ public class PriceResultDTO {
         this.priceMax = priceMax;
     }
 
+    @JsonProperty("price_min")
     public BigDecimal getPriceMin() {
         return priceMin;
     }

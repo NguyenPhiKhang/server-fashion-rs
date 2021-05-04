@@ -146,7 +146,6 @@ public class RatingService implements IRatingService {
             ratingStarList.add(ratingStar);
         }
 
-
         ratingRepository.saveAll(list_ratings);
         ratingStarRepository.saveAll(ratingStarList);
     }

@@ -13,4 +13,5 @@ public interface IProductController {
     ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id);
     ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("filter") String filter, @RequestParam("p") int page);
     ResponseEntity<String> generateIdRatingStarForProduct();
+    ResponseEntity<List<ProductItemDTO>> getProductTopRating(@PathVariable("userId") int userId, @RequestParam(value = "p", defaultValue = "1") int page);
 }

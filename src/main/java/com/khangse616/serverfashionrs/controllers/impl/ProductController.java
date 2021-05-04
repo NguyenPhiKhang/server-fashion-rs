@@ -9,10 +9,7 @@ import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.repositories.CategoryRepository;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
-import com.khangse616.serverfashionrs.services.ICategoryService;
-import com.khangse616.serverfashionrs.services.IImageDataService;
-import com.khangse616.serverfashionrs.services.IOptionProductVarcharService;
-import com.khangse616.serverfashionrs.services.IProductService;
+import com.khangse616.serverfashionrs.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +34,9 @@ public class ProductController implements IProductController {
 
     @Autowired
     private ICategoryService categoryService;
+
+    @Autowired
+    private IRatingService ratingService;
 
     @GetMapping("/product/{id}")
     @Override
@@ -77,6 +78,30 @@ public class ProductController implements IProductController {
         productService.generateIdRatingStar();
 
         return ResponseEntity.ok().body("done");
+    }
+
+    @Override
+    @GetMapping("/recommend/top-rating/{userId}")
+    public ResponseEntity<List<ProductItemDTO>> getProductTopRating(@PathVariable("userId") int userId, @RequestParam(value = "p", defaultValue = "1") int page) {
+        long startTime = new Date().getTime();
+        List<ProductItemDTO> list = new ArrayList<>();
+
+//        if (userId == 0 || !(ratingService.checkUserIsRated(userId) > 0)) {
+        if (userId == 0) {
+            list = productService.productTopRating((page - 1) * 10).stream().map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
+        }
+//        else {
+//            if (!recommendRatingService.checkExistUser(userId)) {
+//                recommend_product_for_user(userId);
+//            }
+//            list = productService.productRecommendForUser(userId).stream().map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
+//        }
+
+
+        long endTime = new Date().getTime();
+        long difference = endTime - startTime;
+        System.out.println("Elapsed time in milliseconds: " + difference);
+        return ResponseEntity.ok().body(list);
     }
 
     private void getListIdCategory(Set<Category> list, List<Integer> listId){

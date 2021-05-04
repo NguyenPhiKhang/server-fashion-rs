@@ -59,4 +59,12 @@ public class ProductService implements IProductService {
 
         productRepository.saveAll(list);
     }
+
+    @Override
+    public List<Product> productTopRating(int page){
+        float C = productRepository.meanOfVoteAverage();
+        float m = productRepository.calculateQuantile();
+
+        return productRepository.topRatingProducts(m, C, page);
+    }
 }

@@ -1,18 +1,13 @@
 package com.khangse616.serverfashionrs.mappers.impl;
 
 import com.khangse616.serverfashionrs.mappers.RowMapper;
-import com.khangse616.serverfashionrs.models.ImageData;
-import com.khangse616.serverfashionrs.models.OptionProductDecimal;
-import com.khangse616.serverfashionrs.models.OptionProductVarchar;
-import com.khangse616.serverfashionrs.models.Product;
-import com.khangse616.serverfashionrs.models.dto.OptionProductDTO;
+import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.PriceResultDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.List;
 
 public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> {
 
@@ -33,14 +28,14 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
             productItemDTO.setOrderCount(product.getOrderCount());
 //            productItemDTO.setImgUrl(ImageUtil.addressImage(product.getImgUrl().getId()));
 
-//            productItemDTO.setCountRating(product.getRatings().size());
-//            RatingStar ratingStar = product.getRatingStar();
-//            int totalStar = ratingStar.getStar1() + ratingStar.getStar2() + ratingStar.getStar3() + ratingStar.getStar4() + ratingStar.getStar5();
-//            float percentStar = totalStar > 0 ? (float) (ratingStar.getStar1() + ratingStar.getStar2() * 2 + ratingStar.getStar3() * 3 + ratingStar.getStar4() * 4 + ratingStar.getStar5() * 5)
-//                    / totalStar : 0;
+            productItemDTO.setCountRating(product.getRatings().size());
+            RatingStar ratingStar = product.getRatingStar();
+            int totalStar = ratingStar.getStar1() + ratingStar.getStar2() + ratingStar.getStar3() + ratingStar.getStar4() + ratingStar.getStar5();
+            float percentStar = totalStar > 0 ? (float) (ratingStar.getStar1() + ratingStar.getStar2() * 2 + ratingStar.getStar3() * 3 + ratingStar.getStar4() * 4 + ratingStar.getStar5() * 5)
+                    / totalStar : 0;
             DecimalFormat decimalFormat = new DecimalFormat("#.##");
-            productItemDTO.setPercentStar(Float.parseFloat(decimalFormat.format(4.32)));
-            productItemDTO.setCountRating(20);
+            productItemDTO.setPercentStar(Float.parseFloat(decimalFormat.format(percentStar)));
+            productItemDTO.setCountRating(totalStar);
 
             OptionProductVarchar optionProductImg = null;
             BigDecimal priceMax = new BigDecimal(0);

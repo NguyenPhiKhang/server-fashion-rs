@@ -16,8 +16,6 @@ public class User {
 
     @Column(name = "name")
     private String name;
-    @Column(name = "is_shop")
-    private boolean shop;
     @Column(name = "email")
     private String email;
     @Column(name = "birthday")
@@ -69,14 +67,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isShop() {
-        return shop;
-    }
-
-    public void setShop(boolean shop) {
-        this.shop = shop;
     }
 
     public String getEmail() {

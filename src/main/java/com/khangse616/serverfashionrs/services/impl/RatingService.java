@@ -136,7 +136,7 @@ public class RatingService implements IRatingService {
 //                ratingRepository.save(rating);
             }
 
-            RatingStar ratingStar = ratingStarRepository.findById(pd.getId()).get();
+            RatingStar ratingStar = pd.getRatingStar();
             ratingStar.setStar1(star1);
             ratingStar.setStar2(star2);
             ratingStar.setStar3(star3);
@@ -149,31 +149,6 @@ public class RatingService implements IRatingService {
 
         ratingRepository.saveAll(list_ratings);
         ratingStarRepository.saveAll(ratingStarList);
-
-//        for (User user : users) {
-//            for (int i = 0; i < 20; i++) {
-//                int idRating;
-//                do {
-//                    idRating = 16000000 + rd.nextInt(4000001);
-//                } while (ratingRepository.existsById(idRating));
-//
-//                int star = 1 + rd.nextInt(5);
-//                int productIndex;
-//                do {
-//                    productIndex = rd.nextInt(products.size());
-//                } while (ratingRepository.existsByUserAndProduct(user, products.get(productIndex)));
-//
-//                Rating rating = new Rating();
-//                rating.setId(idRating);
-//                rating.setStar(star);
-//                rating.setUser(user);
-//                rating.setProduct(products.get(productIndex));
-//                rating.setTimeCreated(new Timestamp(System.currentTimeMillis()));
-//                rating.setTimeUpdated(new Timestamp(System.currentTimeMillis()));
-//
-//                ratingRepository.save(rating);
-//            }
-//        }
     }
 
     @Override

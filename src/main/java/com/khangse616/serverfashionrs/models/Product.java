@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -61,7 +62,6 @@ public class Product implements Serializable {
     @JsonIgnore
     private RatingStar ratingStar;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @JsonIgnore
@@ -71,7 +71,6 @@ public class Product implements Serializable {
     @JoinColumn(name = "brand_id")
     @JsonIgnore
     private Brand brand;
-
 
     @ManyToMany(targetEntity = OptionProductVarchar.class, cascade = CascadeType.ALL)
     @JoinTable(
@@ -112,6 +111,11 @@ public class Product implements Serializable {
     @ManyToMany(targetEntity = Product.class, mappedBy = "productLinks", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Product> products = new HashSet<>();
+
+    @OneToMany(targetEntity = Rating.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    @BatchSize(size = 2)
+    private Set<Rating> ratings;
 
     public Product() {
     }
@@ -330,5 +334,13 @@ public class Product implements Serializable {
 
     public void setRatingStar(RatingStar ratingStar) {
         this.ratingStar = ratingStar;
+    }
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
     }
 }

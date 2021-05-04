@@ -26,7 +26,6 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
             productItemDTO.setFreeShip(product.isFreeShip());
             productItemDTO.setPromotionPercent(product.getPromotionPercent());
             productItemDTO.setOrderCount(product.getOrderCount());
-//            productItemDTO.setImgUrl(ImageUtil.addressImage(product.getImgUrl().getId()));
 
             productItemDTO.setCountRating(product.getRatings().size());
             RatingStar ratingStar = product.getRatingStar();

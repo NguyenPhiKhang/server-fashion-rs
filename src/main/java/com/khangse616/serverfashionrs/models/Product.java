@@ -56,10 +56,10 @@ public class Product implements Serializable {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "rating_star_id")
-//    @JsonIgnore
-//    private RatingStar ratingStar;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rating_star_id")
+    @JsonIgnore
+    private RatingStar ratingStar;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -322,5 +322,13 @@ public class Product implements Serializable {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public RatingStar getRatingStar() {
+        return ratingStar;
+    }
+
+    public void setRatingStar(RatingStar ratingStar) {
+        this.ratingStar = ratingStar;
     }
 }

@@ -33,6 +33,10 @@ public class RatingStar {
     public RatingStar() {
     }
 
+    public RatingStar(int id) {
+        this.id = id;
+    }
+
     public RatingStar(int id, int star1, int star2, int star3, int star4, int star5) {
         this.id = id;
         this.star1 = star1;

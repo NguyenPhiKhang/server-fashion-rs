@@ -13,17 +13,19 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-    Product findByIdAndTypeId(int id, String typeId);
+    Product findByIdAndVisibilityTrue(int id);
 
-    @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.updatedAt desc")
+    List<Product> findAllByVisibilityTrueOrderByPromotionPercentDesc();
+
+    @Query("select u from Product u where u.category.id in (:idCategories) and u.visibility = true order by u.updatedAt desc")
     Page<Product> findProductByCategoriesOrderByNew(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
 
-    @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.purpose")
+    @Query("select u from Product u where u.category.id in (:idCategories) and u.visibility = true order by u.purpose")
     Page<Product> findProductByCategoriesOrderByPopular(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
 
-    @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.updatedAt desc")
+    @Query("select u from Product u where u.category.id in (:idCategories) and u.visibility = true order by u.updatedAt desc")
     Page<Product> findProductByCategoriesOrderByPriceUp(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
 
-    @Query("select u from Product u where u.category.id in (:idCategories) and u.typeId = 'configurable' order by u.updatedAt desc")
+    @Query("select u from Product u where u.category.id in (:idCategories) and u.visibility = true order by u.updatedAt desc")
     Page<Product> findProductByCategoriesOrderByPriceDown(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
 }

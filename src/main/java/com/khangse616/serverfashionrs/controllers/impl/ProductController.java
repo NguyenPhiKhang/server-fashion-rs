@@ -71,6 +71,14 @@ public class ProductController implements IProductController {
         return  ResponseEntity.ok().body(listProduct);
     }
 
+    @Override
+    @PostMapping("/product/generate-id-rating-star")
+    public ResponseEntity<String> generateIdRatingStarForProduct() {
+        productService.generateIdRatingStar();
+
+        return ResponseEntity.ok().body("done");
+    }
+
     private void getListIdCategory(Set<Category> list, List<Integer> listId){
         if(list.size()==0)
             return;

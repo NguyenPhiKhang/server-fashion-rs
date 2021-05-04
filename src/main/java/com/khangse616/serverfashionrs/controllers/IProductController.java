@@ -11,5 +11,6 @@ import java.util.List;
 
 public interface IProductController {
     ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id);
-    public ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("filter") String filter, @RequestParam("p") int page);
+    ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("filter") String filter, @RequestParam("p") int page);
+    ResponseEntity<String> generateIdRatingStarForProduct();
 }

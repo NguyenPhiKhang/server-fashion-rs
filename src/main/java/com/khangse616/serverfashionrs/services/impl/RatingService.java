@@ -4,6 +4,7 @@ import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.RatingStar;
 import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
 import com.khangse616.serverfashionrs.repositories.RatingRepository;
 import com.khangse616.serverfashionrs.repositories.RatingStarRepository;
@@ -63,9 +64,9 @@ public class RatingService implements IRatingService {
         return ratingRepository.findProductsRated();
     }
 
-//    public List<AVGRatedProductDTO> calcAVGRatedProduct() {
-//        return ratingRepository.avgRatedProduct();
-//    }
+    public List<AVGRatedProductDTO> calcAVGRatedProduct() {
+        return ratingRepository.avgRatedProduct();
+    }
 
     @Override
     public void autoRating() {

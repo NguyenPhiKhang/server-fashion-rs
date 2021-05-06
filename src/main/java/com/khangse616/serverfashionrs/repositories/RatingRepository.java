@@ -3,6 +3,7 @@ package com.khangse616.serverfashionrs.repositories;
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -31,9 +32,9 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
     @Query(value = "select distinct product_id from ratings order by product_id asc", nativeQuery = true)
     List<Integer> findProductsRated();
 
-//    //    @Query(value = "select product_id as ProductId, avg(star) as AvgRated from ratings group by productId order by productId asc;", nativeQuery = true)
-//    @Query("select new com.khangse616.serverfashionrs.dto.RecommendSystem.AVGRatedProductDTO(u.product.id, avg(u.star)) from Rating u group by u.product order by u.product.id asc ")
-//    List<AVGRatedProductDTO> avgRatedProduct();
+    //    @Query(value = "select product_id as ProductId, avg(star) as AvgRated from ratings group by productId order by productId asc;", nativeQuery = true)
+    @Query("select new com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO(u.product.id, avg(u.star)) from Rating u group by u.product order by u.product.id asc ")
+    List<AVGRatedProductDTO> avgRatedProduct();
 
     List<Rating> findAllByOrderByProductAsc();
 }

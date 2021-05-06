@@ -45,6 +45,9 @@ public class ProductController implements IProductController {
     @Autowired
     private ICosineSimilarityService cosineSimilarityService;
 
+    @Autowired
+    private IRecommendRatingService recommendRatingService;
+
     @GetMapping("/product/{id}")
     @Override
     public ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id) {
@@ -93,16 +96,15 @@ public class ProductController implements IProductController {
         long startTime = new Date().getTime();
         List<ProductItemDTO> list = new ArrayList<>();
 
-//        if (userId == 0 || !(ratingService.checkUserIsRated(userId) > 0)) {
-        if (userId == 0) {
+        if (userId == 0 || !(ratingService.checkUserIsRated(userId) > 0)) {
             list = productService.productTopRating((page - 1) * 10).stream().map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
         }
-//        else {
-//            if (!recommendRatingService.checkExistUser(userId)) {
-//                recommend_product_for_user(userId);
-//            }
-//            list = productService.productRecommendForUser(userId).stream().map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
-//        }
+        else {
+            if (!recommendRatingService.checkExistUser(userId)) {
+                recommend_product_for_user(userId);
+            }
+            list = productService.productRecommendForUser(userId).stream().map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
+        }
 
 
         long endTime = new Date().getTime();

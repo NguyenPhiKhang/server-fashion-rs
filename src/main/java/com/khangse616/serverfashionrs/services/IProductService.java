@@ -13,4 +13,5 @@ public interface IProductService {
     Page<Product> getProductsByCategoriesOrderByPopular(List<Integer> idCategories, Pageable pageable);
     void generateIdRatingStar();
     List<Product> productTopRating(int page);
+    List<Product> productRecommendForUser(int userId);
 }

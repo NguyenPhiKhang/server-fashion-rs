@@ -103,7 +103,7 @@ public class ProductController implements IProductController {
             if (!recommendRatingService.checkExistUser(userId)) {
                 recommend_product_for_user(userId);
             }
-            list = productService.productRecommendForUser(userId).stream().map(value -> new ProductItemDTOMapper().mapRow(value)).collect(Collectors.toList());
+            list = productService.productRecommendForUser(userId).stream().map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
         }
 
 
@@ -179,7 +179,7 @@ public class ProductController implements IProductController {
         return ResponseEntity.ok().body("done");
     }
 
-    @GetMapping("/create-prediction-rating/{userId}")
+    @PostMapping("/create-prediction-rating/{userId}")
     public ResponseEntity<RecommendRating> recommend_product_for_user(@PathVariable("userId") int user_id) {
         long startTime = new Date().getTime();
 

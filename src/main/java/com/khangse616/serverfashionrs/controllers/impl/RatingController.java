@@ -14,9 +14,8 @@ public class RatingController implements IRatingController {
     @Autowired
     private IRatingService ratingService;
 
-    @PostMapping("/rating/auto-rating")
     @Override
-    public ResponseEntity<String> autoRating(){
+    public ResponseEntity<String> autoRating() {
         ratingService.autoRating();
         return ResponseEntity.ok().body("done");
     }

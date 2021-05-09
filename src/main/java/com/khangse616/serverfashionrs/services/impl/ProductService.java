@@ -29,6 +29,7 @@ public class ProductService implements IProductService {
     @Autowired
     private IRecommendRatingService recommendRatingService;
 
+    @Override
     public Product findProductById(int id) {
         return productRepository.findByIdAndVisibilityTrue(id);
     }

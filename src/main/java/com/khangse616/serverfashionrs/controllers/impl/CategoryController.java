@@ -18,14 +18,13 @@ public class CategoryController implements ICategoryController {
     @Autowired
     private ICategoryService categoryService;
 
-    @GetMapping("/categories/{parentId}/sub-categories")
     @Override
-    public ResponseEntity<Set<Category>> getCategoriesByParentCategory(@PathVariable("parentId") int parentId){
+    public ResponseEntity<Set<Category>> getCategoriesByParentCategory(int parentId) {
         Set<Category> categoryScreenDTO = categoryService.findCategoriesByParentId(parentId);
         return ResponseEntity.ok().body(categoryScreenDTO);
     }
 
-//    @GetMapping("/categories")
+    //    @GetMapping("/categories")
 //    public ResponseEntity<List<CategoryScreenDTO>> getCategoriesLevel1(@RequestParam(value = "level", required = false, defaultValue = "0") int level){
 //        List<CategoryScreenDTO> categoryScreenDTO = level!=0?categoryService.findCategoryByLevel(level).stream().map(value->new CategoryScreenDTOMapper().mapRow(value)).collect(Collectors.toList())
 //                : categoryService.findAllCategories().stream().map(value->new CategoryScreenDTOMapper().mapRow(value)).collect(Collectors.toList());

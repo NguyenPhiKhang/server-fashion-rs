@@ -12,5 +12,5 @@ import java.util.Set;
 @RequestMapping("/default")
 public interface ICategoryController {
     @GetMapping("/categories/{parentId}/sub-categories")
-    public ResponseEntity<Set<Category>> getCategoriesByParentCategory(@PathVariable("parentId") int parentId);
+    ResponseEntity<Set<Category>> getCategoriesByParentCategory(@PathVariable("parentId") int parentId);
 }

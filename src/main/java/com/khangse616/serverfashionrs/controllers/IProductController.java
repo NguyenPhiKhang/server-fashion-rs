@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.Product;
+import com.khangse616.serverfashionrs.models.RecommendRating;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import org.springframework.http.ResponseEntity;
@@ -21,4 +22,10 @@ public interface IProductController {
 
     @GetMapping("/recommend/top-rating/{userId}")
     ResponseEntity<List<ProductItemDTO>> getProductTopRating(@PathVariable("userId") int userId, @RequestParam(value = "p", defaultValue = "1") int page);
+
+    @PostMapping("/recommend/create-cosine-similarity")
+    ResponseEntity<String> createCosineSimilarity();
+
+    @PostMapping("/create-prediction-rating/{userId}")
+    ResponseEntity<RecommendRating> recommend_product_for_user(@PathVariable("userId") int user_id);
 }

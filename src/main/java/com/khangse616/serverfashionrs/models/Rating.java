@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ratings")
@@ -27,6 +29,15 @@ public class Rating {
     @JoinColumn(name = "product_id")
     @JsonIgnore
     private Product product;
+
+    @ManyToMany(targetEntity = ImageData.class, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "rating_image",
+            joinColumns =
+            @JoinColumn(name = "rating_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id", referencedColumnName = "id"))
+    @JsonIgnore
+    private Set<ImageData> dataImages = new HashSet<>();
 
     public Rating(){}
 
@@ -84,6 +95,14 @@ public class Rating {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Set<ImageData> getDataImages() {
+        return dataImages;
+    }
+
+    public void setImageDataImages(Set<ImageData> dataImages) {
+        this.dataImages = dataImages;
     }
 }
 

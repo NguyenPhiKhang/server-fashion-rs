@@ -9,4 +9,8 @@ public interface IRatingStarService {
     RatingStar save(RatingStar ratingStar);
 
     boolean existRatingStarId(int id);
+
+    RatingStar getRatingStarByProductId(int productId);
+
+    int totalStarsOfProduct(int productId);
 }

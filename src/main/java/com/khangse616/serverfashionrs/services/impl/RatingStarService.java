@@ -25,4 +25,14 @@ public class RatingStarService implements IRatingStarService {
     public boolean existRatingStarId(int id) {
         return ratingStarRepository.existsById(id);
     }
+
+    @Override
+    public RatingStar getRatingStarByProductId(int productId) {
+        return ratingStarRepository.getRatingStarByProductId(productId);
+    }
+
+    @Override
+    public int totalStarsOfProduct(int productId) {
+        return ratingStarRepository.totalStarsOfProduct(productId);
+    }
 }

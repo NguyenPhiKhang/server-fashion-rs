@@ -37,4 +37,13 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
     List<AVGRatedProductDTO> avgRatedProduct();
 
     List<Rating> findAllByOrderByProductAsc();
+
+    @Query(value = "SELECT * FROM ratings where product_id=:productId order by time_updated desc limit :p,10;", nativeQuery = true)
+    List<Rating> findAllRatingsByProductId(@Param("productId") int productId, @Param("p") int page);
+
+    @Query(value = "SELECT * FROM ratings where product_id=:productId and star=:star order by time_updated desc limit :p,10;", nativeQuery = true)
+    List<Rating> findRatingsByProductIdAndStar(@Param("productId") int productId, @Param("star") int star, @Param("p") int page);
+
+    @Query(value = "SELECT * FROM ratings where product_id=:productId and star=:star order by time_updated desc limit :p,10;", nativeQuery = true)
+    List<Rating> findRatingsByProductIdAndHasImage(@Param("productId") int productId, @Param("star") int star, @Param("p") int page);
 }

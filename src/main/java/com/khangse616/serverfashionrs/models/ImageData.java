@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "data_images")
@@ -31,6 +33,10 @@ public class ImageData implements Serializable {
 //    @OneToOne(targetEntity = Product.class, mappedBy = "imgUrl", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JsonIgnore
 //    private Product product;
+
+    @ManyToMany(targetEntity = Rating.class, mappedBy = "dataImages", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Rating> ratings = new HashSet<>();
 
     public ImageData(){}
 
@@ -86,5 +92,13 @@ public class ImageData implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Set<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Set<Rating> ratings) {
+        this.ratings = ratings;
     }
 }

@@ -25,4 +25,9 @@ public interface IRatingService {
     void autoRating();
 
     Rating save(Rating rating);
+
+    List<Rating> getAllRatingByProductId(int productId, int page);
+
+    List<Rating> getRatingByProductIdAndStar(int productId, int star, int page);
+
 }

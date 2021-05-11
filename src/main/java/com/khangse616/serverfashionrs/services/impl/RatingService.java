@@ -155,4 +155,14 @@ public class RatingService implements IRatingService {
     public Rating save(Rating rating) {
         return ratingRepository.save(rating);
     }
+
+    @Override
+    public List<Rating> getAllRatingByProductId(int productId, int page) {
+        return ratingRepository.findAllRatingsByProductId(productId, page);
+    }
+
+    @Override
+    public List<Rating> getRatingByProductIdAndStar(int productId, int star, int page) {
+        return ratingRepository.findRatingsByProductIdAndStar(productId, star, page);
+    }
 }

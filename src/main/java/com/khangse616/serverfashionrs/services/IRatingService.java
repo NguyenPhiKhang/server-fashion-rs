@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.services;
 
 import com.khangse616.serverfashionrs.models.Rating;
+import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 
 import java.util.List;
@@ -30,4 +31,7 @@ public interface IRatingService {
 
     List<Rating> getRatingByProductIdAndStar(int productId, int star, int page);
 
+    CountRatingProductDTO countRatingByStarOfProduct(int productId);
+
+    int countRatingByImageOfProduct(int productId);
 }

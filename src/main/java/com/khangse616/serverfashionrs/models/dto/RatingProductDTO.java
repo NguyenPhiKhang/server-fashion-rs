@@ -5,18 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class RatingProductDTO {
-    private int totalCount;
+    private CountRatingProductDTO totalCount;
     private List<RatingDTO> data;
 
     public RatingProductDTO() {
     }
 
     @JsonProperty("total_count")
-    public int getTotalCount() {
+    public CountRatingProductDTO getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount) {
+    public void setTotalCount(CountRatingProductDTO totalCount) {
         this.totalCount = totalCount;
     }
 

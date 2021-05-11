@@ -4,6 +4,7 @@ import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.RatingStar;
 import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
 import com.khangse616.serverfashionrs.repositories.RatingRepository;
@@ -164,5 +165,15 @@ public class RatingService implements IRatingService {
     @Override
     public List<Rating> getRatingByProductIdAndStar(int productId, int star, int page) {
         return ratingRepository.findRatingsByProductIdAndStar(productId, star, page);
+    }
+
+    @Override
+    public CountRatingProductDTO countRatingByStarOfProduct(int productId) {
+        return ratingRepository.countRatingByStar(productId);
+    }
+
+    @Override
+    public int countRatingByImageOfProduct(int productId) {
+        return ratingRepository.countRatingByImage(productId);
     }
 }

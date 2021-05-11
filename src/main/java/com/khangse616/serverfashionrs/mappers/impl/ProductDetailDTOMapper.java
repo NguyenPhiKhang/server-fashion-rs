@@ -109,17 +109,15 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setCategories(categoriesStr.toString());
 
             RatingProductDTO ratingProductDTO = new RatingProductDTO();
-            Set<Rating> ratings = product.getRatings();
+            Set<Rating> ratings = product.getRatings().stream().sorted(Comparator.comparing(Rating::getTimeUpdated)).limit(2).collect(Collectors.toSet());;
 
-            ratingProductDTO.setTotalCount(ratings.size());
             List<RatingDTO> ratingDTOList = new ArrayList<>();
 
-            Set<Rating> get2Rating = ratings.stream().sorted(Comparator.comparing(Rating::getTimeUpdated)).limit(2).collect(Collectors.toSet());
-
-            for(Rating rating: get2Rating){
+            for(Rating rating: ratings){
                 RatingDTO ratingDTO = new RatingDTOMapper().mapRow(rating);
                 ratingDTOList.add(ratingDTO);
             }
+
             ratingProductDTO.setData(ratingDTOList);
             productDetailDTO.setRatings(ratingProductDTO);
 

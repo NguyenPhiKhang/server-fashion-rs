@@ -4,6 +4,7 @@ import com.khangse616.serverfashionrs.controllers.IRatingController;
 import com.khangse616.serverfashionrs.mappers.impl.RatingDTOMapper;
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.RatingStar;
+import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RatingProductDTO;
 import com.khangse616.serverfashionrs.services.IRatingService;
 import com.khangse616.serverfashionrs.services.IRatingStarService;
@@ -31,6 +32,11 @@ public class RatingController implements IRatingController {
     @Override
     public ResponseEntity<RatingProductDTO> getRatingByProduct(int id, String select, int page) {
         RatingProductDTO ratingProductDTO = new RatingProductDTO();
+
+        CountRatingProductDTO countRatingProductDTO = ratingService.countRatingByStarOfProduct(id);
+        countRatingProductDTO.setTotalImage(ratingService.countRatingByImageOfProduct(id));
+
+        ratingProductDTO.setTotalCount(countRatingProductDTO);
 
         List<Rating> ratings;
         if (select.equals("all"))

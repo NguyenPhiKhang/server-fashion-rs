@@ -3,9 +3,11 @@ package com.khangse616.serverfashionrs.repositories;
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -46,4 +48,23 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
 
     @Query(value = "SELECT * FROM ratings where product_id=:productId and star=:star order by time_updated desc limit :p,10;", nativeQuery = true)
     List<Rating> findRatingsByProductIdAndHasImage(@Param("productId") int productId, @Param("star") int star, @Param("p") int page);
+
+//    @Query(value = "call count_detail_ratings(:productId);", nativeQuery = true)
+//    @Procedure(procedureName = "Rating.countDetailRatings")
+//    CountRatingProductDTO countDetailRatings(@Param("productId") int productId);
+
+    @Query(value = "select new com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO(p.ratingStar.star1+p.ratingStar.star2+p.ratingStar.star3+p.ratingStar.star4+p.ratingStar.star5, p.ratingStar.star1, p.ratingStar.star2, p.ratingStar.star3, p.ratingStar.star4, p.ratingStar.star5) \n" +
+            "from Product p \n" +
+            "where p.id = :productId")
+    CountRatingProductDTO countRatingByStar(@Param("productId") int productId);
+
+    @Query(value = "select count(*) from ratings rr \n" +
+            "where rr.id in (\n" +
+            "select r.id\n" +
+            "from ratings r \n" +
+            "join rating_image ri \n" +
+            "on r.id = ri.rating_id\n" +
+            "where r.product_id = :productId\n" +
+            "group by ri.rating_id);", nativeQuery = true)
+    int countRatingByImage(@Param("productId") int productId);
 }

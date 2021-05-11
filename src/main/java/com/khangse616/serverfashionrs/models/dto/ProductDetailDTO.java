@@ -2,12 +2,8 @@ package com.khangse616.serverfashionrs.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.khangse616.serverfashionrs.models.Category;
-import com.khangse616.serverfashionrs.models.OptionProductDecimal;
-import com.khangse616.serverfashionrs.models.OptionProductInteger;
-import com.khangse616.serverfashionrs.models.OptionProductVarchar;
+import com.khangse616.serverfashionrs.models.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductDetailDTO {
@@ -32,12 +28,23 @@ public class ProductDetailDTO {
     private String madeIn;
     private int promotionPercent;
     private int totalQuantity;
+    private RatingProductDTO ratings;
 
     private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
 
     private List<OptionProductDTO> optionProductDTOList;
 
+    private RatingStar ratingStar;
+
     public ProductDetailDTO() {
+    }
+
+    public RatingStar getRatingStar() {
+        return ratingStar;
+    }
+
+    public void setRatingStar(RatingStar ratingStar) {
+        this.ratingStar = ratingStar;
     }
 
     public int getId() {
@@ -225,6 +232,14 @@ public class ProductDetailDTO {
 
     public void setTotalQuantity(int totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+
+    public RatingProductDTO getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(RatingProductDTO ratings) {
+        this.ratings = ratings;
     }
 }
 

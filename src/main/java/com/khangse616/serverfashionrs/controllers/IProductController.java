@@ -15,7 +15,7 @@ public interface IProductController {
     ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id);
 
     @GetMapping("/cat/{idCategory}/products")
-    ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam("filter") String filter, @RequestParam("p") int page);
+    ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam(value = "filter", defaultValue = "popular") String filter, @RequestParam(value = "p", defaultValue = "1") int page);
 
     @PostMapping("/product/generate-id-rating-star")
     ResponseEntity<String> generateIdRatingStarForProduct();

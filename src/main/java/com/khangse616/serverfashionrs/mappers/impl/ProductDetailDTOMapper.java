@@ -2,13 +2,13 @@ package com.khangse616.serverfashionrs.mappers.impl;
 
 import com.khangse616.serverfashionrs.mappers.RowMapper;
 import com.khangse616.serverfashionrs.models.*;
-import com.khangse616.serverfashionrs.models.dto.AttributeDTO;
-import com.khangse616.serverfashionrs.models.dto.OptionProductDTO;
-import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
+import com.khangse616.serverfashionrs.models.dto.*;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Product> {
     @Override
@@ -37,6 +37,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setVisibility(product.isVisibility());
             productDetailDTO.setSuitable_season(product.getSuitableSeason());
             productDetailDTO.setTypeId(product.getTypeId());
+            productDetailDTO.setRatingStar(product.getRatingStar());
 
             List<AttributeDTO<OptionProductVarchar>> attributeDTOVarchar = new ArrayList<>();
             List<OptionProductDTO> optionProductDTOList = new ArrayList<>();
@@ -105,6 +106,17 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             categoriesStr.insert(0, 0);
 
             productDetailDTO.setCategories(categoriesStr.toString());
+
+            RatingProductDTO ratingProductDTO = new RatingProductDTO();
+            ratingProductDTO.setTotalCount(product.getRatings().size());
+            List<RatingDTO> ratingDTOList = new ArrayList<>();
+
+            for(Rating rating: product.getRatings().stream().sorted(Comparator.comparing(Rating::getTimeUpdated)).limit(2).collect(Collectors.toList())){
+                RatingDTO ratingDTO = new RatingDTOMapper().mapRow(rating);
+                ratingDTOList.add(ratingDTO);
+            }
+            ratingProductDTO.setData(ratingDTOList);
+            productDetailDTO.setRatings(ratingProductDTO);
 
             return productDetailDTO;
         } catch (

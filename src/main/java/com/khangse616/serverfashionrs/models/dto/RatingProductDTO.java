@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class RatingProductDTO {
+
     private CountRatingProductDTO totalCount;
     private List<RatingDTO> data;
 
@@ -20,6 +21,7 @@ public class RatingProductDTO {
         this.totalCount = totalCount;
     }
 
+    @JsonProperty("list-rating")
     public List<RatingDTO> getData() {
         return data;
     }

@@ -5,10 +5,7 @@ import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.*;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Product> {
@@ -91,6 +88,8 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                 o.setValue(imgData != null ? "http:" + imgData.getLink().replace("fill_size", "700x817") : "");
             }));
 
+            attributeDTOVarchar.forEach(v->v.getOptions().sort(OptionProductVarchar::compareTo));
+
             productDetailDTO.setTotalQuantity(quantity);
             productDetailDTO.setOptionProductDTOList(optionProductDTOList);
             productDetailDTO.setListAttributeVarchar(attributeDTOVarchar);
@@ -153,6 +152,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                 attributeDTOStream.setOptions(optionProductVarchars);
             }
         }
+
         if (optionProductDTO != null && (!attr.getCode().equals("image") || (attr.getCode().equals("image") && isImage))) {
             List<OptionProductVarchar> list = optionProductDTO.getOptionProductVarcharList();
             list.add(optionProductVarchar);

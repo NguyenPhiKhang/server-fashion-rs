@@ -45,7 +45,7 @@ public class RatingController implements IRatingController {
             if (!select.equals("image")) {
                 ratings = ratingService.getRatingByProductIdAndStar(id, Integer.parseInt(select), (page - 1) * 10);
             } else {
-                ratings = null;
+                ratings = ratingService.getRatingByProductIdHasImage(id, (page - 1) * 10);
             }
         }
 

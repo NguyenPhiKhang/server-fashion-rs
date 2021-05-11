@@ -31,6 +31,8 @@ public interface IRatingService {
 
     List<Rating> getRatingByProductIdAndStar(int productId, int star, int page);
 
+    List<Rating> getRatingByProductIdHasImage(int productId, int page);
+
     CountRatingProductDTO countRatingByStarOfProduct(int productId);
 
     int countRatingByImageOfProduct(int productId);

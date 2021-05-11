@@ -46,8 +46,14 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
     @Query(value = "SELECT * FROM ratings where product_id=:productId and star=:star order by time_updated desc limit :p,10;", nativeQuery = true)
     List<Rating> findRatingsByProductIdAndStar(@Param("productId") int productId, @Param("star") int star, @Param("p") int page);
 
-    @Query(value = "SELECT * FROM ratings where product_id=:productId and star=:star order by time_updated desc limit :p,10;", nativeQuery = true)
-    List<Rating> findRatingsByProductIdAndHasImage(@Param("productId") int productId, @Param("star") int star, @Param("p") int page);
+    @Query(value = "select r.*\n" +
+            "from ratings r \n" +
+            "join rating_image ri \n" +
+            "on r.id = ri.rating_id \n" +
+            "where r.product_id = :productId \n" +
+            "group by ri.rating_id \n" +
+            "order by r.time_updated desc limit :p,10;", nativeQuery = true)
+    List<Rating> findRatingsByProductIdAndHasImage(@Param("productId") int productId, @Param("p") int page);
 
 //    @Query(value = "call count_detail_ratings(:productId);", nativeQuery = true)
 //    @Procedure(procedureName = "Rating.countDetailRatings")

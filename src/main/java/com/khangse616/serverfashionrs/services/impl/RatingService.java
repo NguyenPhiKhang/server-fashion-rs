@@ -176,4 +176,9 @@ public class RatingService implements IRatingService {
     public int countRatingByImageOfProduct(int productId) {
         return ratingRepository.countRatingByImage(productId);
     }
+
+    @Override
+    public List<Rating> getRatingByProductIdHasImage(int productId, int page) {
+        return ratingRepository.findRatingsByProductIdAndHasImage(productId, page);
+    }
 }

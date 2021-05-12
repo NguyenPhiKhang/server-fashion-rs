@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
-public class RatingController implements IRatingController {
+ public class RatingController implements IRatingController {
     @Autowired
     private IRatingService ratingService;
 

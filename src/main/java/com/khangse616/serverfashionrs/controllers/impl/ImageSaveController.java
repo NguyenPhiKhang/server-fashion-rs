@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.controllers.impl;
 
 import com.khangse616.serverfashionrs.Utils.ImageUtil;
 import com.khangse616.serverfashionrs.controllers.IImageSaveController;
+import com.khangse616.serverfashionrs.exceptions.ResourceNotFoundException;
 import com.khangse616.serverfashionrs.messages.ResponseMessage;
 import com.khangse616.serverfashionrs.models.ImageData;
 import com.khangse616.serverfashionrs.models.ImageDataSave;
@@ -9,6 +10,7 @@ import com.khangse616.serverfashionrs.services.IImageDataSaveService;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +42,12 @@ public class ImageSaveController implements IImageSaveController {
         List<MultipartFile> files = ImageUtil.createMultipartFileFromUrls(imageDataList);
 
         return ImageUtil.uploadImages(imageService, files);
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getFile(String id) {
+        ImageDataSave image = imageService.getFile(id).orElseThrow(() -> new ResourceNotFoundException("khong tim thay image id: " + id));
+
+        return ResponseEntity.ok().contentType(MediaType.valueOf(image.getType())).body(image.getData());
     }
 }

@@ -22,4 +22,9 @@ public class ImageDataService implements IImageDataService {
     public List<ImageData> findListImageDataByIds(List<String> ids) {
         return imageDataRepository.findByIdIn(ids);
     }
+
+    @Override
+    public List<ImageData> getAllImages() {
+        return imageDataRepository.findAll();
+    }
 }

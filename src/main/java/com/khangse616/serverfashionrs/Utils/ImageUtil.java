@@ -2,6 +2,8 @@ package com.khangse616.serverfashionrs.Utils;
 
 import com.khangse616.serverfashionrs.messages.ResponseMessage;
 import com.khangse616.serverfashionrs.models.ImageData;
+import com.khangse616.serverfashionrs.models.ImageDataSave;
+import com.khangse616.serverfashionrs.services.IImageDataSaveService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
@@ -16,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImageUtil {
-    public static ResponseEntity<ResponseMessage<ImageData>> uploadImage(ImageService imageService, MultipartFile file) {
+    public static ResponseEntity<ResponseMessage<ImageDataSave>> uploadImage(IImageDataSaveService imageService, MultipartFile file) {
         if (file != null) {
             try {
-                Image image = imageService.store(file);
+                ImageDataSave image = imageService.store(file);
 
                 String message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage<>(message, image));
@@ -29,6 +31,19 @@ public class ImageUtil {
             }
         } else {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage<>(""));
+        }
+    }
+
+    public static ResponseEntity<ResponseMessage<List<ImageDataSave>>> uploadImages(IImageDataSaveService imageService, List<MultipartFile> files) {
+        String message = "";
+        try {
+            List<ImageDataSave> images = imageService.stores(files);
+
+            message = "Uploaded the " + files.size() + " file successfully";
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage<>(message, images));
+        } catch (Exception e) {
+            message = "Could not upload the file!";
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage<>(message));
         }
     }
 

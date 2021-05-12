@@ -7,4 +7,5 @@ import java.util.List;
 public interface IImageDataService {
     ImageData findImageById(String id);
     List<ImageData> findListImageDataByIds(List<String> ids);
+    List<ImageData> getAllImages();
 }

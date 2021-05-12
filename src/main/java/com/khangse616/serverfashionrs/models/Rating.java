@@ -39,6 +39,11 @@ public class Rating {
     @JsonIgnore
     private Set<ImageData> dataImages = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "product_attribute_id")
+    @JsonIgnore
+    private Product productAttribute;
+
     public Rating(){}
 
     public int getId() {
@@ -103,6 +108,18 @@ public class Rating {
 
     public void setImageDataImages(Set<ImageData> dataImages) {
         this.dataImages = dataImages;
+    }
+
+    public void setDataImages(Set<ImageData> dataImages) {
+        this.dataImages = dataImages;
+    }
+
+    public Product getProductAttribute() {
+        return productAttribute;
+    }
+
+    public void setProductAttribute(Product productAttribute) {
+        this.productAttribute = productAttribute;
     }
 }
 

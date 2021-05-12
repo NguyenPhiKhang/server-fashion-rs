@@ -1,10 +1,13 @@
 package com.khangse616.serverfashionrs.mappers.impl;
 
 import com.khangse616.serverfashionrs.mappers.RowMapper;
+import com.khangse616.serverfashionrs.models.ImageData;
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.User;
 import com.khangse616.serverfashionrs.models.dto.RatingDTO;
 import com.khangse616.serverfashionrs.services.IImageDataService;
+
+import java.util.stream.Collectors;
 
 public class RatingDTOMapper implements RowMapper<RatingDTO, Rating> {
     @Override
@@ -20,6 +23,18 @@ public class RatingDTOMapper implements RowMapper<RatingDTO, Rating> {
             ratingDTO.setImageAvatar(user.getImageAvatar().getLink());
             ratingDTO.setTimeUpdated(rating.getTimeUpdated());
             ratingDTO.setUserName(user.getName());
+
+            ratingDTO.setImageRating(rating.getDataImages().stream().map(v->"http:"+ v.getLink().replace("fill_size", "255x298")).collect(Collectors.toList()));
+
+            rating.getProductAttribute().getOptionProductVarchars().forEach(v->{
+                if(v.getAttribute().getId()==80){
+                    ratingDTO.setColor(v.getValue());
+                }else{
+                    if(v.getAttribute().getId()==164){
+                        ratingDTO.setSize(v.getValue());
+                    }
+                }
+            });
 
             return ratingDTO;
         }catch (Exception ex){

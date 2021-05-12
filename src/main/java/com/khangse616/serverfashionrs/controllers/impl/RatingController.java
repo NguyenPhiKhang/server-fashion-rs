@@ -30,6 +30,13 @@ public class RatingController implements IRatingController {
     }
 
     @Override
+    public ResponseEntity<String> autoInsertAttribute() {
+        ratingService.autoInsertRating();
+
+        return ResponseEntity.ok().body("done");
+    }
+
+    @Override
     public ResponseEntity<RatingProductDTO> getRatingByProduct(int id, String select, int page) {
         RatingProductDTO ratingProductDTO = new RatingProductDTO();
 

@@ -18,6 +18,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class RatingService implements IRatingService {
@@ -75,7 +77,7 @@ public class RatingService implements IRatingService {
         List<User> users = userRepository.findAll();
         List<Product> products = productRepository.findAllByVisibilityTrueOrderByPromotionPercentDesc();
 
-        int size_product = products.size()-100;
+        int size_product = products.size() - 100;
         List<Rating> list_ratings = new ArrayList<>();
         List<RatingStar> ratingStarList = new ArrayList<>();
         int q = 100;
@@ -180,5 +182,37 @@ public class RatingService implements IRatingService {
     @Override
     public List<Rating> getRatingByProductIdHasImage(int productId, int page) {
         return ratingRepository.findRatingsByProductIdAndHasImage(productId, page);
+    }
+
+    @Override
+    public void autoInsertRating() {
+        List<Product> products = productRepository.findAllByVisibilityTrueOrderByPromotionPercentDesc();
+
+        Random rd = new Random();
+
+        products.forEach(v -> {
+            List<Product> productAttribute = new ArrayList<>(v.getProductLinks());
+
+            v.getRatings().forEach(r -> {
+                if (productAttribute.size() != 0) {
+                    int pd_rd = rd.nextInt(productAttribute.size());
+                    r.setProductAttribute(productAttribute.get(pd_rd));
+                } else r.setProductAttribute(v);
+            });
+
+            ratingRepository.saveAll(v.getRatings());
+        });
+
+//        Product product = productRepository.findByIdAndVisibilityTrue(48119);
+//        Random rd = new Random();
+//
+//        List<Product> productAttribute = new ArrayList<>(product.getProductLinks());
+//
+//        product.getRatings().forEach(r->{
+//            int pd_rd = rd.nextInt(productAttribute.size());
+//            r.setProductAttribute(productAttribute.get(pd_rd));
+//        });
+//
+//        ratingRepository.saveAll(product.getRatings());
     }
 }

@@ -117,6 +117,10 @@ public class Product implements Serializable {
     @BatchSize(size = 2)
     private Set<Rating> ratings;
 
+    @OneToMany(targetEntity = Rating.class, mappedBy = "productAttribute", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Rating> ratingsAttribute;
+
     public Product() {
     }
 
@@ -342,5 +346,13 @@ public class Product implements Serializable {
 
     public void setRatings(Set<Rating> ratings) {
         this.ratings = ratings;
+    }
+
+    public Set<Rating> getRatingsAttribute() {
+        return ratingsAttribute;
+    }
+
+    public void setRatingsAttribute(Set<Rating> ratingsAttribute) {
+        this.ratingsAttribute = ratingsAttribute;
     }
 }

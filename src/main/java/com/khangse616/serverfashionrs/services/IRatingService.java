@@ -36,4 +36,6 @@ public interface IRatingService {
     CountRatingProductDTO countRatingByStarOfProduct(int productId);
 
     int countRatingByImageOfProduct(int productId);
+
+    void autoInsertRating();
 }

@@ -85,7 +85,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             List<ImageData> listImageData = imageDataService.findListImageDataByIds(listIdImage);
             attributeDTOVarchar.stream().filter(c -> c.getCode().equals("image")).findFirst().ifPresent(attributeImage -> attributeImage.getOptions().forEach(o -> {
                 ImageData imgData = listImageData.stream().filter(i -> i.getId().equals(o.getValue())).findFirst().orElse(null);
-                o.setValue(imgData != null ? "http:" + imgData.getLink().replace("fill_size", "700x817") : "");
+                o.setValue(imgData != null ? "https:" + imgData.getLink().replace("fill_size", "700x817") : "");
             }));
 
             attributeDTOVarchar.forEach(v->v.getOptions().sort(OptionProductVarchar::compareTo));

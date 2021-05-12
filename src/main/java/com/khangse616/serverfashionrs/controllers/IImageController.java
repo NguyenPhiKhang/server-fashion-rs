@@ -11,6 +11,5 @@ import java.util.List;
 
 @RequestMapping("/default")
 public interface IImageController {
-    @PostMapping("/images/upload-multi-url")
-    public ResponseEntity<ResponseMessage<List<ImageData>>> uploadFile(@RequestBody String[] urls);
+
 }

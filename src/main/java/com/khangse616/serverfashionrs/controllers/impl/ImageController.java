@@ -16,8 +16,5 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1")
 public class ImageController implements IImageController {
-    @Override
-    public ResponseEntity<ResponseMessage<List<ImageData>>> uploadFile(String[] urls) {
-        return null;
-    }
+
 }

@@ -46,6 +46,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             if (product.getProductLinks().size() > 0) {
                 for (Product pd : product.getProductLinks()) {
                     OptionProductDTO optionProductDTO = new OptionProductDTO();
+                    optionProductDTO.setProductAttributeId(pd.getId());
                     for(OptionProductVarchar optionProductVarchar: pd.getOptionProductVarchars()) {
                         boolean isImage = optionProductDTO.getOptionProductVarcharList().stream().noneMatch(c -> c.getAttribute().getCode().equals("image"));
                         createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, optionProductDTO, isImage);

@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OptionProductDTO {
-    private List<OptionProductVarchar> optionProductVarcharList;
+    private int productAttributeId;
     private OptionProductDecimal price;
     private OptionProductInteger quantity;
+    private List<OptionProductVarchar> optionProductVarcharList;
 
     public OptionProductDTO() {
         optionProductVarcharList = new ArrayList<>();
@@ -26,6 +27,7 @@ public class OptionProductDTO {
         this.optionProductVarcharList = optionProductVarcharList;
     }
 
+    @JsonProperty("price")
     public OptionProductDecimal getPrice() {
         return price;
     }
@@ -34,11 +36,21 @@ public class OptionProductDTO {
         this.price = price;
     }
 
+    @JsonProperty("quantity")
     public OptionProductInteger getQuantity() {
         return quantity;
     }
 
     public void setQuantity(OptionProductInteger quantity) {
         this.quantity = quantity;
+    }
+
+    @JsonProperty("product_option_id")
+    public int getProductAttributeId() {
+        return productAttributeId;
+    }
+
+    public void setProductAttributeId(int productAttributeId) {
+        this.productAttributeId = productAttributeId;
     }
 }

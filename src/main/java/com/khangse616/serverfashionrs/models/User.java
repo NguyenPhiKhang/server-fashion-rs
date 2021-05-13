@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -42,6 +43,10 @@ public class User {
             mappedBy = "user")
     @JsonIgnore
     private Account account;
+
+    @OneToMany(targetEntity = Cart.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Cart> carts;
 
     public User(){}
 

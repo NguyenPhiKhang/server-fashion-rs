@@ -19,6 +19,10 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_option_id")
+    private Product productOption;
+
     private int amount;
 
     public Cart() {
@@ -54,5 +58,13 @@ public class Cart {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public Product getProductOption() {
+        return productOption;
+    }
+
+    public void setProductOption(Product productOption) {
+        this.productOption = productOption;
     }
 }

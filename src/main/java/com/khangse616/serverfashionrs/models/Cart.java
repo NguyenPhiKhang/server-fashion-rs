@@ -3,6 +3,7 @@ package com.khangse616.serverfashionrs.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "carts")
@@ -24,6 +25,11 @@ public class Cart {
     private Product productOption;
 
     private int amount;
+
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
 
     public Cart() {
     }
@@ -66,5 +72,21 @@ public class Cart {
 
     public void setProductOption(Product productOption) {
         this.productOption = productOption;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

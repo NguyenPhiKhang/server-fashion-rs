@@ -16,6 +16,11 @@ public class ProductUserKey implements Serializable {
     public ProductUserKey() {
     }
 
+    public ProductUserKey(int productId, int userId) {
+        this.productId = productId;
+        this.userId = userId;
+    }
+
     public int getProductId() {
         return productId;
     }

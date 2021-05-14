@@ -40,9 +40,12 @@ public class CartItemDTOMapper implements RowMapper<CartItemDTO, Cart> {
                         else {
                             if (attribute.getId() == 240799 && optionProductItemCartDTO.getImage() == null) {
                                 isImage = true;
-                                ImageData imageData = repository.findImageById(optionProductVarchar.getValue());
-
-                                optionProductVarchar.setValue("https:" + imageData.getLink().replace("fill_size", "700x817"));
+                                if (optionProductVarchar.getValue().contains("https"))
+                                    optionProductVarchar.setValue(optionProductVarchar.getValue());
+                                else {
+                                    ImageData imageData = repository.findImageById(optionProductVarchar.getValue());
+                                    optionProductVarchar.setValue("https:" + imageData.getLink().replace("fill_size", "700x817"));
+                                }
                                 optionProductItemCartDTO.setImage(optionProductVarchar);
                             }
                         }

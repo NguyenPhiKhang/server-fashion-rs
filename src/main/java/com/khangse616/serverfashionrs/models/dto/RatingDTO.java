@@ -8,15 +8,16 @@ import java.util.List;
 
 public class RatingDTO {
     private int id;
+    private int userId;
     private String userName;
     private String imageAvatar;
-    private int customerId;
-    private String comment;
     private int star;
-    private String timeUpdated;
-    private List<String> imageRating;
     private String size;
     private String color;
+    private String comment;
+    private List<String> imageRating;
+    private String timeUpdated;
+
 
     public RatingDTO() {
     }
@@ -30,6 +31,15 @@ public class RatingDTO {
         this.id = id;
     }
 
+    @JsonProperty("user_id")
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @JsonProperty("user_name")
     public String getUserName() {
         return userName;
@@ -37,42 +47,6 @@ public class RatingDTO {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    @JsonProperty("customer_id")
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customer) {
-        this.customerId = customer;
-    }
-
-    @JsonProperty("comment")
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    @JsonProperty("star")
-    public int getStar() {
-        return star;
-    }
-
-    public void setStar(int star) {
-        this.star = star;
-    }
-
-    @JsonProperty("time-updated")
-    public String getTimeUpdated() {
-        return timeUpdated;
-    }
-
-    public void setTimeUpdated(String timeUpdated) {
-        this.timeUpdated = timeUpdated;
     }
 
     @JsonProperty("image-avatar")
@@ -84,13 +58,13 @@ public class RatingDTO {
         this.imageAvatar = imageAvatar;
     }
 
-    @JsonProperty("images-rating")
-    public List<String> getImageRating() {
-        return imageRating;
+    @JsonProperty("star")
+    public int getStar() {
+        return star;
     }
 
-    public void setImageRating(List<String> imageRating) {
-        this.imageRating = imageRating;
+    public void setStar(int star) {
+        this.star = star;
     }
 
     @JsonProperty("size")
@@ -109,5 +83,32 @@ public class RatingDTO {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @JsonProperty("comment")
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    @JsonProperty("images-rating")
+    public List<String> getImageRating() {
+        return imageRating;
+    }
+
+    public void setImageRating(List<String> imageRating) {
+        this.imageRating = imageRating;
+    }
+
+    @JsonProperty("time-updated")
+    public String getTimeUpdated() {
+        return timeUpdated;
+    }
+
+    public void setTimeUpdated(String timeUpdated) {
+        this.timeUpdated = timeUpdated;
     }
 }

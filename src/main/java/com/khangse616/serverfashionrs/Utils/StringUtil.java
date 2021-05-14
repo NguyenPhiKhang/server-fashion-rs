@@ -1,5 +1,11 @@
 package com.khangse616.serverfashionrs.Utils;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class StringUtil {
     public static String capitalize(String str) {
         if(str == null || str.isEmpty()) {
@@ -51,5 +57,13 @@ public class StringUtil {
         } catch (NumberFormatException nfe) {
             return false;
         }
+    }
+
+    public static String convertTimestampToString(Timestamp timestamp){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp.getTime());
+
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        return dateFormat.format(calendar.getTime());
     }
 }

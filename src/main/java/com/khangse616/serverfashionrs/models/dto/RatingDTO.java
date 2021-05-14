@@ -13,7 +13,7 @@ public class RatingDTO {
     private int customerId;
     private String comment;
     private int star;
-    private Timestamp timeUpdated;
+    private String timeUpdated;
     private List<String> imageRating;
     private String size;
     private String color;
@@ -48,6 +48,7 @@ public class RatingDTO {
         this.customerId = customer;
     }
 
+    @JsonProperty("comment")
     public String getComment() {
         return comment;
     }
@@ -56,6 +57,7 @@ public class RatingDTO {
         this.comment = comment;
     }
 
+    @JsonProperty("star")
     public int getStar() {
         return star;
     }
@@ -64,14 +66,16 @@ public class RatingDTO {
         this.star = star;
     }
 
-    public Timestamp getTimeUpdated() {
+    @JsonProperty("time-updated")
+    public String getTimeUpdated() {
         return timeUpdated;
     }
 
-    public void setTimeUpdated(Timestamp timeUpdated) {
+    public void setTimeUpdated(String timeUpdated) {
         this.timeUpdated = timeUpdated;
     }
 
+    @JsonProperty("image-avatar")
     public String getImageAvatar() {
         return imageAvatar;
     }
@@ -80,6 +84,7 @@ public class RatingDTO {
         this.imageAvatar = imageAvatar;
     }
 
+    @JsonProperty("images-rating")
     public List<String> getImageRating() {
         return imageRating;
     }
@@ -88,6 +93,7 @@ public class RatingDTO {
         this.imageRating = imageRating;
     }
 
+    @JsonProperty("size")
     public String getSize() {
         return size;
     }
@@ -96,6 +102,7 @@ public class RatingDTO {
         this.size = size;
     }
 
+    @JsonProperty("color")
     public String getColor() {
         return color;
     }

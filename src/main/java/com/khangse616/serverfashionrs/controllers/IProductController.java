@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.RecommendRating;
+import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import org.springframework.http.ResponseEntity;
@@ -28,4 +29,7 @@ public interface IProductController {
 
     @PostMapping("/create-prediction-rating/{userId}")
     ResponseEntity<RecommendRating> recommend_product_for_user(@PathVariable("userId") int user_id);
+
+    @GetMapping("/product/{productId}/all-option")
+    ResponseEntity<AttributeOptionDTO> getAttributeOptionByProduct(@PathVariable("productId") int productId);
 }

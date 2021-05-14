@@ -79,36 +79,4 @@ public class CartItemDTOMapper implements RowMapper<CartItemDTO, Cart> {
             return null;
         }
     }
-
-//    private void createAttributeVarchar(OptionProductVarchar optionProductVarchar, OptionProductDTO optionProductDTO) {
-//        Attribute attr = optionProductVarchar.getAttribute();
-//        AttributeDTO<OptionProductVarchar> attributeDTOStream = attributeDTOVarchar.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
-//        if (attributeDTOStream == null) {
-//            AttributeDTO<OptionProductVarchar> attr1 = new AttributeDTO<OptionProductVarchar>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
-//            List<OptionProductVarchar> optionProductVarchars = new ArrayList<>();
-//            optionProductVarchars.add(optionProductVarchar);
-//            if (attr.getCode().equals("image")) {
-//                listIdImage.add(optionProductVarchar.getValue());
-//            }
-//            attr1.setOptions(optionProductVarchars);
-//
-//            attributeDTOVarchar.add(attr1);
-//        } else {
-//            List<OptionProductVarchar> optionProductVarchars = attributeDTOStream.getOptions();
-//            if (optionProductVarchars.stream().noneMatch(i -> i.getId() == optionProductVarchar.getId())) {
-//                optionProductVarchars.add(optionProductVarchar);
-//                if (attr.getCode().equals("image")) {
-//                    listIdImage.add(optionProductVarchar.getValue());
-//                }
-//
-//                attributeDTOStream.setOptions(optionProductVarchars);
-//            }
-//        }
-//
-//        if (optionProductDTO != null && (!attr.getCode().equals("image") || (attr.getCode().equals("image") && isImage))) {
-//            List<OptionProductVarchar> list = optionProductDTO.getOptionProductVarcharList();
-//            list.add(optionProductVarchar);
-//            optionProductDTO.setOptionProductVarcharList(list);
-//        }
-//    }
 }

@@ -8,6 +8,7 @@ import com.khangse616.serverfashionrs.models.Category;
 import com.khangse616.serverfashionrs.models.CosineSimilarity;
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.RecommendRating;
+import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
@@ -192,6 +193,11 @@ public class ProductController implements IProductController {
         System.out.println("done");
 
         return ResponseEntity.ok().body(new RecommendRating(user_id, listProductRS_Show.toString()));
+    }
+
+    @Override
+    public ResponseEntity<AttributeOptionDTO> getAttributeOptionByProduct(int productId) {
+        return null;
     }
 
     //    @PostMapping("/product/{productId}/{userId}/rating")

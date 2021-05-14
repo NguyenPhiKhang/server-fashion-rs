@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping("/default")
 public interface ISeenProductController {
-    @PostMapping("/{productId}/{userId}/seen-product")
-    String CreateOrUpdateSeenProduct(@PathVariable("productId") int productId, @PathVariable("userId") int userId);
+    @PostMapping("/{userId}/{productId}/seen-product")
+    String CreateOrUpdateSeenProduct(@PathVariable("userId") int userId, @PathVariable("productId") int productId);
 }

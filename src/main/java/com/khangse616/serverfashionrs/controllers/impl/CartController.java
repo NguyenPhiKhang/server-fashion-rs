@@ -21,11 +21,11 @@ public class CartController implements ICartController {
 
     @Override
     public String removeProductInCart(int cartId) {
-        return null;
+        return cartService.removeProductInCart(cartId);
     }
 
     @Override
     public Cart updateProductInCart(int cartId, int productOptionId, int amount) {
-        return null;
+        return cartService.updateProductInCart(cartId, productOptionId, amount);
     }
 }

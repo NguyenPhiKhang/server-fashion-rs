@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/default")
 public interface IProductController {
     @GetMapping("/product/{id}")
-    ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id);
+    ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id, @RequestParam(value = "user", defaultValue = "0") int userId);
 
     @GetMapping("/cat/{idCategory}/products")
     ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam(value = "filter", defaultValue = "popular") String filter, @RequestParam(value = "p", defaultValue = "1") int page);

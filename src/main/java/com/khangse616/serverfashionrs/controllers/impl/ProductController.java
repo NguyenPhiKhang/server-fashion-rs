@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.controllers.impl;
 
 import com.khangse616.serverfashionrs.controllers.IProductController;
+import com.khangse616.serverfashionrs.controllers.ISeenProductController;
 import com.khangse616.serverfashionrs.mappers.impl.AttributeOptionDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.ProductDetailDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.ProductItemDTOMapper;
@@ -46,8 +47,13 @@ public class ProductController implements IProductController {
     @Autowired
     private IRecommendRatingService recommendRatingService;
 
+    @Autowired
+    private ISeenProductController seenProductController;
+
     @Override
-    public ResponseEntity<ProductDetailDTO> getProductById(int id) {
+    public ResponseEntity<ProductDetailDTO> getProductById(int id, int userId) {
+        if(userId!=0)
+            seenProductController.CreateOrUpdateSeenProduct(userId, id);
         ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(productService.findProductByIdVisibleTrue(id), imageDataService);
         return ResponseEntity.ok().body(productDetailDTO);
     }

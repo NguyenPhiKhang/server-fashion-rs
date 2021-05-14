@@ -17,6 +17,9 @@ public class CartService implements ICartService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public Cart addProductInCart(int userId, int productId, int productOptionId, int amount) {
         Cart cart = new Cart();
@@ -31,9 +34,10 @@ public class CartService implements ICartService {
         cart.setAmount(amount);
         cart.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        cart.setProduct(productService.findProductById(productId));
+        cart.setProduct(productService.findProductByIdVisibleTrue(productId));
         cart.setProductOption(productService.findProductById(productOptionId));
+        cart.setUser(userService.getUserById(userId));
 
-        return null;
+        return cartRepository.save(cart);
     }
 }

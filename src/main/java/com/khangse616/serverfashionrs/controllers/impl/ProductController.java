@@ -46,7 +46,7 @@ public class ProductController implements IProductController {
 
     @Override
     public ResponseEntity<ProductDetailDTO> getProductById(int id) {
-        ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(productService.findProductById(id), imageDataService);
+        ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(productService.findProductByIdVisibleTrue(id), imageDataService);
         return ResponseEntity.ok().body(productDetailDTO);
     }
 

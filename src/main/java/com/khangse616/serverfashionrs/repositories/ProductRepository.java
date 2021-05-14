@@ -17,6 +17,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> findAllByVisibilityTrueOrderByPromotionPercentDesc();
 
+    Product findById(int id);
+
     @Query("select u from Product u where u.category.id in (:idCategories) and u.visibility = true order by u.updatedAt desc")
     Page<Product> findProductByCategoriesOrderByNew(@Param("idCategories") List<Integer> idCategories, Pageable pageable);
 

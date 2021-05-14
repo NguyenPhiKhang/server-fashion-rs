@@ -30,7 +30,7 @@ public class ProductService implements IProductService {
     private IRecommendRatingService recommendRatingService;
 
     @Override
-    public Product findProductById(int id) {
+    public Product findProductByIdVisibleTrue(int id) {
         return productRepository.findByIdAndVisibilityTrue(id);
     }
 
@@ -82,5 +82,10 @@ public class ProductService implements IProductService {
         RecommendRating recommendRating = recommendRatingService.findRecommendRatingByUserId(userId);
         List<Integer> listProducts = Arrays.stream(recommendRating.getProducts().split("-")).map(Integer::parseInt).collect(Collectors.toList());
         return productRepository.findProductByListIdProduct(listProducts);
+    }
+
+    @Override
+    public Product findProductById(int id) {
+        return productRepository.findById(id);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class SeenProductService implements ISeenProductService {
@@ -41,5 +42,10 @@ public class SeenProductService implements ISeenProductService {
 
             seenProductRepository.save(seenProduct);
         }
+    }
+
+    @Override
+    public List<SeenProduct> getListSeenProduct(int userId) {
+        return seenProductRepository.findSeenProductByUserAndLastTime(userId);
     }
 }

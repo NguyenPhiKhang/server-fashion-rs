@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.controllers.impl;
 
 import com.khangse616.serverfashionrs.controllers.IProductController;
+import com.khangse616.serverfashionrs.mappers.impl.AttributeOptionDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.ProductDetailDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.ProductItemDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.RatingRSDTOMapper;
@@ -197,7 +198,9 @@ public class ProductController implements IProductController {
 
     @Override
     public ResponseEntity<AttributeOptionDTO> getAttributeOptionByProduct(int productId) {
-        return null;
+        Product product = productService.findProductByIdVisibleTrue(productId);
+        AttributeOptionDTO attributeOptionDTO = new AttributeOptionDTOMapper().mapRow(product, imageDataService);
+        return ResponseEntity.ok().body(attributeOptionDTO);
     }
 
     //    @PostMapping("/product/{productId}/{userId}/rating")

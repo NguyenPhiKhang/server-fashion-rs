@@ -7,9 +7,9 @@ import java.util.List;
 
 public class AttributeOptionDTO {
     private int productId;
+    private int totalQuantity;
     private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
     private List<OptionProductDTO> optionProductDTOList;
-    private int totalQuantity;
 
     public AttributeOptionDTO() {
     }
@@ -21,6 +21,15 @@ public class AttributeOptionDTO {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    @JsonProperty("total-quantity")
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     @JsonProperty("attributes")
@@ -39,13 +48,5 @@ public class AttributeOptionDTO {
 
     public void setOptionProductDTOList(List<OptionProductDTO> optionProductDTOList) {
         this.optionProductDTOList = optionProductDTOList;
-    }
-
-    public int getTotalQuantity() {
-        return totalQuantity;
-    }
-
-    public void setTotalQuantity(int totalQuantity) {
-        this.totalQuantity = totalQuantity;
     }
 }

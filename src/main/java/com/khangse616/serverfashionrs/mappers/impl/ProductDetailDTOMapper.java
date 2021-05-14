@@ -37,63 +37,11 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setTypeId(product.getTypeId());
             productDetailDTO.setRatingStar(product.getRatingStar());
 
-            List<AttributeDTO<OptionProductVarchar>> attributeDTOVarchar = new ArrayList<>();
-            List<OptionProductDTO> optionProductDTOList = new ArrayList<>();
-            List<String> listIdImage = new ArrayList<>();
+            AttributeOptionDTO attributeOptionDTO = new AttributeOptionDTOMapper().mapRow(product);
 
-            int quantity = 0;
-
-            if (product.getProductLinks().size() > 0) {
-                for (Product pd : product.getProductLinks()) {
-                    OptionProductDTO optionProductDTO = new OptionProductDTO();
-                    optionProductDTO.setProductAttributeId(pd.getId());
-                    for(OptionProductVarchar optionProductVarchar: pd.getOptionProductVarchars()) {
-                        boolean isImage = optionProductDTO.getOptionProductVarcharList().stream().noneMatch(c -> c.getAttribute().getCode().equals("image"));
-                        createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, optionProductDTO, isImage);
-                    }
-                    for (OptionProductInteger optionProductInteger : pd.getOptionProductIntegers()) {
-                        quantity += optionProductInteger.getValue();
-                        createAttributeInteger(optionProductInteger, optionProductDTO);
-                    }
-                    pd.getOptionProductDecimals().forEach(optionProductDecimal -> {
-                        createAttributeDecimal(optionProductDecimal, optionProductDTO);
-                    });
-
-                    optionProductDTOList.add(optionProductDTO);
-                }
-            } else {
-                OptionProductDTO optionProductDTO = new OptionProductDTO();
-                product.getOptionProductVarchars().forEach(optionProductVarchar -> {
-                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false);
-                });
-                for (OptionProductInteger optionProductInteger : product.getOptionProductIntegers()) {
-                    quantity += optionProductInteger.getValue();
-                    createAttributeInteger(optionProductInteger, optionProductDTO);
-                }
-                product.getOptionProductDecimals().forEach(optionProductDecimal -> {
-                    createAttributeDecimal(optionProductDecimal, optionProductDTO);
-                });
-                optionProductDTOList.add(optionProductDTO);
-            }
-
-            boolean checkHaveImages = attributeDTOVarchar.stream().anyMatch(img->img.getCode().equals("image"));
-            if(!checkHaveImages){
-                product.getOptionProductVarchars().forEach(optionProductVarchar -> {
-                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false);
-                });
-            }
-
-            List<ImageData> listImageData = imageDataService.findListImageDataByIds(listIdImage);
-            attributeDTOVarchar.stream().filter(c -> c.getCode().equals("image")).findFirst().ifPresent(attributeImage -> attributeImage.getOptions().forEach(o -> {
-                ImageData imgData = listImageData.stream().filter(i -> i.getId().equals(o.getValue())).findFirst().orElse(null);
-                o.setValue(imgData != null ? "https:" + imgData.getLink().replace("fill_size", "700x817") : "");
-            }));
-
-            attributeDTOVarchar.forEach(v->v.getOptions().sort(OptionProductVarchar::compareTo));
-
-            productDetailDTO.setTotalQuantity(quantity);
-            productDetailDTO.setOptionProductDTOList(optionProductDTOList);
-            productDetailDTO.setListAttributeVarchar(attributeDTOVarchar);
+            productDetailDTO.setTotalQuantity(attributeOptionDTO.getTotalQuantity());
+            productDetailDTO.setOptionProductDTOList(attributeOptionDTO.getOptionProductDTOList());
+            productDetailDTO.setListAttributeVarchar(attributeOptionDTO.getListAttributeVarchar());
 
             productDetailDTO.setCategory(product.getCategory());
 
@@ -126,47 +74,5 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
                 Exception ex) {
             return null;
         }
-    }
-
-    private void createAttributeVarchar(OptionProductVarchar optionProductVarchar, List<AttributeDTO<OptionProductVarchar>> attributeDTOVarchar
-            , List<String> listIdImage, OptionProductDTO optionProductDTO, boolean isImage) {
-        Attribute attr = optionProductVarchar.getAttribute();
-        AttributeDTO<OptionProductVarchar> attributeDTOStream = attributeDTOVarchar.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
-        if (attributeDTOStream == null) {
-            AttributeDTO<OptionProductVarchar> attr1 = new AttributeDTO<OptionProductVarchar>(attr.getId(), attr.getType(), attr.getLabel(), attr.getCode());
-            List<OptionProductVarchar> optionProductVarchars = new ArrayList<>();
-            optionProductVarchars.add(optionProductVarchar);
-            if (attr.getCode().equals("image")) {
-                listIdImage.add(optionProductVarchar.getValue());
-            }
-            attr1.setOptions(optionProductVarchars);
-
-            attributeDTOVarchar.add(attr1);
-        } else {
-            List<OptionProductVarchar> optionProductVarchars = attributeDTOStream.getOptions();
-            if (optionProductVarchars.stream().noneMatch(i -> i.getId() == optionProductVarchar.getId())) {
-                optionProductVarchars.add(optionProductVarchar);
-                if (attr.getCode().equals("image")) {
-                    listIdImage.add(optionProductVarchar.getValue());
-                }
-
-                attributeDTOStream.setOptions(optionProductVarchars);
-            }
-        }
-
-        if (optionProductDTO != null && (!attr.getCode().equals("image") || (attr.getCode().equals("image") && isImage))) {
-            List<OptionProductVarchar> list = optionProductDTO.getOptionProductVarcharList();
-            list.add(optionProductVarchar);
-            optionProductDTO.setOptionProductVarcharList(list);
-        }
-    }
-
-    private void createAttributeInteger(OptionProductInteger optionProductInteger
-            , OptionProductDTO optionProductDTO) {
-        optionProductDTO.setQuantity(optionProductInteger);
-    }
-
-    private void createAttributeDecimal(OptionProductDecimal optionProductDecimal, OptionProductDTO optionProductDTO) {
-        optionProductDTO.setPrice(optionProductDecimal);
     }
 }

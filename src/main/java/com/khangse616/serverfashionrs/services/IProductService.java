@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.services;
 
 import com.khangse616.serverfashionrs.models.Product;
+import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

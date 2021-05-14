@@ -9,6 +9,7 @@ public class AttributeOptionDTO {
     private int productId;
     private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
     private List<OptionProductDTO> optionProductDTOList;
+    private int totalQuantity;
 
     public AttributeOptionDTO() {
     }
@@ -38,5 +39,13 @@ public class AttributeOptionDTO {
 
     public void setOptionProductDTOList(List<OptionProductDTO> optionProductDTOList) {
         this.optionProductDTOList = optionProductDTOList;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 }

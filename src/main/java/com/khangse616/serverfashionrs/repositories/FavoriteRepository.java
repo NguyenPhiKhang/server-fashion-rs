@@ -12,4 +12,5 @@ public interface FavoriteRepository extends JpaRepository<Favorite, ProductUserK
     boolean existsFavoriteProductByIdProductIdAndIdUserId(int id_productId, int id_userId);
     Favorite findFavoriteProductByIdProductIdAndIdUserId(int id_productId, int id_userId);
     List<Favorite> getFavoriteByIdUserIdOrderByTimeUpdatedDesc(int id_userId);
+    boolean existsFavoriteByIdProductIdAndIdUserIdAndLikedTrue(int id_productId, int id_userId);
 }

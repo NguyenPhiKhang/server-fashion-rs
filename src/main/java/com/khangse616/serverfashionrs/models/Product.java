@@ -56,6 +56,8 @@ public class Product implements Serializable {
     private Timestamp createdAt;
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+    @Column(name = "liked")
+    private boolean liked;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rating_star_id")
@@ -364,5 +366,13 @@ public class Product implements Serializable {
 
     public void setRatingsAttribute(Set<Rating> ratingsAttribute) {
         this.ratingsAttribute = ratingsAttribute;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 }

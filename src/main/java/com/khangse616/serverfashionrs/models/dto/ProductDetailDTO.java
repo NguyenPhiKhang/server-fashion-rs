@@ -26,6 +26,7 @@ public class ProductDetailDTO {
     private String purpose;
     private String suitable_season;
     private String madeIn;
+    private boolean liked;
     private int promotionPercent;
     private int totalQuantity;
     private RatingProductDTO ratings;
@@ -189,6 +190,14 @@ public class ProductDetailDTO {
 
     public void setMadeIn(String madeIn) {
         this.madeIn = madeIn;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 
     public int getPromotionPercent() {

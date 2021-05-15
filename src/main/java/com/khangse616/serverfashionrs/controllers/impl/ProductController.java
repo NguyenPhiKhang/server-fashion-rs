@@ -50,11 +50,19 @@ public class ProductController implements IProductController {
     @Autowired
     private ISeenProductController seenProductController;
 
+    @Autowired
+    private IFavoriteService favoriteService;
+
     @Override
     public ResponseEntity<ProductDetailDTO> getProductById(int id, int userId) {
-        if(userId!=0)
+        Product product = productService.findProductByIdVisibleTrue(id);
+        if(userId!=0){
             seenProductController.createOrUpdateSeenProduct(userId, id);
-        ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(productService.findProductByIdVisibleTrue(id), imageDataService);
+            if(favoriteService.checkUserLikedProduct(userId, id)){
+                product.setLiked(true);
+            }
+        }
+        ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(product, imageDataService);
         return ResponseEntity.ok().body(productDetailDTO);
     }
 

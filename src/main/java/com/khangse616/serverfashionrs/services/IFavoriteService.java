@@ -8,4 +8,5 @@ import java.util.List;
 public interface IFavoriteService {
     void updateFavoriteOfUser(int userId, int productId);
     List<Favorite> getListFavoriteProduct(int userId);
+    boolean checkUserLikedProduct(int userId, int productId);
 }

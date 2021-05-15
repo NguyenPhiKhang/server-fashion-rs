@@ -36,6 +36,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setSuitable_season(product.getSuitableSeason());
             productDetailDTO.setTypeId(product.getTypeId());
             productDetailDTO.setRatingStar(product.getRatingStar());
+            productDetailDTO.setLiked(product.isLiked());
 
             AttributeOptionDTO attributeOptionDTO = new AttributeOptionDTOMapper().mapRow(product, imageDataService);
 

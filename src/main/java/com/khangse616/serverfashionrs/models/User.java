@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -47,6 +48,10 @@ public class User {
     @OneToMany(targetEntity = Cart.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Cart> carts;
+
+    @OneToMany(targetEntity = Favorite.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Favorite> favoriteProducts;
 
     public User(){}
 

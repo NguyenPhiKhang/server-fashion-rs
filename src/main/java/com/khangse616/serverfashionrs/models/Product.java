@@ -125,6 +125,12 @@ public class Product implements Serializable {
     @JsonIgnore
     private Set<Cart> carts;
 
+    @OneToMany(targetEntity = Favorite.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Favorite> favoriteProducts;
+
+
+
     public Product() {
     }
 

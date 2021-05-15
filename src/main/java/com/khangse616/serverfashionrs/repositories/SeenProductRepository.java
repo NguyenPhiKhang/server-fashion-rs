@@ -5,9 +5,11 @@ import com.khangse616.serverfashionrs.models.SeenProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface SeenProductRepository extends JpaRepository<SeenProduct, ProductUserKey> {
 
 //    @Query(value = "select count(*) from seen_products where product_id = :productId and user_id=:user_id", nativeQuery = true)

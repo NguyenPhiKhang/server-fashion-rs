@@ -3,19 +3,20 @@ package com.khangse616.serverfashionrs.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "favorite_products")
+@Table(name = "favorites")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class FavoriteProduct {
+public class Favorite implements Serializable {
     @EmbeddedId
     private ProductUserKey id;
 
     @Column(name = "like")
     private boolean like;
-    @Column(name ="time_seen")
-    private Timestamp timeSeen;
+    @Column(name ="time_updated")
+    private Timestamp timeUpdated;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("productId")
@@ -27,7 +28,7 @@ public class FavoriteProduct {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public FavoriteProduct() {
+    public Favorite() {
     }
 
     public ProductUserKey getId() {
@@ -46,12 +47,12 @@ public class FavoriteProduct {
         this.like = like;
     }
 
-    public Timestamp getTimeSeen() {
-        return timeSeen;
+    public Timestamp getTimeUpdated() {
+        return timeUpdated;
     }
 
-    public void setTimeSeen(Timestamp timeSeen) {
-        this.timeSeen = timeSeen;
+    public void setTimeUpdated(Timestamp timeUpdated) {
+        this.timeUpdated = timeUpdated;
     }
 
     public Product getProduct() {

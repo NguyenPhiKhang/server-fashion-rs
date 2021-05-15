@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @RequestMapping("/default")
-public interface ISeenProductController {
-    @PostMapping("/{userId}/{productId}/seen-product")
-    String createOrUpdateSeenProduct(@PathVariable("userId") int userId, @PathVariable("productId") int productId);
+public interface IFavoriteController {
+    @PostMapping("/{userId}/{productId}/update-favorite")
+    String createOrUpdateFavoriteOfUser(@PathVariable("userId") int userId, @PathVariable("productId") int productId);
 
-    @GetMapping("/{userId}/get-seen-products")
-    List<ProductItemDTO> getListSeenProduct(@PathVariable("userId") int userId);
+    @GetMapping("/{userId}/get-favorite-products")
+    List<ProductItemDTO> getListFavoriteProduct(@PathVariable("userId") int userId);
 }

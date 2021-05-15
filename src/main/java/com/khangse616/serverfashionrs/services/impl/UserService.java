@@ -13,6 +13,6 @@ public class UserService implements IUserService {
 
     @Override
     public User getUserById(int userId) {
-        return userRepository.findById(userId).get();
+        return userRepository.findUserById(userId);
     }
 }

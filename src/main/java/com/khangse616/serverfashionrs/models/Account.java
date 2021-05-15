@@ -19,7 +19,7 @@ public class Account {
     private boolean active;
 
     @OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", unique= true, referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
 
     public Account() {

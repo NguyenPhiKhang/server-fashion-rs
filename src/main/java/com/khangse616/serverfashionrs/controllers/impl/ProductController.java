@@ -53,7 +53,7 @@ public class ProductController implements IProductController {
     @Override
     public ResponseEntity<ProductDetailDTO> getProductById(int id, int userId) {
         if(userId!=0)
-            seenProductController.CreateOrUpdateSeenProduct(userId, id);
+            seenProductController.createOrUpdateSeenProduct(userId, id);
         ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(productService.findProductByIdVisibleTrue(id), imageDataService);
         return ResponseEntity.ok().body(productDetailDTO);
     }

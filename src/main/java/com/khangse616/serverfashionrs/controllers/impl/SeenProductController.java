@@ -22,8 +22,8 @@ public class SeenProductController implements ISeenProductController {
     private IImageDataService imageDataService;
 
     @Override
-    public String CreateOrUpdateSeenProduct(int userId, int productId) {
-        seenProductService.CreateOrUpdateSeenProduct(userId, productId);
+    public String createOrUpdateSeenProduct(int userId, int productId) {
+        seenProductService.createOrUpdateSeenProduct(userId, productId);
         return "Đã cập nhật";
     }
 

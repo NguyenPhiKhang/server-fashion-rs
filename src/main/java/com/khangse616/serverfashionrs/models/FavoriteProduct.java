@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "favorite-products")
+@Table(name = "favorite_products")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class FavoriteProduct {
     @EmbeddedId

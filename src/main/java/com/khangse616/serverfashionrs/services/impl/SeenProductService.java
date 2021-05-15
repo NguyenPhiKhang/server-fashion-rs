@@ -24,7 +24,7 @@ public class SeenProductService implements ISeenProductService {
     private IUserService userService;
 
     @Override
-    public void CreateOrUpdateSeenProduct(int userId, int productId) {
+    public void createOrUpdateSeenProduct(int userId, int productId) {
 
         if (seenProductRepository.existsSeenProductByIdProductIdAndIdUserId(productId, userId)) {
             SeenProduct seenProduct = seenProductRepository.findSeenProductByIdProductIdAndIdUserId(productId, userId);

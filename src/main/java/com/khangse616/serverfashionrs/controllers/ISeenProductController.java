@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/default")
 public interface ISeenProductController {
     @PostMapping("/{userId}/{productId}/seen-product")
-    String CreateOrUpdateSeenProduct(@PathVariable("userId") int userId, @PathVariable("productId") int productId);
+    String createOrUpdateSeenProduct(@PathVariable("userId") int userId, @PathVariable("productId") int productId);
 
     @GetMapping("/{userId}/seen-products")
     List<ProductItemDTO> getListSeenProduct(@PathVariable("userId") int userId);

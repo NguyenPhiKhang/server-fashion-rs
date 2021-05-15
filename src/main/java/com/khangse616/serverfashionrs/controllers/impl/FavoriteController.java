@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.controllers.impl;
 
 import com.khangse616.serverfashionrs.controllers.IFavoriteController;
+import com.khangse616.serverfashionrs.mappers.impl.ProductItemDTOMapper;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.services.IFavoriteService;
 import com.khangse616.serverfashionrs.services.IImageDataService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -27,6 +29,6 @@ public class FavoriteController implements IFavoriteController {
 
     @Override
     public List<ProductItemDTO> getListFavoriteProduct(int userId) {
-        return null;
+        return favoriteProductService.getListFavoriteProduct(userId).stream().map(value-> new ProductItemDTOMapper().mapRow(value.getProduct(), imageDataService)).collect(Collectors.toList());
     }
 }

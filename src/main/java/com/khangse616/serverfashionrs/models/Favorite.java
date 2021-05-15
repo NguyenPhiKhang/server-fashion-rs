@@ -13,8 +13,8 @@ public class Favorite implements Serializable {
     @EmbeddedId
     private ProductUserKey id;
 
-    @Column(name = "like")
-    private boolean like;
+    @Column(name = "liked")
+    private boolean liked;
     @Column(name ="time_updated")
     private Timestamp timeUpdated;
 
@@ -39,12 +39,12 @@ public class Favorite implements Serializable {
         this.id = id;
     }
 
-    public boolean isLike() {
-        return like;
+    public boolean isLiked() {
+        return liked;
     }
 
-    public void setLike(boolean like) {
-        this.like = like;
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 
     public Timestamp getTimeUpdated() {

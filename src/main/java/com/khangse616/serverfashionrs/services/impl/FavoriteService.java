@@ -27,13 +27,13 @@ public class FavoriteService implements IFavoriteService {
     public void updateFavoriteOfUser(int userId, int productId) {
         if (favoriteRepository.existsFavoriteProductByIdProductIdAndIdUserId(productId, userId)) {
             Favorite favoriteProduct = favoriteRepository.findFavoriteProductByIdProductIdAndIdUserId(productId, userId);
-            favoriteProduct.setLike(!favoriteProduct.isLike());
+            favoriteProduct.setLiked(!favoriteProduct.isLiked());
             favoriteProduct.setTimeUpdated(new Timestamp(System.currentTimeMillis()));
 
             favoriteRepository.save(favoriteProduct);
         } else {
             Favorite favoriteProduct = new Favorite();
-            favoriteProduct.setLike(true);
+            favoriteProduct.setLiked(true);
             favoriteProduct.setTimeUpdated(new Timestamp(System.currentTimeMillis()));
             favoriteProduct.setProduct(productService.findProductByIdVisibleTrue(productId));
             favoriteProduct.setUser(userService.getUserById(userId));

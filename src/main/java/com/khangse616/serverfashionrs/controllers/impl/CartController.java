@@ -24,8 +24,9 @@ public class CartController implements ICartController {
     private IImageDataService imageDataService;
 
     @Override
-    public Cart addProductIntoCart(int userId, int productId, int productOptionId, int amount) {
-        return cartService.addProductInCart(userId, productId, productOptionId, amount);
+    public String addProductIntoCart(int userId, int productId, int productOptionId, int amount) {
+        cartService.addProductInCart(userId, productId, productOptionId, amount);
+        return "success";
     }
 
     @Override

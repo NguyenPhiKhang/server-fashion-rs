@@ -9,7 +9,7 @@ import java.util.List;
 @RequestMapping("/default")
 public interface ICartController {
     @PostMapping("/cart/{userId}/{productId}/add")
-    Cart addProductIntoCart(@PathVariable("userId") int userId, @PathVariable("productId") int productId, @RequestParam("p_option") int productOptionId, @RequestParam("amount") int amount);
+    String addProductIntoCart(@PathVariable("userId") int userId, @PathVariable("productId") int productId, @RequestParam("p_option") int productOptionId, @RequestParam("amount") int amount);
 
     @DeleteMapping("/cart/{cartId}/remove")
     String removeProductInCart(@PathVariable int cartId);

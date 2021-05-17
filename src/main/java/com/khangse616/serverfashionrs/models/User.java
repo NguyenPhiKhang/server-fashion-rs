@@ -26,8 +26,6 @@ public class User {
     private String phoneNumber;
     @Column(name = "sex")
     private String sex;
-    @Column(name = "address")
-    private String address;
     @Column(name = "active")
     private boolean active;
     @Column(name = "time_created")
@@ -109,14 +107,6 @@ public class User {
 
     public void setSex(String sex) {
         this.sex = sex;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public boolean isActive() {

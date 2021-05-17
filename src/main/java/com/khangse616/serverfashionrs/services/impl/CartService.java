@@ -23,21 +23,29 @@ public class CartService implements ICartService {
 
     @Override
     public Cart addProductInCart(int userId, int productId, int productOptionId, int amount) {
-        Cart cart = new Cart();
-        Random rd = new Random();
+        Cart cart = cartRepository.findCartByUserIdAndProductIdAndProductOptionId(userId, productId, productOptionId);
 
-        int idCart;
-        do {
-            idCart = 100 + rd.nextInt(6000001);
-        } while (cartRepository.existsById(idCart));
+        if (cart != null) {
+           cart.setAmount(cart.getAmount() + amount);
+           cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-        cart.setId(idCart);
-        cart.setAmount(amount);
-        cart.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        cart.setProduct(productService.findProductByIdVisibleTrue(productId));
-        cart.setProductOption(productService.findProductById(productOptionId));
-        cart.setUser(userService.getUserById(userId));
+        } else {
+            cart = new Cart();
+            Random rd = new Random();
+
+            int idCart;
+            do {
+                idCart = 100 + rd.nextInt(6000001);
+            } while (cartRepository.existsById(idCart));
+
+            cart.setId(idCart);
+            cart.setAmount(amount);
+            cart.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+            cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            cart.setProduct(productService.findProductByIdVisibleTrue(productId));
+            cart.setProductOption(productService.findProductById(productOptionId));
+            cart.setUser(userService.getUserById(userId));
+        }
 
         return cartRepository.save(cart);
     }
@@ -57,7 +65,7 @@ public class CartService implements ICartService {
         Cart cart = cartRepository.findById(cartId).orElse(null);
         if (cart != null) {
             cart.setAmount(amount);
-            if (cart.getProductOption()==null || cart.getProductOption().getId() != productOptionId)
+            if (cart.getProductOption() == null || cart.getProductOption().getId() != productOptionId)
                 cart.setProductOption(productService.findProductById(productOptionId));
 
             cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
@@ -69,6 +77,6 @@ public class CartService implements ICartService {
 
     @Override
     public List<Cart> getListProductInCart(int userId) {
-        return cartRepository.findCartByUserId(userId);
+        return cartRepository.findCartByUserIdOrderByUpdatedAtDesc(userId);
     }
 }

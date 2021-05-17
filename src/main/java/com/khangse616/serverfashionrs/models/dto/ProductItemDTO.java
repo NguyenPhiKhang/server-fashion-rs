@@ -11,7 +11,7 @@ public class ProductItemDTO {
     private Category category;
     private boolean freeShip;
     private PriceResultDTO price;
-    private int promotionPercent;
+    private float promotionPercent;
     private int orderCount;
     private String imgUrl;
     private float percentStar;
@@ -91,11 +91,11 @@ public class ProductItemDTO {
     }
 
     @JsonProperty("promotion_percent")
-    public int getPromotionPercent() {
+    public float getPromotionPercent() {
         return promotionPercent;
     }
 
-    public void setPromotionPercent(int promotionPercent) {
+    public void setPromotionPercent(float promotionPercent) {
         this.promotionPercent = promotionPercent;
     }
 

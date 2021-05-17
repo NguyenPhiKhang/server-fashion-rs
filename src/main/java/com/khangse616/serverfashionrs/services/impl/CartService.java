@@ -1,14 +1,17 @@
 package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.Cart;
+import com.khangse616.serverfashionrs.models.CartItem;
 import com.khangse616.serverfashionrs.repositories.CartRepository;
 import com.khangse616.serverfashionrs.services.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Service
 public class CartService implements ICartService {
@@ -21,13 +24,26 @@ public class CartService implements ICartService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CartItemService cartItemService;
+
     @Override
-    public Cart addProductInCart(int userId, int productId, int productOptionId, int amount) {
-        Cart cart = cartRepository.findCartByUserIdAndProductIdAndProductOptionId(userId, productId, productOptionId);
+    public void addProductInCart(int userId, int productId, int productOptionId, int quantity) {
+        Cart cart = cartRepository.findCartByUserId(userId);
 
         if (cart != null) {
-           cart.setAmount(cart.getAmount() + amount);
-           cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            CartItem cartItem = cartItemService.getCartItemByProductOption(cart.getId(), productOptionId);
+            if(cartItem!=null)
+            {
+                cartItem.setQuantity(cartItem.getQuantity()+1);
+                cartItem.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            }
+            else{
+                cartItem = cartItemService.save(productId, productOptionId, quantity);
+                Set<CartItem> cartItems = cart.getCartItems();
+                cartItems.add(cartItem);
+                cart.setCartItems(cartItems);
+            }
 
         } else {
             cart = new Cart();
@@ -39,15 +55,16 @@ public class CartService implements ICartService {
             } while (cartRepository.existsById(idCart));
 
             cart.setId(idCart);
-            cart.setAmount(amount);
             cart.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-            cart.setProduct(productService.findProductByIdVisibleTrue(productId));
-            cart.setProductOption(productService.findProductById(productOptionId));
             cart.setUser(userService.getUserById(userId));
+
+            Set<CartItem> cartItems = new HashSet<>();
+            cartItems.add(cartItemService.save(productId, productOptionId, quantity));
+            cart.setCartItems(cartItems);
         }
 
-        return cartRepository.save(cart);
+        cartRepository.save(cart);
     }
 
     @Override
@@ -61,7 +78,7 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Cart updateProductInCart(int cartId, int productOptionId, int amount) {
+    public void updateProductInCart(int cartId, int productOptionId, int amount) {
         Cart cart = cartRepository.findById(cartId).orElse(null);
         if (cart != null) {
             cart.setAmount(amount);
@@ -70,9 +87,8 @@ public class CartService implements ICartService {
 
             cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-            return cartRepository.save(cart);
+            cartRepository.save(cart);
         }
-        return null;
     }
 
     @Override

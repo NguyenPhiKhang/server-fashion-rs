@@ -12,22 +12,22 @@ import com.khangse616.serverfashionrs.services.IImageDataService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartItemDTOMapper implements RowMapper<CartItemDTO, Cart> {
+public class CartItemDTOMapper implements RowMapper<CartItemDTO, CartItem> {
     @Override
-    public CartItemDTO mapRow(Cart cart) {
+    public CartItemDTO mapRow(CartItem cartItem) {
         return null;
     }
 
     @Override
-    public CartItemDTO mapRow(Cart cart, IImageDataService repository) {
+    public CartItemDTO mapRow(CartItem cartItem, IImageDataService repository) {
         try {
-            Product product = cart.getProduct();
+            Product product = cartItem.getProduct();
 
-            CartItemDTO cartItemDTO = new CartItemDTO(cart.getId(), product.getId(), product.getName(), cart.getAmount());
+            CartItemDTO cartItemDTO = new CartItemDTO(cartItem.getId(), product.getId(), product.getName(), cartItem.getQuantity(), product.getPromotionPercent());
             OptionProductItemCartDTO optionProductItemCartDTO = new OptionProductItemCartDTO();
 
             if (product.getTypeId().equals("configurable")) {
-                Product productOption = cart.getProductOption();
+                Product productOption = cartItem.getProductOption();
                 optionProductItemCartDTO.setProductOptionId(productOption.getId());
                 boolean isImage = false;
                 for (OptionProductVarchar optionProductVarchar : productOption.getOptionProductVarchars()) {

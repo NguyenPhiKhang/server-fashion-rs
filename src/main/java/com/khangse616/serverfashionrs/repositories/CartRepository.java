@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
-    List<Cart> findCartByUserIdOrderByUpdatedAtDesc(int user_id);
-    boolean existsCartByUserIdAndProductIdAndProductOptionId(int user_id, int product_id, int productOption_id);
-    Cart findCartByUserIdAndProductIdAndProductOptionId(int user_id, int product_id, int productOption_id);
+    Cart findCartByUserId(int user_id);
 }

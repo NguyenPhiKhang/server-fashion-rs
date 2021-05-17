@@ -27,7 +27,7 @@ public class ProductDetailDTO {
     private String suitable_season;
     private String madeIn;
     private boolean liked;
-    private int promotionPercent;
+    private float promotionPercent;
     private int totalQuantity;
     private RatingProductDTO ratings;
 
@@ -200,11 +200,11 @@ public class ProductDetailDTO {
         this.liked = liked;
     }
 
-    public int getPromotionPercent() {
+    public float getPromotionPercent() {
         return promotionPercent;
     }
 
-    public void setPromotionPercent(int promotionPercent) {
+    public void setPromotionPercent(float promotionPercent) {
         this.promotionPercent = promotionPercent;
     }
 

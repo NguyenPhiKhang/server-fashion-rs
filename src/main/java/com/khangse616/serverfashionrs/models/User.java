@@ -43,9 +43,11 @@ public class User {
     @JsonIgnore
     private Account account;
 
-    @OneToMany(targetEntity = Cart.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "user")
     @JsonIgnore
-    private Set<Cart> carts;
+    private Cart cart;
 
     @OneToMany(targetEntity = Favorite.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
@@ -139,5 +141,21 @@ public class User {
 
     public void setTimeUpdated(Timestamp timeUpdated) {
         this.timeUpdated = timeUpdated;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Set<Favorite> getFavoriteProducts() {
+        return favoriteProducts;
+    }
+
+    public void setFavoriteProducts(Set<Favorite> favoriteProducts) {
+        this.favoriteProducts = favoriteProducts;
     }
 }

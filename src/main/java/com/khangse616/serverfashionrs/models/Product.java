@@ -37,7 +37,7 @@ public class Product implements Serializable {
     @Column(name = "is_active")
     private boolean active;
     @Column(name = "promotion_percent")
-    private int promotionPercent;
+    private float promotionPercent;
     @Column(name = "order_count")
     private int orderCount;
     @Column(name = "is_free_ship")
@@ -123,15 +123,13 @@ public class Product implements Serializable {
     @JsonIgnore
     private Set<Rating> ratingsAttribute;
 
-    @OneToMany(targetEntity = Cart.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Cart> carts;
+//    @OneToMany(targetEntity = CartItem.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonIgnore
+//    private Set<Cart> carts;
 
-    @OneToMany(targetEntity = Favorite.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Favorite> favoriteProducts;
-
-
+//    @OneToMany(targetEntity = Favorite.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    @JsonIgnore
+//    private Set<Favorite> favoriteProducts;
 
     public Product() {
     }
@@ -152,11 +150,11 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public int getPromotionPercent() {
+    public float getPromotionPercent() {
         return promotionPercent;
     }
 
-    public void setPromotionPercent(int promotionPercent) {
+    public void setPromotionPercent(float promotionPercent) {
         this.promotionPercent = promotionPercent;
     }
 

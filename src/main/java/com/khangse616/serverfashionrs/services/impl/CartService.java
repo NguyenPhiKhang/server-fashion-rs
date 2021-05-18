@@ -32,19 +32,20 @@ public class CartService implements ICartService {
         Cart cart = cartRepository.findCartByUserId(userId);
 
         if (cart != null) {
-            CartItem cartItem = cartItemService.getCartItemByProductOption(cart.getId(), productOptionId);
+            CartItem cartItem = (productOptionId!=0) ? cartItemService.getCartItemByProductOption(cart.getId(), productOptionId)
+                    :cartItemService.getCartItemByProductOptionIsNull(cart.getId(), productId);
             if(cartItem!=null)
             {
                 cartItem.setQuantity(cartItem.getQuantity()+1);
                 cartItem.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
             }
             else{
-                cartItem = cartItemService.save(productId, productOptionId, quantity);
+                cartItem = cartItemService.save(productId, productOptionId, quantity, cart);
                 Set<CartItem> cartItems = cart.getCartItems();
                 cartItems.add(cartItem);
                 cart.setCartItems(cartItems);
             }
-
+            cartRepository.save(cart);
         } else {
             cart = new Cart();
             Random rd = new Random();
@@ -58,13 +59,10 @@ public class CartService implements ICartService {
             cart.setCreatedAt(new Timestamp(System.currentTimeMillis()));
             cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
             cart.setUser(userService.getUserById(userId));
+            Cart cartSave = cartRepository.save(cart);
 
-            Set<CartItem> cartItems = new HashSet<>();
-            cartItems.add(cartItemService.save(productId, productOptionId, quantity));
-            cart.setCartItems(cartItems);
+            cartItemService.save(productId, productOptionId, quantity, cartSave);
         }
-
-        cartRepository.save(cart);
     }
 
     @Override
@@ -78,21 +76,23 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public void updateProductInCart(int cartId, int productOptionId, int amount) {
-        Cart cart = cartRepository.findById(cartId).orElse(null);
-        if (cart != null) {
-            cart.setAmount(amount);
-            if (cart.getProductOption() == null || cart.getProductOption().getId() != productOptionId)
-                cart.setProductOption(productService.findProductById(productOptionId));
-
-            cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-
-            cartRepository.save(cart);
-        }
+    public void updateProductInCart(int cartId, int productOptionId, int quantity) {
+//        Cart cart = cartRepository.findCartByUserId(cartId);
+//        if (cart != null) {
+//            cart.setAmount(amount);
+//            if (cart.getProductOption() == null || cart.getProductOption().getId() != productOptionId)
+//                cart.setProductOption(productService.findProductById(productOptionId));
+//
+//            cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+//
+//            cartRepository.save(cart);
+//        }
     }
 
-    @Override
-    public List<Cart> getListProductInCart(int userId) {
-        return cartRepository.findCartByUserIdOrderByUpdatedAtDesc(userId);
-    }
+//    @Override
+//    public List<Cart> getListProductInCart(int userId) {
+//        Cart cart = cartRepository.findCartByUserId(userId);
+//        Set<CartItem> cartItems = cart.getCartItems();
+//        return cartRepository.findCartByUserIdOrderByUpdatedAtDesc(userId);
+//    }
 }

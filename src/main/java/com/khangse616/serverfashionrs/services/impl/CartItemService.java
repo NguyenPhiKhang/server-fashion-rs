@@ -1,5 +1,6 @@
 package com.khangse616.serverfashionrs.services.impl;
 
+import com.khangse616.serverfashionrs.models.Cart;
 import com.khangse616.serverfashionrs.models.CartItem;
 import com.khangse616.serverfashionrs.repositories.CartItemRepository;
 import com.khangse616.serverfashionrs.services.ICartItemService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -28,6 +30,11 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
+    public CartItem getCartItemByProductOptionIsNull(int cartId, int productId) {
+        return cartItemRepository.findCartItemByCartIdAndProductIdAndProductOptionIsNull(cartId, productId);
+    }
+
+    @Override
     public boolean checkExistsCartItemById(int id) {
         return cartItemRepository.existsCartItemById(id);
     }
@@ -38,7 +45,7 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
-    public CartItem save(int productId, int productOptionId, int quantity) {
+    public CartItem save(int productId, int productOptionId, int quantity, Cart cart) {
         CartItem cartItem = new CartItem();
         Random rd = new Random();
         int idCartItem;
@@ -52,7 +59,13 @@ public class CartItemService implements ICartItemService {
         cartItem.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         cartItem.setProduct(productService.findProductByIdVisibleTrue(productId));
         cartItem.setProductOption(productService.findProductById(productOptionId));
+        cartItem.setCart(cart);
 
         return cartItemRepository.save(cartItem);
+    }
+
+    @Override
+    public List<CartItem> getCartItemByUser(int userId) {
+        return cartItemRepository.findCartItemByUserId(userId);
     }
 }

@@ -24,8 +24,8 @@ public class CartController implements ICartController {
     private IImageDataService imageDataService;
 
     @Override
-    public String addProductIntoCart(int userId, int productId, int productOptionId, int amount) {
-        cartService.addProductInCart(userId, productId, productOptionId, amount);
+    public String addProductIntoCart(int userId, int productId, int productOptionId, int quantity) {
+        cartService.addProductInCart(userId, productId, productOptionId, quantity);
         return "add success";
     }
 
@@ -39,9 +39,9 @@ public class CartController implements ICartController {
         cartService.updateProductInCart(cartId, productOptionId, amount);
         return "update success";
     }
-
-    @Override
-    public List<CartItemDTO> getListProductInCart(int userId) {
-        return cartService.getListProductInCart(userId).stream().map(value->new CartItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
-    }
+//
+//    @Override
+//    public List<CartItemDTO> getListProductInCart(int userId) {
+//        return cartService.getListProductInCart(userId).stream().map(value->new CartItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
+//    }
 }

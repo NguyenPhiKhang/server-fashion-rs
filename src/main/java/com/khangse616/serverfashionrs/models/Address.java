@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "addresses")
@@ -12,8 +12,16 @@ import java.util.Set;
 public class Address {
     @Id
     private int id;
-    @Column(name = "address")
-    private String address;
+    @Column(name = "specific_address")
+    private String specificAddress;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "number_phone")
+    private String numberPhone;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+    @Column(name = "updated_at")
+    private Timestamp updateAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -34,12 +42,28 @@ public class Address {
         this.id = id;
     }
 
-    public String getAddress() {
-        return address;
+    public String getSpecificAddress() {
+        return specificAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setSpecificAddress(String specificAddress) {
+        this.specificAddress = specificAddress;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNumberPhone() {
+        return numberPhone;
+    }
+
+    public void setNumberPhone(String numberPhone) {
+        this.numberPhone = numberPhone;
     }
 
     public User getUser() {
@@ -56,5 +80,21 @@ public class Address {
 
     public void setWard(Ward ward) {
         this.ward = ward;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Timestamp updateAt) {
+        this.updateAt = updateAt;
     }
 }

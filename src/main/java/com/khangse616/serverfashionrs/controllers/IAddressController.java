@@ -13,4 +13,7 @@ public interface IAddressController {
 
     @GetMapping("/user/{userId}/get-addresses")
     List<AddressDTO> getAddressesOfUser(@PathVariable("userId") int userId);
+
+    @DeleteMapping("/address/{addressId}/delete")
+    String removeAddressById(@PathVariable("addressId") int addressId);
 }

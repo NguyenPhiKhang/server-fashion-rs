@@ -51,8 +51,13 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public void deleteAddressForUser() {
-
+    public String deleteAddressForUser(int addressId) {
+        if (addressRepository.existsById(addressId)) {
+            addressRepository.deleteById(addressId);
+            return "Đã xoá thành công địa chỉ";
+        } else {
+            return "Không tồn tại địa chỉ";
+        }
     }
 
     @Override

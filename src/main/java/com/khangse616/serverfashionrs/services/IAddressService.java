@@ -7,7 +7,6 @@ import java.util.List;
 public interface IAddressService {
     void addAddressForUser(Address address, int userId, int wardId);
     void updateAddressForUser();
-    void deleteAddressForUser();
+    String deleteAddressForUser(int addressId);
     List<Address> getAddressOfUser(int userId);
-//    boolean setDefaultIsFalseForUser(int userId);
 }

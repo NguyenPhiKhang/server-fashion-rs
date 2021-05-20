@@ -28,4 +28,9 @@ public class AddressController implements IAddressController {
     public List<AddressDTO> getAddressesOfUser(int userId) {
         return addressService.getAddressOfUser(userId).stream().map(value->new AddressDTOMapper().mapRow(value)).collect(Collectors.toList());
     }
+
+    @Override
+    public String removeAddressById(int addressId) {
+        return addressService.deleteAddressForUser(addressId);
+    }
 }

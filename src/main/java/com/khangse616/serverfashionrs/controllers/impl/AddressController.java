@@ -33,4 +33,9 @@ public class AddressController implements IAddressController {
     public String removeAddressById(int addressId) {
         return addressService.deleteAddressForUser(addressId);
     }
+
+    @Override
+    public String updateAddress(Address address) {
+        return addressService.updateAddressForUser(address);
+    }
 }

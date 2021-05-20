@@ -35,19 +35,31 @@ public class AddressService implements IAddressService {
             idAddress = 100 + rd.nextInt(6000001);
         } while (addressRepository.existsById(idAddress));
 
-         newAddress.setId(idAddress);
-         newAddress.setWard(wardService.getWardById(wardId));
-         newAddress.setUser(userService.getUserById(userId));
+        newAddress.setId(idAddress);
+        newAddress.setWard(wardService.getWardById(wardId));
+        newAddress.setUser(userService.getUserById(userId));
 
-         if(address.isDefaultIs())
-             addressRepository.setDefaultIsFalse(userId);
+        if (address.isDefaultIs())
+            addressRepository.setDefaultIsFalse(userId);
 
-         addressRepository.save(newAddress);
+        addressRepository.save(newAddress);
     }
 
     @Override
-    public void updateAddressForUser() {
+    public String updateAddressForUser(Address address) {
+        Address addressUpdate = addressRepository.findById(address.getId()).orElse(null);
 
+        if (addressUpdate != null) {
+            addressUpdate.setName(address.getName());
+            addressUpdate.setNumberPhone(address.getNumberPhone());
+            addressUpdate.setDefaultIs(address.isDefaultIs());
+            addressUpdate.setUpdateAt(new Timestamp(System.currentTimeMillis()));
+            addressUpdate.setSpecificAddress(address.getSpecificAddress());
+            addressUpdate.setWard(address.getWard());
+
+            addressRepository.save(addressUpdate);
+            return "udpate địa chỉ thành công";
+        } else return "không tồn tại địa chỉ";
     }
 
     @Override

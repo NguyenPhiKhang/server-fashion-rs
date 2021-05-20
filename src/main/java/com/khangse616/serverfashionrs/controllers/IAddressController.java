@@ -16,4 +16,7 @@ public interface IAddressController {
 
     @DeleteMapping("/address/{addressId}/delete")
     String removeAddressById(@PathVariable("addressId") int addressId);
+
+    @PutMapping("/address/update")
+    String updateAddress(@RequestBody Address address);
 }

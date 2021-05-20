@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IAddressService {
     void addAddressForUser(Address address, int userId, int wardId);
-    void updateAddressForUser();
+    String updateAddressForUser(Address address);
     String deleteAddressForUser(int addressId);
     List<Address> getAddressOfUser(int userId);
 }

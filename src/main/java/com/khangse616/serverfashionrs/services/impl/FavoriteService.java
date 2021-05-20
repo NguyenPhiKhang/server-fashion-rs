@@ -45,7 +45,7 @@ public class FavoriteService implements IFavoriteService {
 
     @Override
     public List<Favorite> getListFavoriteProduct(int userId) {
-        return favoriteRepository.getFavoriteByIdUserIdOrderByTimeUpdatedDesc(userId);
+        return favoriteRepository.getFavoriteByIdUserIdAndLikedTrueOrderByTimeUpdatedDesc(userId);
     }
 
     @Override

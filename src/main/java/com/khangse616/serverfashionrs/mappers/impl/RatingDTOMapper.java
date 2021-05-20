@@ -22,7 +22,7 @@ public class RatingDTOMapper implements RowMapper<RatingDTO, Rating> {
             ratingDTO.setUserId(user.getId());
 //            ratingDTO.setImage( ImageUtil.addressImage(user.getImageAvatar().getId()));
             ratingDTO.setStar(rating.getStar());
-            ratingDTO.setImageAvatar(user.getImageAvatar().getLink());
+            ratingDTO.setImageAvatar(user.getImageAvatar()==null?"https://media3.scdn.vn/images/apps/icon_user_default.png":user.getImageAvatar().getLink());
             ratingDTO.setTimeUpdated(StringUtil.convertTimestampToString(rating.getTimeUpdated()));
             ratingDTO.setUserName(user.getName());
 

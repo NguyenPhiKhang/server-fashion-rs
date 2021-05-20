@@ -25,7 +25,7 @@ public class Province implements Serializable {
     @JsonIgnore
     private Set<District> districts;
 
-    @OneToMany(targetEntity = Ward.class, mappedBy = "ward", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Ward.class, mappedBy = "province", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Ward> wards;
 

@@ -53,6 +53,10 @@ public class User {
     @JsonIgnore
     private Set<Favorite> favoriteProducts;
 
+    @OneToMany(targetEntity = Address.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Address> addresses;
+
     public User(){}
 
     public Account getAccount() {
@@ -157,5 +161,13 @@ public class User {
 
     public void setFavoriteProducts(Set<Favorite> favoriteProducts) {
         this.favoriteProducts = favoriteProducts;
+    }
+
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
     }
 }

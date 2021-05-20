@@ -1,9 +1,11 @@
 package com.khangse616.serverfashionrs.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "wards")
@@ -25,6 +27,10 @@ public class Ward implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "district_id")
     private District district;
+
+    @OneToMany(targetEntity = Address.class, mappedBy = "ward", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Address> addresses;
 
     public Ward() {
     }
@@ -67,5 +73,13 @@ public class Ward implements Serializable {
 
     public void setDistrict(District district) {
         this.district = district;
+    }
+
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
     }
 }

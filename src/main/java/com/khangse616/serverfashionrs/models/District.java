@@ -21,6 +21,7 @@ public class District {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "province_id")
+    @JsonIgnore
     private Province province;
 
     @OneToMany(targetEntity = Ward.class, mappedBy = "district", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

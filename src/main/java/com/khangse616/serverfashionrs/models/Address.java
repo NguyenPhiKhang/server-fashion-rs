@@ -22,6 +22,8 @@ public class Address {
     private Timestamp createdAt;
     @Column(name = "updated_at")
     private Timestamp updateAt;
+    @Column(name = "default_is")
+    private boolean defaultIs;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -32,6 +34,15 @@ public class Address {
     private Ward ward;
 
     public Address() {
+    }
+
+    public Address(String specificAddress, String name, String numberPhone, boolean defaultIs, Timestamp createdAt, Timestamp updateAt) {
+        this.specificAddress = specificAddress;
+        this.name = name;
+        this.numberPhone = numberPhone;
+        this.createdAt = createdAt;
+        this.updateAt = updateAt;
+        this.defaultIs = defaultIs;
     }
 
     public int getId() {
@@ -96,5 +107,13 @@ public class Address {
 
     public void setUpdateAt(Timestamp updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public boolean isDefaultIs() {
+        return defaultIs;
+    }
+
+    public void setDefaultIs(boolean defaultIs) {
+        this.defaultIs = defaultIs;
     }
 }

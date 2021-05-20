@@ -17,4 +17,9 @@ public class WardService implements IWardService {
     public List<Ward> getWardByDistrict(int districtId) {
         return wardRepository.findWardByDistrictIdOrderByName(districtId);
     }
+
+    @Override
+    public Ward getWardById(int wardId) {
+        return wardRepository.findById(wardId).orElse(null);
+    }
 }

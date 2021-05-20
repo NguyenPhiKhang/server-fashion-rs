@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Integer> {
@@ -15,4 +16,6 @@ public interface AddressRepository extends JpaRepository<Address, Integer> {
     @Transactional
     @Query(value = "update addresses a set a.default_is = 0 where a.user_id = :userId", nativeQuery = true)
     void setDefaultIsFalse(@Param("userId") int userId);
+
+    List<Address> findAddressByUserIdOrderByUpdateAtDesc(int user_id);
 }

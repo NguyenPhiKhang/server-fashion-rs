@@ -56,7 +56,7 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public List<Address> getAddressOfUser() {
-        return null;
+    public List<Address> getAddressOfUser(int userId) {
+        return addressRepository.findAddressByUserIdOrderByUpdateAtDesc(userId);
     }
 }

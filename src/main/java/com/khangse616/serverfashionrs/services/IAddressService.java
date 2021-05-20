@@ -8,6 +8,6 @@ public interface IAddressService {
     void addAddressForUser(Address address, int userId, int wardId);
     void updateAddressForUser();
     void deleteAddressForUser();
-    List<Address> getAddressOfUser();
+    List<Address> getAddressOfUser(int userId);
 //    boolean setDefaultIsFalseForUser(int userId);
 }

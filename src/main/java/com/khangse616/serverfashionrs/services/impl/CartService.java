@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.Cart;
 import com.khangse616.serverfashionrs.models.CartItem;
+import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.repositories.CartRepository;
 import com.khangse616.serverfashionrs.services.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,12 @@ public class CartService implements ICartService {
         Cart cart = cartRepository.findCartByUserId(userId);
 
         if (cart != null) {
-            CartItem cartItem = (productOptionId!=0) ? cartItemService.getCartItemByProductOption(cart.getId(), productOptionId)
-                    :cartItemService.getCartItemByProductOptionIsNull(cart.getId(), productId);
-            if(cartItem!=null)
-            {
-                cartItem.setQuantity(cartItem.getQuantity()+1);
+            CartItem cartItem = (productOptionId != 0) ? cartItemService.getCartItemByProductOption(cart.getId(), productOptionId)
+                    : cartItemService.getCartItemByProductOptionIsNull(cart.getId(), productId);
+            if (cartItem != null) {
+                cartItem.setQuantity(cartItem.getQuantity() + 1);
                 cartItem.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-            }
-            else{
+            } else {
                 cartItem = cartItemService.save(productId, productOptionId, quantity, cart);
                 Set<CartItem> cartItems = cart.getCartItems();
                 cartItems.add(cartItem);
@@ -66,33 +65,30 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public String removeProductInCart(int cartId) {
-        if (cartRepository.existsById(cartId)) {
-            cartRepository.deleteById(cartId);
-            return "Đã bỏ thành công sản phẩm khỏi giỏ hàng";
-        } else {
-            return "Không tồn tại product trong giỏ hàng";
-        }
+    public String removeProductInCart(int cartItemId) {
+        return cartItemService.removeCartItemById(cartItemId);
     }
 
     @Override
-    public void updateProductInCart(int cartId, int productOptionId, int quantity) {
-//        Cart cart = cartRepository.findCartByUserId(cartId);
-//        if (cart != null) {
-//            cart.setAmount(amount);
-//            if (cart.getProductOption() == null || cart.getProductOption().getId() != productOptionId)
-//                cart.setProductOption(productService.findProductById(productOptionId));
-//
-//            cart.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-//
-//            cartRepository.save(cart);
-//        }
-    }
+    public void updateProductInCart(int userId, int cartItemId, int productOptionId, int quantity) {
+        CartItem cartItem = cartItemService.getCartItemById(cartItemId);
+        CartItem cartItemOther = cartItemService.getCartItemOtherToMerge(userId, productOptionId, cartItemId);
 
-//    @Override
-//    public List<Cart> getListProductInCart(int userId) {
-//        Cart cart = cartRepository.findCartByUserId(userId);
-//        Set<CartItem> cartItems = cart.getCartItems();
-//        return cartRepository.findCartByUserIdOrderByUpdatedAtDesc(userId);
-//    }
+        if (cartItemOther == null) {
+            cartItem.setQuantity(quantity);
+            Product productOpId = cartItem.getProductOption();
+            if (productOpId != null && productOpId.getId() != productOptionId)
+                cartItem.setProductOption(productService.findProductById(productOptionId));
+
+            cartItem.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+            cartItemService.save(cartItem);
+        } else {
+            cartItemOther.setQuantity(cartItemOther.getQuantity() + 1);
+            cartItemOther.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            cartItemService.save(cartItemOther);
+
+            removeProductInCart(cartItemId);
+        }
+    }
 }

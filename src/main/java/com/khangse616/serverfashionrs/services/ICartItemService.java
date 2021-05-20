@@ -7,9 +7,20 @@ import java.util.List;
 
 public interface ICartItemService {
     CartItem getCartItemByProductOption(int cartId, int productOptionId);
+
     CartItem getCartItemByProductOptionIsNull(int cartId, int productId);
+
     boolean checkExistsCartItemById(int id);
+
     CartItem save(CartItem cartItem);
+
     CartItem save(int productId, int productOptionId, int quantity, Cart cart);
+
     List<CartItem> getCartItemByUser(int userId);
+
+    CartItem getCartItemById(int cartItemId);
+
+    CartItem getCartItemOtherToMerge(int userId, int product_OId, int cartItemId);
+
+    String removeCartItemById(int cartItemId);
 }

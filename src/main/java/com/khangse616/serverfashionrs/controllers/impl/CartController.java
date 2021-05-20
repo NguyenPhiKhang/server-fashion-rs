@@ -30,13 +30,13 @@ public class CartController implements ICartController {
     }
 
     @Override
-    public String removeProductInCart(int cartId) {
-        return cartService.removeProductInCart(cartId);
+    public String removeProductInCart(int cartItemId) {
+        return cartService.removeProductInCart(cartItemId);
     }
 
     @Override
-    public String updateProductInCart(int cartId, int productOptionId, int amount) {
-        cartService.updateProductInCart(cartId, productOptionId, amount);
+    public String updateProductInCart(int userId, int cartItemId, int productOptionId, int quantity) {
+        cartService.updateProductInCart(userId, cartItemId, productOptionId, quantity);
         return "update success";
     }
 //

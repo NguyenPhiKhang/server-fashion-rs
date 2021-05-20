@@ -23,7 +23,7 @@ public class CartItemDTOMapper implements RowMapper<CartItemDTO, CartItem> {
         try {
             Product product = cartItem.getProduct();
 
-            CartItemDTO cartItemDTO = new CartItemDTO(cartItem.getId(), product.getId(), product.getName(), cartItem.getQuantity(), product.getPromotionPercent());
+            CartItemDTO cartItemDTO = new CartItemDTO(cartItem.getId(), cartItem.getCart().getId(), product.getId(), product.getName(), cartItem.getQuantity(), product.getPromotionPercent());
             OptionProductItemCartDTO optionProductItemCartDTO = new OptionProductItemCartDTO();
 
             if (product.getTypeId().equals("configurable")) {

@@ -3,6 +3,7 @@ package com.khangse616.serverfashionrs.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CartItemDTO {
+    private int cartItemId;
     private int cartId;
     private int productId;
     private String nameProduct;
@@ -13,12 +14,22 @@ public class CartItemDTO {
     public CartItemDTO() {
     }
 
-    public CartItemDTO(int cartId, int productId, String nameProduct, int quantity, float discount) {
+    public CartItemDTO(int cartItemId, int cartId, int productId, String nameProduct, int quantity, float discount) {
+        this.cartItemId = cartItemId;
         this.cartId = cartId;
         this.productId = productId;
         this.nameProduct = nameProduct;
         this.quantity = quantity;
         this.discount = discount;
+    }
+
+    @JsonProperty("cart-item-id")
+    public int getCartItemId() {
+        return cartItemId;
+    }
+
+    public void setCartItemId(int cartItemId) {
+        this.cartItemId = cartItemId;
     }
 
     @JsonProperty("cart-id")

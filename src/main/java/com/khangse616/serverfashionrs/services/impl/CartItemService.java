@@ -68,4 +68,24 @@ public class CartItemService implements ICartItemService {
     public List<CartItem> getCartItemByUser(int userId) {
         return cartItemRepository.findCartItemByUserId(userId);
     }
+
+    @Override
+    public CartItem getCartItemById(int cartItemId) {
+        return cartItemRepository.findById(cartItemId).orElse(null);
+    }
+
+    @Override
+    public CartItem getCartItemOtherToMerge(int userId, int productOId, int cartItemId) {
+        return cartItemRepository.findCartItemOtherToMerge(userId, productOId, cartItemId);
+    }
+
+    @Override
+    public String removeCartItemById(int cartItemId) {
+        if (cartItemRepository.existsCartItemById(cartItemId)) {
+            cartItemRepository.deleteById(cartItemId);
+            return "Đã bỏ thành công sản phẩm khỏi giỏ hàng";
+        } else {
+            return "Không tồn tại product trong giỏ hàng";
+        }
+    }
 }

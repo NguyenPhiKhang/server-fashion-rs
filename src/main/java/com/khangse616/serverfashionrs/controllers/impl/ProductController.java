@@ -120,7 +120,7 @@ public class ProductController implements IProductController {
 
     @Override
     public ResponseEntity<String> createCosineSimilarity() {
-        List<Integer> list_product = ratingService.getProductsRated();
+        List<Integer> list_product_rated = ratingService.getProductsRated();
 
         List<RatingRSDTO> listRatingRS = ratingService.getAll().stream().map(value -> new RatingRSDTOMapper().mapRow(value)).collect(Collectors.toList());
 
@@ -128,12 +128,12 @@ public class ProductController implements IProductController {
 
         List<AVGRatedProductDTO> listAVG = ratingService.calcAVGRatedProduct();
 
-        normalizedRating(list_product, listRatingNormalized, listAVG);
+        normalizedRating(list_product_rated, listRatingNormalized, listAVG);
 
         List<CosineSimilarity> cosSimilarities = new ArrayList<>();
 
         // calc cosine similarity
-        calcCosineSimilarity(list_product, listRatingNormalized, listAVG, cosSimilarities);
+        calcCosineSimilarity(list_product_rated, listRatingNormalized, cosSimilarities);
 
         cosineSimilarityService.removeAll();
         cosineSimilarityService.saveAll(cosSimilarities);
@@ -378,13 +378,13 @@ public class ProductController implements IProductController {
         });
     }
 
-    private void calcCosineSimilarity(List<Integer> list_product, List<RatingRSDTO> listRatingNormalized, List<AVGRatedProductDTO> listAVG, List<CosineSimilarity> cosSimilarities) {
-        int size_list_avg = listAVG.size();
-        for (int i = size_list_avg - 1; i > 0; i--) {
-            int product_id1 = list_product.get(i);
+    private void calcCosineSimilarity(List<Integer> list_product_rated, List<RatingRSDTO> listRatingNormalized, List<CosineSimilarity> cosSimilarities) {
+        int size_list = list_product_rated.size();
+        for (int i = size_list - 1; i > 0; i--) {
+            int product_id1 = list_product_rated.get(i);
             List<RatingRSDTO> user_rated_product1 = calcUserRatedProduct(listRatingNormalized, product_id1);
             for (int j = i - 1; j >= 0; j--) {
-                int product_id2 = list_product.get(j);
+                int product_id2 = list_product_rated.get(j);
                 List<RatingRSDTO> user_rated_product2 = calcUserRatedProduct(listRatingNormalized, product_id2);
 
                 double pd1_dot_pd2 = p1_dot_p2(user_rated_product1, user_rated_product2);

@@ -22,10 +22,12 @@ public class Ward implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "province_id")
+    @JsonIgnore
     private Province province;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "district_id")
+    @JsonIgnore
     private District district;
 
     @OneToMany(targetEntity = Address.class, mappedBy = "ward", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

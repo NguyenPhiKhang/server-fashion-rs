@@ -5,5 +5,5 @@ import com.khangse616.serverfashionrs.models.Ward;
 import java.util.List;
 
 public interface IWardService {
-    List<Ward> getWardByDistrict(int provinceId, int districtId);
+    List<Ward> getWardByDistrict(int districtId);
 }

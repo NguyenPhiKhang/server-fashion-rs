@@ -21,6 +21,7 @@ public class AddressDTOMapper implements RowMapper<AddressDTO, Address> {
             addressDTO.setProvince(address.getWard().getProvince());
             addressDTO.setDistrict(address.getWard().getDistrict());
             addressDTO.setWard(address.getWard());
+            addressDTO.setDefaultIs(address.isDefaultIs());
 
             return addressDTO;
         }catch (Exception ex){

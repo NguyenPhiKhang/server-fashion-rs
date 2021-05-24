@@ -5,9 +5,11 @@ import com.khangse616.serverfashionrs.models.RecommendRating;
 import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
+import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RecommendForUser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RequestMapping("/default")
@@ -32,4 +34,10 @@ public interface IProductController {
 
     @GetMapping("/product/{productId}/all-option")
     ResponseEntity<AttributeOptionDTO> getAttributeOptionByProduct(@PathVariable("productId") int productId);
+
+    @GetMapping("/test-recommend-movie")
+    ResponseEntity<List<RecommendForUser>> recommend_movie_test();
+
+    @GetMapping("/calc-tfidf")
+    List<HashMap<String, Double>> calculationTFIDF();
 }

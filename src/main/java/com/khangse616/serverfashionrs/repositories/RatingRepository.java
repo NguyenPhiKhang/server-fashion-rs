@@ -73,4 +73,7 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
             "where r.product_id = :productId\n" +
             "group by ri.rating_id);", nativeQuery = true)
     int countRatingByImage(@Param("productId") int productId);
+
+    @Query(value = "select u.id as userId, r.product_id as productId, r.star from users u left join ratings r on u.id = r.user_id order by u.id" ,nativeQuery = true)
+    List<Object[]> getUserLeftJoinRating();
 }

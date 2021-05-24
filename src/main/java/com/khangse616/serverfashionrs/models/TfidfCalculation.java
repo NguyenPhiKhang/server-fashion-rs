@@ -16,7 +16,6 @@ public class TfidfCalculation {
     //Calculates inverse Doc frequency.
     public HashMap<String,Double> calculateInverseDocFrequency(DocumentProperties [] docProperties)
     {
-
         HashMap<String,Double> InverseDocFreqMap = new HashMap<>();
         int size = docProperties.length;
         double wordCount ;
@@ -94,6 +93,42 @@ public class TfidfCalculation {
         newStr = newStr.replaceAll("\t","");
         return newStr;
     }
+
+    public  HashMap<String, Integer> getTerms(String description){
+        HashMap<String,Integer> WordCount = new HashMap<String,Integer>();
+        HashMap<String, Integer> finalMap = new HashMap<>();
+
+        String[] words = description.toLowerCase().split(" ");
+        for(String term : words)
+        {
+            //cleaning up the term ie removing .,:"
+            term = cleanseInput(term);
+            //ignoring numbers
+            if(isDigit(term))
+            {
+                continue;
+            }
+            if(term.length() == 0)
+            {
+                continue;
+            }
+            wordList.add(term);
+            if(WordCount.containsKey(term))
+            {
+                WordCount.put(term,WordCount.get(term)+1);
+            }
+            else
+            {
+                WordCount.put(term,1);
+            }
+        }
+
+        Map<String, Integer> treeMap = new TreeMap<>(WordCount);
+        finalMap = new HashMap<String, Integer>(treeMap);
+
+        return finalMap;
+    }
+
     // Converts the input text file to hashmap and even dumps the final output as CSV files
     public  HashMap<String, Integer> getTermsFromFile(String Filename,int count,File folder) {
         HashMap<String,Integer> WordCount = new HashMap<String,Integer>();

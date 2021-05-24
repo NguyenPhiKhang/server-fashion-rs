@@ -3,6 +3,7 @@ package com.khangse616.serverfashionrs.services;
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
+import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
 
 import java.util.List;
 
@@ -38,4 +39,6 @@ public interface IRatingService {
     int countRatingByImageOfProduct(int productId);
 
     void autoInsertRating();
+
+    List<RatingRSDTO> getUserLeftJoinRating();
 }

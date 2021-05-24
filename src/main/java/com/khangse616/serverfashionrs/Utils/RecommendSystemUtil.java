@@ -14,20 +14,20 @@ public class RecommendSystemUtil {
             return 0.0;
         }
 
-//        double sumProduct = 0;
-//        double sumASq = 0;
-//        double sumBSq = 0;
-//        int size = user_rated_product1.size();
-//        for (int i = 0; i < user_rated_product1.length; i++) {
-//
-//            sumProduct += A[i]*B[i];
-//            sumASq += A[i] * A[i];
-//            sumBSq += B[i] * B[i];
-//        }
-//        if (sumASq == 0 && sumBSq == 0) {
-//            return 0.0;
-//        }
-//        return sumProduct / (Math.sqrt(sumASq) * Math.sqrt(sumBSq));
-        return 0.0;
+        double sumProduct = 0;
+        double sumASq = 0;
+        double sumBSq = 0;
+        int size = user_rated_product1.size();
+        for (int i = 0; i < user_rated_product1.size(); i++) {
+//            for(int j = 0; j<)
+
+            sumProduct += user_rated_product1.get(i).getValue()*user_rated_product2.get(i).getValue();
+            sumASq += user_rated_product1.get(i).getValue() * user_rated_product1.get(i).getValue();
+            sumBSq += user_rated_product2.get(i).getValue() * user_rated_product2.get(i).getValue();
+        }
+        if (sumASq == 0 && sumBSq == 0) {
+            return 0.0;
+        }
+        return sumProduct / (Math.sqrt(sumASq) * Math.sqrt(sumBSq));
     }
 }

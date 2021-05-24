@@ -15,6 +15,7 @@ import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
+import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RecommendForUser;
 import com.khangse616.serverfashionrs.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -413,4 +414,157 @@ public class ProductController implements IProductController {
         }
     }
 
+
+    @Override
+    public ResponseEntity<List<RecommendForUser>> recommend_movie_test() {
+        long startTime = new Date().getTime();
+
+        List<Integer> list_users = new ArrayList<>();
+        list_users.add(0);
+        list_users.add(1);
+        list_users.add(2);
+        list_users.add(3);
+        list_users.add(4);
+        list_users.add(5);
+        list_users.add(6);
+        List<Integer> list_product = new ArrayList<>();
+        list_product.add(0);
+        list_product.add(1);
+        list_product.add(2);
+        list_product.add(3);
+        list_product.add(4);
+
+        List<RatingRSDTO> listRatingRS = new ArrayList<>();
+        listRatingRS.add(new RatingRSDTO(0, 0, 5.));
+        listRatingRS.add(new RatingRSDTO(0, 1, 4.));
+        listRatingRS.add(new RatingRSDTO(0, 3, 2.));
+        listRatingRS.add(new RatingRSDTO(0, 4, 2.));
+        listRatingRS.add(new RatingRSDTO(1, 0, 5.));
+        listRatingRS.add(new RatingRSDTO(1, 2, 4.));
+        listRatingRS.add(new RatingRSDTO(1, 3, 2.));
+        listRatingRS.add(new RatingRSDTO(1, 4, 1.));
+        listRatingRS.add(new RatingRSDTO(2, 0, 2.));
+        listRatingRS.add(new RatingRSDTO(2, 2, 1.));
+        listRatingRS.add(new RatingRSDTO(2, 3, 3.));
+        listRatingRS.add(new RatingRSDTO(2, 4, 4.));
+        listRatingRS.add(new RatingRSDTO(3, 0, 1.));
+        listRatingRS.add(new RatingRSDTO(3, 1, 1.));
+        listRatingRS.add(new RatingRSDTO(3, 3, 4.));
+        listRatingRS.add(new RatingRSDTO(4, 0, 1.));
+        listRatingRS.add(new RatingRSDTO(4, 3, 4.));
+        listRatingRS.add(new RatingRSDTO(5, 1, 2.));
+        listRatingRS.add(new RatingRSDTO(5, 2, 1.));
+        listRatingRS.add(new RatingRSDTO(6, 2, 1.));
+        listRatingRS.add(new RatingRSDTO(6, 3, 4.));
+        listRatingRS.add(new RatingRSDTO(6, 4, 5.));
+
+
+        List<RatingRSDTO> listRatingNormalized = listRatingRS.stream().map(rt -> new RatingRSDTO(rt.getUserId(), rt.getProductId(), rt.getValue())).collect(Collectors.toList());
+
+//        List<AVGRatedProductDTO> listAVG = ratingService.calcAVGRatedProduct();
+        List<AVGRatedProductDTO> listAVG = new ArrayList<>();
+        listAVG.add(new AVGRatedProductDTO(0, 2.8));
+        listAVG.add(new AVGRatedProductDTO(1, 7.0 / 3.0));
+        listAVG.add(new AVGRatedProductDTO(2, 1.75));
+        listAVG.add(new AVGRatedProductDTO(3, 19.0 / 6.0));
+        listAVG.add(new AVGRatedProductDTO(4, 3.0));
+
+        // normalized utility matrix
+        int size_list_avg = listAVG.size();
+        int size_list_user = list_users.size();
+        for (int i = 0; i < size_list_avg; i++) {
+            int pd_id = list_product.get(i);
+            double avg_pd = listAVG.get(i).getAvgRated();
+            listRatingNormalized.parallelStream().filter(value -> value.getProductId() == pd_id).forEach(value -> {
+                value.setValue(value.getValue() - avg_pd);
+            });
+        }
+
+        List<CosineSimilarity> cosSimilarities = new ArrayList<>();
+
+        // calc cosine similarity
+        for (int i = size_list_avg - 1; i > 0; i--) {
+            int product_id1 = list_product.get(i);
+            List<RatingRSDTO> user_rated_product1 = calcUserRatedProduct(listRatingNormalized, product_id1);
+            for (int j = i - 1; j >= 0; j--) {
+
+                for(int k = 0; k <list_users.size();k++){
+
+                }
+                int product_id2 = list_product.get(j);
+                List<RatingRSDTO> user_rated_product2 = calcUserRatedProduct(listRatingNormalized, product_id2);
+
+                double pd1_dot_pd2 = p1_dot_p2(user_rated_product1, user_rated_product2);
+                double norm_pd1 = calc_norm(user_rated_product1);
+                double norm_pd2 = calc_norm(user_rated_product2);
+                double norm_pd1_mul_norm_pd2 = norm_pd1 * norm_pd2;
+//
+                double cosineSimilarity = norm_pd1_mul_norm_pd2 != 0.0 ? pd1_dot_pd2 / norm_pd1_mul_norm_pd2 : -1;
+//
+                CosineSimilarity a = new CosineSimilarity(product_id1, product_id2, cosineSimilarity);
+                cosSimilarities.add(a);
+                System.out.println("i: " + i + " - j: " + j);
+            }
+        }
+
+        for (CosineSimilarity cs : cosSimilarities) {
+            System.out.println(cs.toString());
+        }
+
+        cosSimilarities.forEach(System.out::println);
+
+        List<RecommendForUser> recommendForUserList = new ArrayList<>();
+//
+//        // Rating Prediction
+        List<Integer> list_pd_user_rated = new ArrayList<>();
+        List<Integer> list_pd_user_unrated = new ArrayList<>();
+//        List<CosineSimilarity> list_cos_of_user = new ArrayList<>();
+//        List<RatingRSDTO> list_normalize_of_user = new ArrayList<>();
+        for (int i = 0; i < size_list_user; i++) {
+            int user_id = list_users.get(i);
+            divide_rated_unrated(listRatingNormalized, list_product, user_id, list_pd_user_rated, list_pd_user_unrated);
+            System.out.println("------------------------giai doan 1---------------------------");
+            int size_unrated = list_pd_user_unrated.size();
+//            int size_rated = list_pd_user_rated.size();
+            StringBuilder listProductRS = new StringBuilder();
+            list_pd_user_unrated.parallelStream().forEach(value -> {
+                List<CosineSimilarity> list_cos_of_user = new ArrayList<>();
+                List<RatingRSDTO> list_normalize_of_user = new ArrayList<>();
+                list_cos_of_user = top_k_cosine_similarity_of_user(2, cosSimilarities, value, list_pd_user_rated);
+
+                list_normalize_of_user = top_k_normalized_corresponding_top_k_cosine_similarity(
+                        user_id, list_cos_of_user, listRatingNormalized, value);
+
+                double a = list_cos_of_user.get(0).getRow() == list_normalize_of_user.get(0).getProductId() || list_cos_of_user.get(0).getColumn() == list_normalize_of_user.get(0).getProductId() ?
+                        list_cos_of_user.get(0).getCosSimilarity() * list_normalize_of_user.get(0).getValue() +
+                                list_cos_of_user.get(1).getCosSimilarity() * list_normalize_of_user.get(1).getValue() :
+                        list_cos_of_user.get(0).getCosSimilarity() * list_normalize_of_user.get(1).getValue() +
+                                list_cos_of_user.get(1).getCosSimilarity() * list_normalize_of_user.get(0).getValue();
+                double b = Math.abs(list_cos_of_user.get(0).getCosSimilarity()) + Math.abs(list_cos_of_user.get(1).getCosSimilarity());
+
+//                System.out.println(a / b);
+                if (a / b > 0) {
+                    listProductRS.append(value).append(" (").append((double) Math.round((a / b) * 100) / 100).append("), ");
+                }
+            });
+            recommendForUserList.add(new RecommendForUser(user_id, listProductRS.toString()));
+
+//        System.out.println("i: " + i + "/" + size_list_user);
+        }
+//
+        recommendForUserList.forEach(System.out::println);
+
+
+        long endTime = new Date().getTime();
+        long difference = endTime - startTime;
+        System.out.println("Elapsed time in milliseconds: " + difference);
+        System.out.println("done");
+
+        return ResponseEntity.ok().body(recommendForUserList);
+    }
+
+    @Override
+    public List<HashMap<String, Double>> calculationTFIDF() {
+        return productService.getListShortDescription();
+    }
 }

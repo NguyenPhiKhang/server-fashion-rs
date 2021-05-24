@@ -6,6 +6,7 @@ import com.khangse616.serverfashionrs.models.RatingStar;
 import com.khangse616.serverfashionrs.models.User;
 import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
+import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
 import com.khangse616.serverfashionrs.repositories.RatingRepository;
 import com.khangse616.serverfashionrs.repositories.RatingStarRepository;
@@ -214,5 +215,27 @@ public class RatingService implements IRatingService {
 //        });
 //
 //        ratingRepository.saveAll(product.getRatings());
+    }
+
+    @Override
+    public List<RatingRSDTO> getUserLeftJoinRating() {
+        List<RatingRSDTO> ratingRSDTOList = new ArrayList<>();
+
+        List<Object[]> objects = ratingRepository.getUserLeftJoinRating();
+
+        for (Object[] o : objects) {
+            RatingRSDTO dto = new RatingRSDTO();
+            dto.setUserId((int) o[0]);
+            if (o[1] == null && o[2] == null) {
+                dto.setProductId(0);
+                dto.setValue(0);
+            } else {
+                dto.setProductId((int) o[1]);
+                dto.setValue((int) o[2]);
+            }
+
+            ratingRSDTOList.add(dto);
+        }
+        return ratingRSDTOList;
     }
 }

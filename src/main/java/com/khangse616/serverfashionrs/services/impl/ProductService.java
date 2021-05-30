@@ -89,6 +89,8 @@ public class ProductService implements IProductService {
         list.add("Ô hay buồn vương cây ngô đồng. Vàng rơi vàng rơi thu mênh mông");
         list.add("Một chiều về bên bến sông thu. Nghe tin em cưới á cái đù.");
 
+//        list.add("sông thu");
+
 //        list.add("bây giờ mận mới hỏi đào");
 //        list.add("vườn hồng có lối ai vào hay chưa");
         TfidfCalculation TfidfObj = new TfidfCalculation();
@@ -96,44 +98,30 @@ public class ProductService implements IProductService {
 
         //containers for documents and their properties required to calculate final score
         DocumentProperties[] docProperties = new DocumentProperties[noOfDocs];
-        int count = 0;
-        for (String des : list) {
-            docProperties[count] = new DocumentProperties();
-            HashMap<String, Integer> wordCount = TfidfObj.getTerms(des);
-            docProperties[count].setWordCountMap(wordCount);
-            HashMap<String, Double> termFrequency = TfidfObj.calculateTermFrequency(docProperties[count].getWordCountMap());
-            docProperties[count].setTermFreqMap(termFrequency);
-            count++;
+        SortedSet<String> wordList = new TreeSet(String.CASE_INSENSITIVE_ORDER);
+        for (int i = 0;i<noOfDocs;i++) {
+            docProperties[i] = TfidfObj.calculateTF(list.get(i), wordList);
         }
 
         //calculating InverseDocument frequency
-        HashMap<String, Double> inverseDocFreqMap = TfidfObj.calculateInverseDocFrequency(docProperties);
+        HashMap<String, Double> inverseDocFreqMap = TfidfObj.calculateInverseDocFrequency(docProperties, wordList);
 
         //Calculating tf-idf
         List<HashMap<String, Double>> listTFIDF = new ArrayList<>();
-        count = 0;
-        for (int i = 0; i < list.size(); i++) {
-            HashMap<String, Double> tfIDF = new HashMap<>();
-            double tfIdfValue = 0.0;
-            double idfVal = 0.0;
-
-            HashMap<String, Double> tf = docProperties[count].getTermFreqMap();
-            Iterator itTF = tf.entrySet().iterator();
-            while (itTF.hasNext()) {
-                Map.Entry pair = (Map.Entry) itTF.next();
-                double tfVal = (Double) pair.getValue();
-                if (inverseDocFreqMap.containsKey((String) pair.getKey())) {
-                    idfVal = inverseDocFreqMap.get((String) pair.getKey());
-                }
-                tfIdfValue = tfVal * idfVal;
-                tfIDF.put((pair.getKey().toString()), tfIdfValue);
-            }
-
-            listTFIDF.add(tfIDF);
-            count++;
+        for (int i = 0; i < noOfDocs; i++) {
+            listTFIDF.add(TfidfObj.calculateTFIDF(docProperties[i], inverseDocFreqMap));
         }
 
-        return listTFIDF;
+        String search = "sông thu";
+        SortedSet<String> wordListSearch = new TreeSet(String.CASE_INSENSITIVE_ORDER);
+        DocumentProperties documentProperty = TfidfObj.calculateTF(search, wordListSearch);
+
+        List<HashMap<String, Double>> listTFIDFSearch = new ArrayList<>();
+
+        listTFIDFSearch.add(TfidfObj.calculateTFIDF(documentProperty, inverseDocFreqMap));
+
+
+        return listTFIDFSearch;
     }
 
     @Override

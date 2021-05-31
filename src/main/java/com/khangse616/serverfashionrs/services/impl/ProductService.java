@@ -98,8 +98,8 @@ public class ProductService implements IProductService {
 
         //containers for documents and their properties required to calculate final score
         DocumentProperties[] docProperties = new DocumentProperties[noOfDocs];
-        SortedSet<String> wordList = new TreeSet(String.CASE_INSENSITIVE_ORDER);
-        for (int i = 0;i<noOfDocs;i++) {
+        SortedSet<String> wordList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        for (int i = 0; i < noOfDocs; i++) {
             docProperties[i] = TfidfObj.calculateTF(list.get(i), wordList);
         }
 
@@ -116,13 +116,34 @@ public class ProductService implements IProductService {
         SortedSet<String> wordListSearch = new TreeSet(String.CASE_INSENSITIVE_ORDER);
         DocumentProperties documentProperty = TfidfObj.calculateTF(search, wordListSearch);
 
-        List<HashMap<String, Double>> listTFIDFSearch = new ArrayList<>();
+//        List<HashMap<String, Double>> listTFIDFSearch = new ArrayList<>();
 
-        listTFIDFSearch.add(TfidfObj.calculateTFIDF(documentProperty, inverseDocFreqMap));
+        HashMap<String, Double> tfidfSearch = TfidfObj.calculateTFIDF(documentProperty, inverseDocFreqMap);
+
+        for (HashMap<String, Double> tfidfProduct : listTFIDF) {
+            Iterator it = tfidfSearch.entrySet().iterator();
+            double dot_pd = 0.0;
+            double norm_search = 0.0;
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                if (tfidfProduct.containsKey((String) pair.getKey())) {
+                    dot_pd += tfidfProduct.get(pair.getKey()) * (double) pair.getValue();
+                }
+                norm_search += (double) pair.getValue() * (double) pair.getValue();
+            }
+            double norm_pd = 0.0;
+            for(double v:tfidfProduct.values()){
+                norm_pd += v;
+            }
+
+            double cosine = dot_pd/(Math.sqrt(norm_pd)*Math.sqrt(norm_search));
+            System.out.println(cosine);
+        }
 
 
-        return listTFIDFSearch;
+        return listTFIDF;
     }
+
 
     @Override
     public Product findProductById(int id) {

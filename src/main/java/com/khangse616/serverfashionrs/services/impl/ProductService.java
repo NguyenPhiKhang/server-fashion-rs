@@ -1,5 +1,6 @@
 package com.khangse616.serverfashionrs.services.impl;
 
+import com.khangse616.serverfashionrs.Utils.MapUtil;
 import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
@@ -83,16 +84,7 @@ public class ProductService implements IProductService {
 
     @Override
     public List<HashMap<String, Double>> getListShortDescription() {
-//        List<String> list = productRepository.getShortDescriptionByVisibilityTrue();
-        List<String> list = new ArrayList<>();
-        list.add("Người lên ngựa kẻ chia bào. Rừng phong thu đã nhốm màu quan san");
-        list.add("Ô hay buồn vương cây ngô đồng. Vàng rơi vàng rơi thu mênh mông");
-        list.add("Một chiều về bên bến sông thu. Nghe tin em cưới á cái đù.");
-
-//        list.add("sông thu");
-
-//        list.add("bây giờ mận mới hỏi đào");
-//        list.add("vườn hồng có lối ai vào hay chưa");
+        List<Product> list = productRepository.getProductAndShortDescription();
         TfidfCalculation TfidfObj = new TfidfCalculation();
         int noOfDocs = list.size();
 
@@ -107,42 +99,60 @@ public class ProductService implements IProductService {
         HashMap<String, Double> inverseDocFreqMap = TfidfObj.calculateInverseDocFrequency(docProperties, wordList);
 
         //Calculating tf-idf
-        List<HashMap<String, Double>> listTFIDF = new ArrayList<>();
+        HashMap<Product, HashMap<String, Double>> listTFIDF = new HashMap<>();
         for (int i = 0; i < noOfDocs; i++) {
-            listTFIDF.add(TfidfObj.calculateTFIDF(docProperties[i], inverseDocFreqMap));
+            listTFIDF.put(list.get(i),TfidfObj.calculateTFIDF(docProperties[i], inverseDocFreqMap));
         }
 
-        String search = "sông thu";
-        SortedSet<String> wordListSearch = new TreeSet(String.CASE_INSENSITIVE_ORDER);
+        String search = "Đồng hồ";
+        SortedSet<String> wordListSearch = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         DocumentProperties documentProperty = TfidfObj.calculateTF(search, wordListSearch);
-
-//        List<HashMap<String, Double>> listTFIDFSearch = new ArrayList<>();
 
         HashMap<String, Double> tfidfSearch = TfidfObj.calculateTFIDF(documentProperty, inverseDocFreqMap);
 
-        for (HashMap<String, Double> tfidfProduct : listTFIDF) {
-            Iterator it = tfidfSearch.entrySet().iterator();
+        HashMap<Product, Double> listProductSearch = new HashMap<>();
+
+        for (Map.Entry<Product, HashMap<String, Double>> pd: listTFIDF.entrySet()) {
+            Iterator<Map.Entry<String, Double>> it = tfidfSearch.entrySet().iterator();
             double dot_pd = 0.0;
             double norm_search = 0.0;
             while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry) it.next();
-                if (tfidfProduct.containsKey((String) pair.getKey())) {
-                    dot_pd += tfidfProduct.get(pair.getKey()) * (double) pair.getValue();
+                Map.Entry<String, Double> pair = it.next();
+                if (pd.getValue().containsKey((String) pair.getKey())) {
+                    dot_pd += pd.getValue().get(pair.getKey()) * (double) pair.getValue();
                 }
                 norm_search += (double) pair.getValue() * (double) pair.getValue();
             }
             double norm_pd = 0.0;
-            for(double v:tfidfProduct.values()){
-                norm_pd += v;
+            for(double v: pd.getValue().values()){
+                norm_pd += v*v;
             }
 
             double cosine = dot_pd/(Math.sqrt(norm_pd)*Math.sqrt(norm_search));
-            System.out.println(cosine);
+            if(cosine>0.0)
+                listProductSearch.put(pd.getKey(), cosine);
         }
 
+        System.out.println(listProductSearch.size());
 
-        return listTFIDF;
+        HashMap<Product, Double> testSearch = listProductSearch.entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
+                .limit(10)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+
+        testSearch.forEach((k, v)->{
+            System.out.println(k.getName());
+            System.out.println(v);
+            System.out.println("____---------------------------_____");
+        });
+
+        return null;
     }
+
+
+
 
 
     @Override

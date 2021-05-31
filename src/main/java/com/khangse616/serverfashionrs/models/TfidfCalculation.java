@@ -80,6 +80,17 @@ public class TfidfCalculation {
         return docProperty;
     }
 
+    public DocumentProperties calculateTF(Product product, SortedSet<String> wordList) {
+        DocumentProperties docProperty = new DocumentProperties();
+        HashMap<String, Integer> wordCount = getTerms(product.getShortDescription(), wordList);
+        docProperty.setWordCountMap(wordCount);
+        HashMap<String, Double> termFrequency = calculateTermFrequency(docProperty.getWordCountMap());
+        docProperty.setTermFreqMap(termFrequency);
+
+        docProperty.setProduct(product);
+        return docProperty;
+    }
+
     //calculates Term frequency for all terms
     public HashMap<String, Double> calculateTermFrequency(HashMap<String, Integer> inputMap) {
 

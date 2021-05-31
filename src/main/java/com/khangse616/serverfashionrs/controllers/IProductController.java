@@ -39,5 +39,8 @@ public interface IProductController {
     ResponseEntity<List<RecommendForUser>> recommend_movie_test();
 
     @GetMapping("/calc-tfidf")
-    List<HashMap<String, Double>> calculationTFIDF();
+    List<HashMap<String, Double>> calculationTFIDF(@RequestParam("s") String search);
+
+    @GetMapping("/search-product")
+    List<HashMap<String, Double>> searchProduct(@RequestParam("s") String search);
 }

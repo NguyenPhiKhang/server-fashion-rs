@@ -564,7 +564,12 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public List<HashMap<String, Double>> calculationTFIDF() {
+    public List<HashMap<String, Double>> calculationTFIDF(String search) {
         return productService.getListShortDescription();
+    }
+
+    @Override
+    public List<HashMap<String, Double>> searchProduct(String search) {
+        return null;
     }
 }

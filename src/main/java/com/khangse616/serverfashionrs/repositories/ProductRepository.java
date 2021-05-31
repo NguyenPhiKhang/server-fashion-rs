@@ -46,4 +46,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("select p.shortDescription from Product p where p.visibility = true")
     List<String> getShortDescriptionByVisibilityTrue();
+
+    @Query("select p from Product p where p.visibility = true")
+    List<Product> getProductAndShortDescription();
 }

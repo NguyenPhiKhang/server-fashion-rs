@@ -6,6 +6,7 @@ import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RecommendForUser;
+import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,5 +43,5 @@ public interface IProductController {
     List<HashMap<String, Double>> calculationTFIDF(@RequestParam("s") String search);
 
     @GetMapping("/search-product")
-    List<HashMap<String, Double>> searchProduct(@RequestParam("s") String search);
+    List<SearchProductDTO> searchProduct(@RequestParam("s") String search);
 }

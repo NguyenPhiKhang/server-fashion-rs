@@ -2,6 +2,8 @@ package com.khangse616.serverfashionrs.services;
 
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
+import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
+import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,6 +19,6 @@ public interface IProductService {
     void generateIdRatingStar();
     List<Product> productTopRating(int page);
     List<Product> productRecommendForUser(int userId);
-
     List<HashMap<String, Double>> getListShortDescription();
+    List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService);
 }

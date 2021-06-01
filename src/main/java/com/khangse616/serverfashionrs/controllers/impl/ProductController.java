@@ -16,6 +16,7 @@ import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RecommendForUser;
+import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import com.khangse616.serverfashionrs.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -569,7 +570,7 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public List<HashMap<String, Double>> searchProduct(String search) {
-        return null;
+    public List<SearchProductDTO> searchProduct(String search) {
+        return productService.getProductSearch(search, imageDataService);
     }
 }

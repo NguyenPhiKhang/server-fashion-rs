@@ -573,4 +573,9 @@ public class ProductController implements IProductController {
     public List<SearchProductDTO> searchProduct(String search) {
         return productService.getProductSearch(search, imageDataService);
     }
+
+    @Override
+    public List<ProductItemDTO> productsAlsoLike(int productId) {
+        return productService.getProductsAlsoLike(productId, imageDataService);
+    }
 }

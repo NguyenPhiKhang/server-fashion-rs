@@ -49,4 +49,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("select p from Product p where p.visibility = true")
     List<Product> getProductAndShortDescription();
+
+    @Query(value = "call get_shortdesc_name(:productId)", nativeQuery = true)
+    String getShortDescriptionOrName(@Param("productId") int productId);
 }

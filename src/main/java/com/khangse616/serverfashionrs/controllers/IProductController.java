@@ -44,4 +44,7 @@ public interface IProductController {
 
     @GetMapping("/search-product")
     List<SearchProductDTO> searchProduct(@RequestParam("s") String search);
+
+    @GetMapping("/product/{productId}/products-also-like")
+    List<ProductItemDTO> productsAlsoLike(@PathVariable("productId") int productId);
 }

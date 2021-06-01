@@ -1,10 +1,8 @@
 package com.khangse616.serverfashionrs.services.impl;
 
-import com.khangse616.serverfashionrs.Utils.MapUtil;
 import com.khangse616.serverfashionrs.mappers.impl.ProductItemDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.SearchProductDTOMapper;
 import com.khangse616.serverfashionrs.models.*;
-import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
@@ -154,9 +152,35 @@ public class ProductService implements IProductService {
 
     @Override
     public List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService) {
+
+        return calcCosineSimilarityText(search).entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
+                .limit(10)
+                .map(entry -> new SearchProductDTOMapper().mapRow(entry, imageDataService))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Product findProductById(int id) {
+        return productRepository.findById(id);
+    }
+
+    @Override
+    public List<ProductItemDTO> getProductsAlsoLike(int id, IImageDataService imageDataService) {
+        String shortDescOrName = productRepository.getShortDescriptionOrName(id);
+
+        return calcCosineSimilarityText(shortDescOrName).entrySet().stream()
+                .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
+//                .skip(1)
+                .limit(10)
+                .map(v -> new ProductItemDTOMapper().mapRow(v.getKey(), imageDataService))
+                .collect(Collectors.toList());
+    }
+
+    private HashMap<Product, Double> calcCosineSimilarityText(String search){
         List<Product> list = productRepository.getProductAndShortDescription();
-        TfidfCalculation TfidfObj = new TfidfCalculation();
         int noOfDocs = list.size();
+
+        TfidfCalculation TfidfObj = new TfidfCalculation();
 
         //containers for documents and their properties required to calculate final score
         DocumentProperties[] docProperties = new DocumentProperties[noOfDocs];
@@ -202,16 +226,6 @@ public class ProductService implements IProductService {
                 listProductSearch.put(pd.getKey(), cosine);
         }
 
-        System.out.println(listProductSearch.size());
-
-        return listProductSearch.entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-                .limit(10)
-                .map(entry -> new SearchProductDTOMapper().mapRow(entry, imageDataService))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Product findProductById(int id) {
-        return productRepository.findById(id);
+        return listProductSearch;
     }
 }

@@ -21,4 +21,5 @@ public interface IProductService {
     List<Product> productRecommendForUser(int userId);
     List<HashMap<String, Double>> getListShortDescription();
     List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService);
+    List<ProductItemDTO> getProductsAlsoLike(int id, IImageDataService imageDataService);
 }

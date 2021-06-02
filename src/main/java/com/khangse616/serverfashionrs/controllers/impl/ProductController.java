@@ -575,7 +575,7 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public List<ProductItemDTO> productsAlsoLike(int productId) {
-        return productService.getProductsAlsoLike(productId, imageDataService);
+    public List<ProductItemDTO> productsSimilarity(int productId) {
+        return productService.getProductsSimilarity(productId, imageDataService);
     }
 }

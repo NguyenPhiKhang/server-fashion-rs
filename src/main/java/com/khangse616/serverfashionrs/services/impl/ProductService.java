@@ -165,7 +165,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductItemDTO> getProductsAlsoLike(int id, IImageDataService imageDataService) {
+    public List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService) {
         String shortDescOrName = productRepository.getShortDescriptionOrName(id);
 
         return calcCosineSimilarityText(shortDescOrName).entrySet().stream()

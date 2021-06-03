@@ -48,7 +48,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<String> getShortDescriptionByVisibilityTrue();
 
     @Query("select p from Product p where p.visibility = true")
-    List<Product> getProductAndShortDescription();
+    List<Product> getProductsVisibilityTrue();
+
+    @Query("select p from Product p where p.visibility = true and p.id <> :productId")
+    List<Product> getProductAndShortDescriptionExceptProduct(@Param("productId") int productId);
+
+    @Query("select p from Product p where p.visibility = true and p.id not in :listIdProduct")
+    List<Product> getProductAndShortDescriptionExceptListProduct(@Param("listIdProduct") List<Integer> listIdProduct);
 
     @Query(value = "call get_shortdesc_name(:productId)", nativeQuery = true)
     String getShortDescriptionOrName(@Param("productId") int productId);
@@ -57,7 +63,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 //    List<String> getShortDescriptionOrNameByUser(@Param("userId") int userId);
 
 
-    @Query(value = "Select (case when (p.short_description <> '' and p.short_description is not null) then p.short_description else p.name end) as txt_description, s.count as count_seen \n" +
+    @Query(value = "Select (case when (p.short_description <> '' and p.short_description is not null) then p.short_description else p.name end) as txt_description, s.count as count_seen, s.product_id as product_id \n" +
             "    from fashionshop_db.products p \n" +
             "    join fashionshop_db.seen_products s \n" +
             "    on p.id = s.product_id \n" +

@@ -86,7 +86,9 @@ public class ProductService implements IProductService {
     @Override
     public List<HashMap<String, Double>> calcContentBasedTest(String textTest) {
 
-        HashMap<Product, Double> listProductSearch = calcCosineSimilarityText(textTest);
+        List<Product> list = productRepository.getProductsVisibilityTrue();
+
+        HashMap<Product, Double> listProductSearch = calcCosineSimilarityText(textTest, list);
 
         System.out.println(listProductSearch.size());
 
@@ -108,8 +110,9 @@ public class ProductService implements IProductService {
 
     @Override
     public List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService) {
+        List<Product> list = productRepository.getProductsVisibilityTrue();
 
-        return calcCosineSimilarityText(search).entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
+        return calcCosineSimilarityText(search, list).entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
                 .limit(10)
                 .map(entry -> new SearchProductDTOMapper().mapRow(entry, imageDataService))
                 .collect(Collectors.toList());
@@ -123,8 +126,9 @@ public class ProductService implements IProductService {
     @Override
     public List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService) {
         String shortDescOrName = productRepository.getShortDescriptionOrName(id);
+        List<Product> list = productRepository.getProductAndShortDescriptionExceptProduct(id);
 
-        return calcCosineSimilarityText(shortDescOrName).entrySet().stream()
+        return calcCosineSimilarityText(shortDescOrName, list).entrySet().stream()
                 .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
 //                .skip(1)
                 .limit(10)
@@ -132,8 +136,7 @@ public class ProductService implements IProductService {
                 .collect(Collectors.toList());
     }
 
-    private HashMap<Product, Double> calcCosineSimilarityText(String search){
-        List<Product> list = productRepository.getProductAndShortDescription();
+    private HashMap<Product, Double> calcCosineSimilarityText(String search, List<Product> list){
         int noOfDocs = list.size();
 
         TfidfCalculation TfidfObj = new TfidfCalculation();
@@ -187,7 +190,15 @@ public class ProductService implements IProductService {
 
     @Override
     public List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService) {
-        List<Product> list = productRepository.getProductAndShortDescription();
+        List<Integer> listIdProduct = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Object[]> pageSeen = productRepository.getShortDescriptionOrNameByUser(userId, pageable);
+        List<DescriptionCountDTO> listSeen = pageSeen.getContent().stream().map(v -> {
+            listIdProduct.add((Integer) v[2]);
+            return new DescriptionCountDTO((String) v[0], (int)v[1]);
+        }).collect(Collectors.toList());
+
+        List<Product> list = productRepository.getProductAndShortDescriptionExceptListProduct(listIdProduct);
         int noOfDocs = list.size();
 
         TfidfCalculation TfidfObj = new TfidfCalculation();
@@ -207,11 +218,6 @@ public class ProductService implements IProductService {
         for (int i = 0; i < noOfDocs; i++) {
             listTFIDF.put(list.get(i), TfidfObj.calculateTFIDF(docProperties[i], inverseDocFreqMap));
         }
-
-        Pageable pageable = PageRequest.of(0, 10);
-
-        Page<Object[]> pageSeen = productRepository.getShortDescriptionOrNameByUser(userId, pageable);
-        List<DescriptionCountDTO> listSeen = pageSeen.getContent().stream().map(v -> new DescriptionCountDTO((String) v[0], (int)v[1])).collect(Collectors.toList());
 
         SortedSet<String> wordListSearch = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         DocumentProperties documentProperty = TfidfObj.calculateTF(listSeen, wordListSearch);

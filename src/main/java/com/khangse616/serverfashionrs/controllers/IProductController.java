@@ -39,12 +39,15 @@ public interface IProductController {
     @GetMapping("/test-recommend-movie")
     ResponseEntity<List<RecommendForUser>> recommend_movie_test();
 
-    @GetMapping("/calc-tfidf")
-    List<HashMap<String, Double>> calculationTFIDF(@RequestParam("s") String search);
+    @GetMapping("/calc-content-based-test")
+    List<HashMap<String, Double>> calculationContentBasedTest(@RequestParam("s") String search);
 
     @GetMapping("/search-product")
     List<SearchProductDTO> searchProduct(@RequestParam("s") String search);
 
     @GetMapping("/product/{productId}/products-similarity")
     List<ProductItemDTO> productsSimilarity(@PathVariable("productId") int productId);
+
+    @GetMapping("/user/{userId}/products-also-like")
+    List<ProductItemDTO> productsMightAlsoLike(@PathVariable int userId);
 }

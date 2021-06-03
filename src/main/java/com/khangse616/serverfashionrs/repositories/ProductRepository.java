@@ -52,4 +52,16 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "call get_shortdesc_name(:productId)", nativeQuery = true)
     String getShortDescriptionOrName(@Param("productId") int productId);
+
+//    @Query(value = "call get_shortdesc_name_product_seen(:userId)", nativeQuery = true)
+//    List<String> getShortDescriptionOrNameByUser(@Param("userId") int userId);
+
+
+    @Query(value = "Select (case when (p.short_description <> '' and p.short_description is not null) then p.short_description else p.name end) as txt_description, s.count as count_seen \n" +
+            "    from fashionshop_db.products p \n" +
+            "    join fashionshop_db.seen_products s \n" +
+            "    on p.id = s.product_id \n" +
+            "    where s.user_id = :userId and CURRENT_TIMESTAMP - last_time < 7000000 \n" +
+            "    order by last_time desc", nativeQuery = true)
+    Page<Object[]> getShortDescriptionOrNameByUser(@Param("userId") int userId, Pageable pageable);
 }

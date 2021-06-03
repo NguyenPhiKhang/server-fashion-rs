@@ -565,8 +565,8 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public List<HashMap<String, Double>> calculationTFIDF(String search) {
-        return productService.getListShortDescription();
+    public List<HashMap<String, Double>> calculationContentBasedTest(String search) {
+        return productService.calcContentBasedTest(search);
     }
 
     @Override
@@ -577,5 +577,10 @@ public class ProductController implements IProductController {
     @Override
     public List<ProductItemDTO> productsSimilarity(int productId) {
         return productService.getProductsSimilarity(productId, imageDataService);
+    }
+
+    @Override
+    public List<ProductItemDTO> productsMightAlsoLike(int userId) {
+        return productService.getProductsAlsoLike(userId, imageDataService);
     }
 }

@@ -1,5 +1,8 @@
 package com.khangse616.serverfashionrs.models;
 
+import com.khangse616.serverfashionrs.Utils.VNCharacterUtil;
+import com.khangse616.serverfashionrs.models.dto.RecommendSystem.DescriptionCountDTO;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -69,6 +72,15 @@ public class TfidfCalculation {
         }
 
         return tfIDF;
+    }
+
+    public DocumentProperties calculateTF(List<DescriptionCountDTO> listDescription, SortedSet<String> wordList) {
+        DocumentProperties docProperty = new DocumentProperties();
+        HashMap<String, Integer> wordCount = getTerms(listDescription, wordList);
+        docProperty.setWordCountMap(wordCount);
+        HashMap<String, Double> termFrequency = calculateTermFrequency(docProperty.getWordCountMap());
+        docProperty.setTermFreqMap(termFrequency);
+        return docProperty;
     }
 
     public DocumentProperties calculateTF(String des, SortedSet<String> wordList) {
@@ -147,6 +159,40 @@ public class TfidfCalculation {
         return newStr;
     }
 
+    public HashMap<String, Integer> getTerms(List<DescriptionCountDTO> listDescription, SortedSet<String> wordList) {
+        HashMap<String, Integer> WordCount = new HashMap<String, Integer>();
+        HashMap<String, Integer> finalMap = new HashMap<>();
+
+        for(DescriptionCountDTO description: listDescription){
+            String[] words = description.getDescOrName().toLowerCase().split(" ");
+            for (String term : words) {
+                //cleaning up the term ie removing .,:"
+                term = cleanseInput(term);
+                //ignoring numbers
+                if (isDigit(term)) {
+                    continue;
+                }
+                if (term.length() == 0) {
+                    continue;
+                }
+                String removeAccentTerm = VNCharacterUtil.removeAccent(term);
+                wordList.add(removeAccentTerm);
+                if (WordCount.containsKey(removeAccentTerm)) {
+                    WordCount.put(removeAccentTerm, WordCount.get(removeAccentTerm) + description.getCount()>5?5:description.getCount());
+                } else {
+                    WordCount.put(removeAccentTerm, Math.min(description.getCount(), 5));
+                }
+
+                System.out.println(removeAccentTerm);
+            }
+        }
+
+        Map<String, Integer> treeMap = new TreeMap<>(WordCount);
+        finalMap = new HashMap<String, Integer>(treeMap);
+
+        return finalMap;
+    }
+
     public HashMap<String, Integer> getTerms(String description, SortedSet<String> wordList) {
         HashMap<String, Integer> WordCount = new HashMap<String, Integer>();
         HashMap<String, Integer> finalMap = new HashMap<>();
@@ -162,11 +208,12 @@ public class TfidfCalculation {
             if (term.length() == 0) {
                 continue;
             }
-            wordList.add(term);
-            if (WordCount.containsKey(term)) {
-                WordCount.put(term, WordCount.get(term) + 1);
+            String removeAccentTerm = VNCharacterUtil.removeAccent(term);
+            wordList.add(removeAccentTerm);
+            if (WordCount.containsKey(removeAccentTerm)) {
+                WordCount.put(removeAccentTerm, WordCount.get(removeAccentTerm) + 1);
             } else {
-                WordCount.put(term, 1);
+                WordCount.put(removeAccentTerm, 1);
             }
         }
 

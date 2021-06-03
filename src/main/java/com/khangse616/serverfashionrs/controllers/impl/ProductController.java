@@ -570,17 +570,17 @@ public class ProductController implements IProductController {
     }
 
     @Override
-    public List<SearchProductDTO> searchProduct(String search) {
-        return productService.getProductSearch(search, imageDataService);
+    public List<SearchProductDTO> searchProduct(String search, int page) {
+        return productService.getProductSearch(search, imageDataService, page);
     }
 
     @Override
-    public List<ProductItemDTO> productsSimilarity(int productId) {
-        return productService.getProductsSimilarity(productId, imageDataService);
+    public List<ProductItemDTO> productsSimilarity(int productId, int page) {
+        return productService.getProductsSimilarity(productId, imageDataService, page);
     }
 
     @Override
-    public List<ProductItemDTO> productsMightAlsoLike(int userId) {
-        return productService.getProductsAlsoLike(userId, imageDataService);
+    public List<ProductItemDTO> productsMightAlsoLike(int userId, int page) {
+        return productService.getProductsAlsoLike(userId, imageDataService, page);
     }
 }

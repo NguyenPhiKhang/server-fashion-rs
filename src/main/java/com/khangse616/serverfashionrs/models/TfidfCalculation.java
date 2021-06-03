@@ -180,8 +180,6 @@ public class TfidfCalculation {
                 } else {
                     WordCount.put(removeAccentTerm, Math.min(description.getCount(), 5));
                 }
-
-                System.out.println(removeAccentTerm);
             }
         }
 

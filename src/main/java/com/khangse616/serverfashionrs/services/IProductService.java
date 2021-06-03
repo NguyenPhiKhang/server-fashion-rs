@@ -20,7 +20,7 @@ public interface IProductService {
     List<Product> productTopRating(int page);
     List<Product> productRecommendForUser(int userId);
     List<HashMap<String, Double>> calcContentBasedTest(String textTest);
-    List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService);
-    List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService);
-    List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService);
+    List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService, int page);
+    List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService, int page);
+    List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page);
 }

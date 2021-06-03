@@ -43,11 +43,11 @@ public interface IProductController {
     List<HashMap<String, Double>> calculationContentBasedTest(@RequestParam("s") String search);
 
     @GetMapping("/search-product")
-    List<SearchProductDTO> searchProduct(@RequestParam("s") String search);
+    List<SearchProductDTO> searchProduct(@RequestParam("s") String search, @RequestParam(value = "p", defaultValue = "1") int page);
 
     @GetMapping("/product/{productId}/products-similarity")
-    List<ProductItemDTO> productsSimilarity(@PathVariable("productId") int productId);
+    List<ProductItemDTO> productsSimilarity(@PathVariable("productId") int productId, @RequestParam(value = "p", defaultValue = "1") int page);
 
     @GetMapping("/user/{userId}/products-also-like")
-    List<ProductItemDTO> productsMightAlsoLike(@PathVariable int userId);
+    List<ProductItemDTO> productsMightAlsoLike(@PathVariable int userId, @RequestParam(value = "p", defaultValue = "1") int page);
 }

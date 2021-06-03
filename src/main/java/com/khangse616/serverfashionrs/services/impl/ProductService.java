@@ -109,11 +109,14 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService) {
+    public List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService, int page) {
         List<Product> list = productRepository.getProductsVisibilityTrue();
 
+        System.out.println(page);
+
         return calcCosineSimilarityText(search, list).entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-                .limit(10)
+                .skip(page* 15L)
+                .limit(15)
                 .map(entry -> new SearchProductDTOMapper().mapRow(entry, imageDataService))
                 .collect(Collectors.toList());
     }
@@ -124,72 +127,20 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService) {
+    public List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService, int page) {
         String shortDescOrName = productRepository.getShortDescriptionOrName(id);
         List<Product> list = productRepository.getProductAndShortDescriptionExceptProduct(id);
 
         return calcCosineSimilarityText(shortDescOrName, list).entrySet().stream()
                 .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-//                .skip(1)
-                .limit(10)
+                .skip(page* 15L)
+                .limit(15)
                 .map(v -> new ProductItemDTOMapper().mapRow(v.getKey(), imageDataService))
                 .collect(Collectors.toList());
     }
 
-    private HashMap<Product, Double> calcCosineSimilarityText(String search, List<Product> list){
-        int noOfDocs = list.size();
-
-        TfidfCalculation TfidfObj = new TfidfCalculation();
-
-        //containers for documents and their properties required to calculate final score
-        DocumentProperties[] docProperties = new DocumentProperties[noOfDocs];
-        SortedSet<String> wordList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        for (int i = 0; i < noOfDocs; i++) {
-            docProperties[i] = TfidfObj.calculateTF(list.get(i), wordList);
-        }
-
-        //calculating InverseDocument frequency
-        HashMap<String, Double> inverseDocFreqMap = TfidfObj.calculateInverseDocFrequency(docProperties, wordList);
-
-        //Calculating tf-idf
-        HashMap<Product, HashMap<String, Double>> listTFIDF = new HashMap<>();
-        for (int i = 0; i < noOfDocs; i++) {
-            listTFIDF.put(list.get(i), TfidfObj.calculateTFIDF(docProperties[i], inverseDocFreqMap));
-        }
-
-        SortedSet<String> wordListSearch = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        DocumentProperties documentProperty = TfidfObj.calculateTF(search, wordListSearch);
-
-        HashMap<String, Double> tfidfSearch = TfidfObj.calculateTFIDF(documentProperty, inverseDocFreqMap);
-
-        HashMap<Product, Double> listProductSearch = new HashMap<>();
-
-        for (Map.Entry<Product, HashMap<String, Double>> pd : listTFIDF.entrySet()) {
-            Iterator<Map.Entry<String, Double>> it = tfidfSearch.entrySet().iterator();
-            double dot_pd = 0.0;
-            double norm_search = 0.0;
-            while (it.hasNext()) {
-                Map.Entry<String, Double> pair = it.next();
-                if (pd.getValue().containsKey((String) pair.getKey())) {
-                    dot_pd += pd.getValue().get(pair.getKey()) * (double) pair.getValue();
-                }
-                norm_search += (double) pair.getValue() * (double) pair.getValue();
-            }
-            double norm_pd = 0.0;
-            for (double v : pd.getValue().values()) {
-                norm_pd += v * v;
-            }
-
-            double cosine = dot_pd / (Math.sqrt(norm_pd) * Math.sqrt(norm_search));
-            if (cosine > 0.0)
-                listProductSearch.put(pd.getKey(), cosine);
-        }
-
-        return listProductSearch;
-    }
-
     @Override
-    public List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService) {
+    public List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page) {
         List<Integer> listIdProduct = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Object[]> pageSeen = productRepository.getShortDescriptionOrNameByUser(userId, pageable);
@@ -247,11 +198,67 @@ public class ProductService implements IProductService {
                 listProductAlsoLike.put(pd.getKey(), cosine);
         }
 
+        System.out.println(listProductAlsoLike.size());
+
         return listProductAlsoLike.entrySet().stream()
                 .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-//                .skip(1)
-                .limit(10)
+                .skip(page* 15L)
+                .limit(15)
                 .map(v -> new ProductItemDTOMapper().mapRow(v.getKey(), imageDataService))
                 .collect(Collectors.toList());
+    }
+
+    private HashMap<Product, Double> calcCosineSimilarityText(String search, List<Product> list){
+        int noOfDocs = list.size();
+
+        TfidfCalculation TfidfObj = new TfidfCalculation();
+
+        //containers for documents and their properties required to calculate final score
+        DocumentProperties[] docProperties = new DocumentProperties[noOfDocs];
+        SortedSet<String> wordList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        for (int i = 0; i < noOfDocs; i++) {
+            docProperties[i] = TfidfObj.calculateTF(list.get(i), wordList);
+        }
+
+        //calculating InverseDocument frequency
+        HashMap<String, Double> inverseDocFreqMap = TfidfObj.calculateInverseDocFrequency(docProperties, wordList);
+
+        //Calculating tf-idf
+        HashMap<Product, HashMap<String, Double>> listTFIDF = new HashMap<>();
+        for (int i = 0; i < noOfDocs; i++) {
+            listTFIDF.put(list.get(i), TfidfObj.calculateTFIDF(docProperties[i], inverseDocFreqMap));
+        }
+
+        SortedSet<String> wordListSearch = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        DocumentProperties documentProperty = TfidfObj.calculateTF(search, wordListSearch);
+
+        HashMap<String, Double> tfidfSearch = TfidfObj.calculateTFIDF(documentProperty, inverseDocFreqMap);
+
+        HashMap<Product, Double> listProductSearch = new HashMap<>();
+
+        for (Map.Entry<Product, HashMap<String, Double>> pd : listTFIDF.entrySet()) {
+            Iterator<Map.Entry<String, Double>> it = tfidfSearch.entrySet().iterator();
+            double dot_pd = 0.0;
+            double norm_search = 0.0;
+            while (it.hasNext()) {
+                Map.Entry<String, Double> pair = it.next();
+                if (pd.getValue().containsKey((String) pair.getKey())) {
+                    dot_pd += pd.getValue().get(pair.getKey()) * (double) pair.getValue();
+                }
+                norm_search += (double) pair.getValue() * (double) pair.getValue();
+            }
+            double norm_pd = 0.0;
+            for (double v : pd.getValue().values()) {
+                norm_pd += v * v;
+            }
+
+            double cosine = dot_pd / (Math.sqrt(norm_pd) * Math.sqrt(norm_search));
+            if (cosine > 0.0)
+                listProductSearch.put(pd.getKey(), cosine);
+        }
+
+        System.out.println(listProductSearch.size());
+
+        return listProductSearch;
     }
 }

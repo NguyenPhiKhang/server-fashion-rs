@@ -53,6 +53,8 @@ public class AddressService implements IAddressService {
             addressUpdate.setName(address.getName());
             addressUpdate.setNumberPhone(address.getNumberPhone());
             addressUpdate.setDefaultIs(address.isDefaultIs());
+            if (address.isDefaultIs())
+                addressRepository.setDefaultIsFalse(address.getUser().getId());
             addressUpdate.setUpdateAt(new Timestamp(System.currentTimeMillis()));
             addressUpdate.setSpecificAddress(address.getSpecificAddress());
             addressUpdate.setWard(address.getWard());

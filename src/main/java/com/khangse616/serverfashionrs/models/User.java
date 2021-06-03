@@ -57,6 +57,10 @@ public class User {
     @JsonIgnore
     private Set<Address> addresses;
 
+    @OneToMany(targetEntity = HistorySearch.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<HistorySearch> historySearches;
+
     public User(){}
 
     public Account getAccount() {
@@ -169,5 +173,13 @@ public class User {
 
     public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public Set<HistorySearch> getHistorySearches() {
+        return historySearches;
+    }
+
+    public void setHistorySearches(Set<HistorySearch> historySearches) {
+        this.historySearches = historySearches;
     }
 }

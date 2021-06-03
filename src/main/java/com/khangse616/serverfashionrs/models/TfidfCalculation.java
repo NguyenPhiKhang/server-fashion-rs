@@ -14,8 +14,6 @@ This class contains details such as the word frequency count for each term and t
 
 public class TfidfCalculation {
 
-    // SortedSet<String> wordList = new TreeSet(String.CASE_INSENSITIVE_ORDER);
-
     //Calculates inverse Doc frequency.
     public HashMap<String, Double> calculateInverseDocFrequency(DocumentProperties[] docProperties, SortedSet<String> wordList) {
         HashMap<String, Double> InverseDocFreqMap = new HashMap<>();
@@ -75,17 +73,17 @@ public class TfidfCalculation {
     }
 
     public DocumentProperties calculateTF(List<DescriptionCountDTO> listDescription, SortedSet<String> wordList) {
-        DocumentProperties docProperty = new DocumentProperties();
         HashMap<String, Integer> wordCount = getTerms(listDescription, wordList);
-        docProperty.setWordCountMap(wordCount);
-        HashMap<String, Double> termFrequency = calculateTermFrequency(docProperty.getWordCountMap());
-        docProperty.setTermFreqMap(termFrequency);
-        return docProperty;
+        return getDocumentProperties(wordCount);
     }
 
     public DocumentProperties calculateTF(String des, SortedSet<String> wordList) {
-        DocumentProperties docProperty = new DocumentProperties();
         HashMap<String, Integer> wordCount = getTerms(des, wordList);
+        return getDocumentProperties(wordCount);
+    }
+
+    private DocumentProperties getDocumentProperties(HashMap<String, Integer> wordCount){
+        DocumentProperties docProperty = new DocumentProperties();
         docProperty.setWordCountMap(wordCount);
         HashMap<String, Double> termFrequency = calculateTermFrequency(docProperty.getWordCountMap());
         docProperty.setTermFreqMap(termFrequency);
@@ -220,44 +218,6 @@ public class TfidfCalculation {
         Map<String, Integer> treeMap = new TreeMap<>(WordCount);
         finalMap = new HashMap<String, Integer>(treeMap);
 
-        return finalMap;
-    }
-
-    // Converts the input text file to hashmap and even dumps the final output as CSV files
-    public HashMap<String, Integer> getTermsFromFile(String Filename, int count, File folder, SortedSet<String> wordList) {
-        HashMap<String, Integer> WordCount = new HashMap<String, Integer>();
-        BufferedReader reader = null;
-        HashMap<String, Integer> finalMap = new HashMap<>();
-        try {
-            reader = new BufferedReader(new FileReader(Filename));
-            String line = reader.readLine();
-            while (line != null) {
-                String[] words = line.toLowerCase().split(" ");
-                for (String term : words) {
-                    //cleaning up the term ie removing .,:"
-                    term = cleanseInput(term);
-                    //ignoring numbers
-                    if (isDigit(term)) {
-                        continue;
-                    }
-                    if (term.length() == 0) {
-                        continue;
-                    }
-                    wordList.add(term);
-                    if (WordCount.containsKey(term)) {
-                        WordCount.put(term, WordCount.get(term) + 1);
-                    } else {
-                        WordCount.put(term, 1);
-                    }
-                }
-                line = reader.readLine();
-            }
-            // sorting the hashmap
-            Map<String, Integer> treeMap = new TreeMap<>(WordCount);
-            finalMap = new HashMap<String, Integer>(treeMap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return finalMap;
     }
 }

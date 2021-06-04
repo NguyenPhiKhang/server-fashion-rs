@@ -57,4 +57,9 @@ public class HistorySearchService implements IHistorySearchService {
     public void removeHistorySearch(int id) {
         historySearchRepository.deleteById(id);
     }
+
+    @Override
+    public void removeAllHistorySearch(int userId) {
+        historySearchRepository.deleteAllByUserId(userId);
+    }
 }

@@ -4,9 +4,13 @@ import com.khangse616.serverfashionrs.models.HistorySearch;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
+@Repository
 public interface HistorySearchRepository extends JpaRepository<HistorySearch, Integer> {
 //    @Query("select hs from HistorySearch hs where hs.user.id = :userId order by hs.timeSearch desc")
     List<HistorySearch> getHistorySearchByUserIdOrderByTimeSearchDesc(int user_id);
@@ -17,4 +21,9 @@ public interface HistorySearchRepository extends JpaRepository<HistorySearch, In
 
     @Query(value = "select * from history_search hs where hs.user_id = :userId order by hs.id desc limit 1", nativeQuery = true)
     HistorySearch findTop1HistorySearchByUserId(@Param("userId") int userId);
+
+    @Query(value = "delete from history_search where user_id = :user_id", nativeQuery = true)
+    void deleteHistorySearchesByUserId(@Param("user_id") int user_id);
+
+     void deleteAllByUserId(int user_id);
 }

@@ -18,10 +18,12 @@ public class HistorySearch {
     private String keyword;
 
     @Column(name = "time_search")
+    @JsonIgnore
     private Timestamp timeSearch;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
 

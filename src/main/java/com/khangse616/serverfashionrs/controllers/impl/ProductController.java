@@ -55,6 +55,9 @@ public class ProductController implements IProductController {
     @Autowired
     private IFavoriteService favoriteService;
 
+    @Autowired
+    private IHistorySearchService historySearchService;
+
     @Override
     public ResponseEntity<ProductDetailDTO> getProductById(int id, int userId) {
         Product product = productService.findProductByIdVisibleTrue(id);
@@ -571,6 +574,12 @@ public class ProductController implements IProductController {
 
     @Override
     public List<SearchProductDTO> searchProduct(String search, int page) {
+        return productService.getProductSearch(search, imageDataService, page);
+    }
+
+    @Override
+    public List<SearchProductDTO> searchProduct(int userId, String search, int page) {
+        historySearchService.createOrUpdateHistorySearch(userId, search);
         return productService.getProductSearch(search, imageDataService, page);
     }
 

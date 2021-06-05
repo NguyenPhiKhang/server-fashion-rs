@@ -45,6 +45,9 @@ public interface IProductController {
     @GetMapping("/search-product")
     List<SearchProductDTO> searchProduct(@RequestParam("s") String search, @RequestParam(value = "p", defaultValue = "1") int page);
 
+    @GetMapping("/{userId}/search-product")
+    List<SearchProductDTO> searchProduct(@PathVariable("userId") int userId, @RequestParam("s") String search, @RequestParam(value = "p", defaultValue = "1") int page);
+
     @GetMapping("/product/{productId}/products-similarity")
     List<ProductItemDTO> productsSimilarity(@PathVariable("productId") int productId, @RequestParam(value = "p", defaultValue = "1") int page);
 

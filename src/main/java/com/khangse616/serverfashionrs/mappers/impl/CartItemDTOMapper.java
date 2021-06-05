@@ -55,9 +55,11 @@ public class CartItemDTOMapper implements RowMapper<CartItemDTO, CartItem> {
                 if (!isImage) {
                     OptionProductVarchar ov = product.getOptionProductVarchars().stream().findFirst().orElse(null);
                     assert ov != null;
-                    ImageData imageData = repository.findImageById(ov.getValue());
 
-                    ov.setValue("https:" + imageData.getLink().replace("fill_size", "700x817"));
+                    if(!ov.getValue().contains("https")){
+                        ImageData imageData = repository.findImageById(ov.getValue());
+                        ov.setValue("https:" + imageData.getLink().replace("fill_size", "700x817"));
+                    }
                     optionProductItemCartDTO.setImage(ov);
                 }
                 productOption.getOptionProductIntegers().forEach(optionProductItemCartDTO::setQuantity);

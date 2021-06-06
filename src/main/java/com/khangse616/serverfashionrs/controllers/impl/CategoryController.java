@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,4 +31,8 @@ public class CategoryController implements ICategoryController {
 //    }
 
 
+    @Override
+    public ResponseEntity<Set<String>> getRecommendSearch(String keyword) {
+        return ResponseEntity.ok().body(categoryService.recommendSearch(keyword));
+    }
 }

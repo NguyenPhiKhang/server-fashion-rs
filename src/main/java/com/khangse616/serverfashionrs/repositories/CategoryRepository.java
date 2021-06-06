@@ -21,4 +21,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     @Query(value = "select * from categories where parent_id=:parentId", nativeQuery = true)
     Set<Category> findByParentId(@Param("parentId") int parentId);
+
+    @Query("select c.name from Category c where c.level<>0")
+    List<String> getAllName();
 }

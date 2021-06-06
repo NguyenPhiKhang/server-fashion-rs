@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -13,4 +15,7 @@ import java.util.Set;
 public interface ICategoryController {
     @GetMapping("/categories/{parentId}/sub-categories")
     ResponseEntity<Set<Category>> getCategoriesByParentCategory(@PathVariable("parentId") int parentId);
+
+    @GetMapping("/recommend-search")
+    ResponseEntity<Set<String>> getRecommendSearch(@RequestParam("keyword") String keyword);
 }

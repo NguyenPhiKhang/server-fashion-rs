@@ -27,17 +27,16 @@ public class CategoryService implements ICategoryService {
         return categoryRepository.getAllName();
     }
 
-    @Override
-    public Set<String> recommendSearch(String keyword) {
-        Set<String> newWord = new HashSet<>();
-        getAllNameCategories().forEach(c-> {
-            newWord.addAll(Arrays.asList(c.split(" - ")));
-        });
-
-        return RecommendSystemUtil.calcCosineSimilaritySearch(keyword, new ArrayList<>(newWord)).entrySet().stream()
-                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
-                .limit(10)
-                .map(Map.Entry::getKey).collect(Collectors.toSet());
-    }
-
+//    @Override
+//    public Set<String> recommendSearch(String keyword) {
+//        Set<String> newWord = new HashSet<>();
+//        getAllNameCategories().forEach(c-> {
+//            newWord.addAll(Arrays.asList(c.split(" - ")));
+//        });
+//
+//        return RecommendSystemUtil.calcCosineSimilaritySearch(keyword, new ArrayList<>(newWord)).entrySet().stream()
+//                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+//                .limit(10)
+//                .map(Map.Entry::getKey).collect(Collectors.toSet());
+//    }
 }

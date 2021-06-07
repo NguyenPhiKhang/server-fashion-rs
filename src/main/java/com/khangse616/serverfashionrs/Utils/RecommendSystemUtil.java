@@ -3,6 +3,7 @@ package com.khangse616.serverfashionrs.Utils;
 import com.khangse616.serverfashionrs.models.DocumentProperties;
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.TfidfCalculation;
+import com.khangse616.serverfashionrs.models.dto.HotSearchDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
 
 import java.util.*;
@@ -140,5 +141,65 @@ public class RecommendSystemUtil {
         System.out.println(listProductSearch.size());
 
         return listProductSearch;
+    }
+
+    public static HashMap<Product, String> calcCosineSimilaritySearch(List<String> topSearch, List<Product> list){
+        int noOfDocs = list.size();
+
+        TfidfCalculation TfidfObj = new TfidfCalculation();
+
+        //containers for documents and their properties required to calculate final score
+        DocumentProperties[] docProperties = new DocumentProperties[noOfDocs];
+        SortedSet<String> wordList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        for (int i = 0; i < noOfDocs; i++) {
+            docProperties[i] = TfidfObj.calculateTF(list.get(i), wordList);
+        }
+
+        //calculating InverseDocument frequency
+        java.util.HashMap<String, Double> inverseDocFreqMap = TfidfObj.calculateInverseDocFrequency(docProperties, wordList);
+
+        //Calculating tf-idf
+        HashMap<Product, HashMap<String, Double>> listTFIDF = new HashMap<>();
+        for (int i = 0; i < noOfDocs; i++) {
+            listTFIDF.put(list.get(i), TfidfObj.calculateTFIDF(docProperties[i], inverseDocFreqMap));
+        }
+
+        HashMap<Product, String> products = new HashMap<>();
+
+        for(String search: topSearch){
+            SortedSet<String> wordListSearch = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+            DocumentProperties documentProperty = TfidfObj.calculateTF(search, wordListSearch);
+
+            HashMap<String, Double> tfidfSearch = TfidfObj.calculateTFIDF(documentProperty, inverseDocFreqMap);
+
+            Product product = new Product();
+            double max_cosine = 0.0;
+
+            for (Map.Entry<Product, HashMap<String, Double>> pd : listTFIDF.entrySet()) {
+                Iterator<Map.Entry<String, Double>> it = tfidfSearch.entrySet().iterator();
+                double dot_pd = 0.0;
+                double norm_search = 0.0;
+                while (it.hasNext()) {
+                    Map.Entry<String, Double> pair = it.next();
+                    if (pd.getValue().containsKey((String) pair.getKey())) {
+                        dot_pd += pd.getValue().get(pair.getKey()) * (double) pair.getValue();
+                    }
+                    norm_search += (double) pair.getValue() * (double) pair.getValue();
+                }
+                double norm_pd = 0.0;
+                for (double v : pd.getValue().values()) {
+                    norm_pd += v * v;
+                }
+
+                double cosine = dot_pd / (Math.sqrt(norm_pd) * Math.sqrt(norm_search));
+                if (cosine > 0.0 && cosine > max_cosine){
+                    product = pd.getKey();
+                    max_cosine = cosine;
+                }
+            }
+            products.put(product, search);
+        }
+
+        return products;
     }
 }

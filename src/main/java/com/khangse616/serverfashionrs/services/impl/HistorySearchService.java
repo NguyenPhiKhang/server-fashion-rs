@@ -1,15 +1,18 @@
 package com.khangse616.serverfashionrs.services.impl;
 
+import com.khangse616.serverfashionrs.Utils.RecommendSystemUtil;
+import com.khangse616.serverfashionrs.mappers.impl.HotSearchDTOMapper;
 import com.khangse616.serverfashionrs.models.HistorySearch;
+import com.khangse616.serverfashionrs.models.Product;
+import com.khangse616.serverfashionrs.models.dto.HotSearchDTO;
 import com.khangse616.serverfashionrs.repositories.HistorySearchRepository;
-import com.khangse616.serverfashionrs.services.ICategoryService;
-import com.khangse616.serverfashionrs.services.IHistorySearchService;
-import com.khangse616.serverfashionrs.services.IUserService;
+import com.khangse616.serverfashionrs.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class HistorySearchService implements IHistorySearchService {
@@ -21,6 +24,12 @@ public class HistorySearchService implements IHistorySearchService {
 
     @Autowired
     private ICategoryService categoryService;
+
+    @Autowired
+    private IProductService productService;
+
+    @Autowired
+    private IImageDataService imageDataService;
 
     @Override
     public List<HistorySearch> getAllHistorySearchByUser(int userId) {
@@ -86,5 +95,24 @@ public class HistorySearchService implements IHistorySearchService {
                 createOrUpdateHistorySearch(listIdUser.get(i), newWord.get(idxSearch));
             }
         }
+    }
+
+    @Override
+    public Set<String> recommendSearch(String keyword) {
+        List<String> listSearch = historySearchRepository.getAllSearch();
+
+        return RecommendSystemUtil.calcCosineSimilaritySearch(keyword, listSearch).entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .limit(10)
+                .map(Map.Entry::getKey).collect(Collectors.toSet());
+    }
+
+    @Override
+    public List<HotSearchDTO> getTopSearch() {
+//        return historySearchRepository.getTopSearch();
+        List<String> topSearches = historySearchRepository.getTopSearch();
+        List<Product> listProduct = productService.getAllProductVisibility();
+
+        return RecommendSystemUtil.calcCosineSimilaritySearch(topSearches, listProduct).entrySet().stream().map(v->  new HotSearchDTOMapper().mapRow(v, imageDataService)).collect(Collectors.toList());
     }
 }

@@ -10,6 +10,6 @@ public interface ICategoryController {
     @GetMapping("/categories/{parentId}/sub-categories")
     ResponseEntity<Set<Category>> getCategoriesByParentCategory(@PathVariable("parentId") int parentId);
 
-    @GetMapping("/recommend-search")
-    ResponseEntity<Set<String>> getRecommendSearch(@RequestParam("keyword") String keyword);
+//    @GetMapping("/recommend-search")
+//    ResponseEntity<Set<String>> getRecommendSearch(@RequestParam("keyword") String keyword);
 }

@@ -31,8 +31,8 @@ public class CategoryController implements ICategoryController {
 //    }
 
 
-    @Override
-    public ResponseEntity<Set<String>> getRecommendSearch(String keyword) {
-        return ResponseEntity.ok().body(categoryService.recommendSearch(keyword));
-    }
+//    @Override
+//    public ResponseEntity<Set<String>> getRecommendSearch(String keyword) {
+//        return ResponseEntity.ok().body(categoryService.recommendSearch(keyword));
+//    }
 }

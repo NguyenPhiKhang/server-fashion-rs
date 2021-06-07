@@ -2,12 +2,15 @@ package com.khangse616.serverfashionrs.controllers;
 
 
 import com.khangse616.serverfashionrs.models.HistorySearch;
+import com.khangse616.serverfashionrs.models.dto.HotSearchDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @RequestMapping("/default")
 public interface IHistorySearchController {
@@ -24,4 +27,10 @@ public interface IHistorySearchController {
 
     @PostMapping("/history-search/auto")
     String autoHistorySearch();
+
+    @GetMapping("/search/recommend-search")
+    ResponseEntity<Set<String>> getRecommendSearch(@RequestParam("keyword") String keyword);
+
+    @GetMapping("/search/hot-search")
+    ResponseEntity<List<HotSearchDTO>> getHotSearch();
 }

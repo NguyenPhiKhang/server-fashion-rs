@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 @Repository
 public interface HistorySearchRepository extends JpaRepository<HistorySearch, Integer> {
-//    @Query("select hs from HistorySearch hs where hs.user.id = :userId order by hs.timeSearch desc")
+    //    @Query("select hs from HistorySearch hs where hs.user.id = :userId order by hs.timeSearch desc")
     List<HistorySearch> getHistorySearchByUserIdOrderByTimeSearchDesc(int user_id);
 
     boolean existsHistorySearchByUserIdAndKeyword(int user_id, String keyword);
@@ -25,5 +25,11 @@ public interface HistorySearchRepository extends JpaRepository<HistorySearch, In
     @Query(value = "delete from history_search where user_id = :user_id", nativeQuery = true)
     void deleteHistorySearchesByUserId(@Param("user_id") int user_id);
 
-     void deleteAllByUserId(int user_id);
+    void deleteAllByUserId(int user_id);
+
+    @Query(value = "select keyword from fashionshop_db.history_search group by keyword order by count(keyword) desc", nativeQuery = true)
+    List<String> getAllSearch();
+
+    @Query(value = "select keyword from fashionshop_db.history_search group by keyword order by count(keyword) desc limit 4;", nativeQuery = true)
+    List<String> getTopSearch();
 }

@@ -36,6 +36,11 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> getAllProductVisibility() {
+        return productRepository.getProductsVisibilityTrue();
+    }
+
+    @Override
+    public List<Product> getAllProductVisibilityOrderByPromotionPercent() {
         return productRepository.findAllByVisibilityTrueOrderByPromotionPercentDesc();
     }
 

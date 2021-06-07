@@ -9,4 +9,5 @@ public interface IHistorySearchService {
     void createOrUpdateHistorySearch(int userId, String keyword);
     void removeHistorySearch(int id);
     void removeAllHistorySearch(int userId);
+    void autoHistorySearch();
 }

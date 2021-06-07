@@ -2,15 +2,14 @@ package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.HistorySearch;
 import com.khangse616.serverfashionrs.repositories.HistorySearchRepository;
+import com.khangse616.serverfashionrs.services.ICategoryService;
 import com.khangse616.serverfashionrs.services.IHistorySearchService;
 import com.khangse616.serverfashionrs.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class HistorySearchService implements IHistorySearchService {
@@ -19,6 +18,9 @@ public class HistorySearchService implements IHistorySearchService {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private ICategoryService categoryService;
 
     @Override
     public List<HistorySearch> getAllHistorySearchByUser(int userId) {
@@ -61,5 +63,28 @@ public class HistorySearchService implements IHistorySearchService {
     @Override
     public void removeAllHistorySearch(int userId) {
         historySearchRepository.deleteAllByUserId(userId);
+    }
+
+    @Override
+    public void autoHistorySearch() {
+        List<String> listNameCategories = categoryService.getAllNameCategories();
+        List<String> newWord = new ArrayList<>();
+        listNameCategories.forEach(c-> {
+            newWord.addAll(Arrays.asList(c.split(" - ")));
+        });
+        List<Integer> listIdUser = userService.getListIdUser();
+
+        Random rd = new Random();
+        int listUserSize = listIdUser.size();
+        int listNameCategoriesSize = newWord.size();
+
+        for(int i = 0; i < listUserSize - 100; i++){
+            int numSearch = 1 + rd.nextInt(12);
+
+            for(int j = 0; j<numSearch; j++){
+                int idxSearch = rd.nextInt(listNameCategoriesSize);
+                createOrUpdateHistorySearch(listIdUser.get(i), newWord.get(idxSearch));
+            }
+        }
     }
 }

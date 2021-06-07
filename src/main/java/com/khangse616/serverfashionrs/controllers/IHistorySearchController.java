@@ -21,4 +21,7 @@ public interface IHistorySearchController {
     @Modifying
     @Transactional
     String removeHistorySearch(@PathVariable("userId") int userId, @RequestParam("hs") String hsType);
+
+    @PostMapping("/history-search/auto")
+    String autoHistorySearch();
 }

@@ -46,4 +46,10 @@ public class HistorySearchController implements IHistorySearchController {
             return "Xoá không thành công.";
         }
     }
+
+    @Override
+    public String autoHistorySearch() {
+        historySearchService.autoHistorySearch();
+        return "Done";
+    }
 }

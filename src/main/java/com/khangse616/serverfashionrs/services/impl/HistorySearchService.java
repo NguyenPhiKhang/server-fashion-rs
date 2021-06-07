@@ -8,6 +8,9 @@ import com.khangse616.serverfashionrs.models.dto.HotSearchDTO;
 import com.khangse616.serverfashionrs.repositories.HistorySearchRepository;
 import com.khangse616.serverfashionrs.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -108,11 +111,22 @@ public class HistorySearchService implements IHistorySearchService {
     }
 
     @Override
-    public List<HotSearchDTO> getTopSearch() {
+    public List<HotSearchDTO> getTopSearchItem(int page, int size) {
 //        return historySearchRepository.getTopSearch();
-        List<String> topSearches = historySearchRepository.getTopSearch();
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<String> pageTopSearches = historySearchRepository.getTopSearch(pageable);
+        List<String> topSearches = pageTopSearches.getContent();
+        System.out.println(topSearches);
         List<Product> listProduct = productService.getAllProductVisibility();
 
         return RecommendSystemUtil.calcCosineSimilaritySearch(topSearches, listProduct).entrySet().stream().map(v->  new HotSearchDTOMapper().mapRow(v, imageDataService)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getTopSearch(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<String> pageTopSearch = historySearchRepository.getTopSearch(pageable);
+        System.out.println(pageTopSearch.getContent());
+        return pageTopSearch.getContent();
     }
 }

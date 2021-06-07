@@ -14,5 +14,6 @@ public interface IHistorySearchService {
     void removeAllHistorySearch(int userId);
     void autoHistorySearch();
     Set<String> recommendSearch(String keyword);
-    List<HotSearchDTO> getTopSearch();
+    List<HotSearchDTO> getTopSearchItem(int page, int size);
+    List<String> getTopSearch(int page, int size);
 }

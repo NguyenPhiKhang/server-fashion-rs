@@ -1,6 +1,8 @@
 package com.khangse616.serverfashionrs.repositories;
 
 import com.khangse616.serverfashionrs.models.HistorySearch;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,6 +32,6 @@ public interface HistorySearchRepository extends JpaRepository<HistorySearch, In
     @Query(value = "select keyword from fashionshop_db.history_search group by keyword order by count(keyword) desc", nativeQuery = true)
     List<String> getAllSearch();
 
-    @Query(value = "select keyword from fashionshop_db.history_search group by keyword order by count(keyword) desc limit 4;", nativeQuery = true)
-    List<String> getTopSearch();
+    @Query(value = "select keyword from fashionshop_db.history_search group by keyword order by count(keyword) desc", nativeQuery = true)
+    Page<String> getTopSearch(Pageable pageable);
 }

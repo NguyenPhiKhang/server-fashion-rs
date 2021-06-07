@@ -7,6 +7,8 @@ import com.khangse616.serverfashionrs.models.HistorySearch;
 import com.khangse616.serverfashionrs.models.dto.HotSearchDTO;
 import com.khangse616.serverfashionrs.services.IHistorySearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +64,12 @@ public class HistorySearchController implements IHistorySearchController {
     }
 
     @Override
-    public ResponseEntity<List<HotSearchDTO>> getHotSearch() {
-        return ResponseEntity.ok().body(historySearchService.getTopSearch());
+    public ResponseEntity<List<HotSearchDTO>> getHotSearchItem(int page) {
+        return ResponseEntity.ok().body(historySearchService.getTopSearchItem(page, 4));
+    }
+
+    @Override
+    public ResponseEntity<List<String>> getHotSearchText() {
+        return ResponseEntity.ok().body(historySearchService.getTopSearch(0,20));
     }
 }

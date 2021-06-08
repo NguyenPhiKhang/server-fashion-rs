@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 @Repository
@@ -34,4 +35,7 @@ public interface HistorySearchRepository extends JpaRepository<HistorySearch, In
 
     @Query(value = "select keyword from fashionshop_db.history_search group by keyword order by count(keyword) desc", nativeQuery = true)
     Page<String> getTopSearch(Pageable pageable);
+
+    @Query(value = "SELECT keyword FROM fashionshop_db.history_search where keyword like :txt_search% group by keyword order by count(keyword) desc limit 15", nativeQuery = true)
+    Set<String> getTopSearchLike(@Param("txt_search") String keyword);
 }

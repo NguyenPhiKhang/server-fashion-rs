@@ -102,6 +102,10 @@ public class HistorySearchService implements IHistorySearchService {
 
     @Override
     public Set<String> recommendSearch(String keyword) {
+        Set<String> listSearchLike = historySearchRepository.getTopSearchLike(keyword);
+        if(listSearchLike.size()!=0)
+            return listSearchLike;
+
         List<String> listSearch = historySearchRepository.getAllSearch();
 
         return RecommendSystemUtil.calcCosineSimilaritySearch(keyword, listSearch).entrySet().stream()

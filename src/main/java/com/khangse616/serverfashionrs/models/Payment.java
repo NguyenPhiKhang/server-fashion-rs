@@ -1,12 +1,11 @@
 package com.khangse616.serverfashionrs.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "payment")
@@ -16,6 +15,10 @@ public class Payment implements Serializable {
     private int id;
     @Column(name = "name")
     private String name;
+
+    @OneToMany(targetEntity = Order.class, mappedBy = "paymentMethod", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Order> orders;
 
     public Payment() {
     }

@@ -61,6 +61,10 @@ public class User {
     @JsonIgnore
     private Set<HistorySearch> historySearches;
 
+    @OneToMany(targetEntity = Order.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Order> orders;
+
     public User(){}
 
     public Account getAccount() {

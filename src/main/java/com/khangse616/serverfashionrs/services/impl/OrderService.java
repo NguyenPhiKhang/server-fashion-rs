@@ -3,10 +3,7 @@ package com.khangse616.serverfashionrs.services.impl;
 import com.khangse616.serverfashionrs.models.Order;
 import com.khangse616.serverfashionrs.models.dto.CreateOrderDTO;
 import com.khangse616.serverfashionrs.repositories.OrderRepository;
-import com.khangse616.serverfashionrs.services.IAddressService;
-import com.khangse616.serverfashionrs.services.IOrderItemService;
-import com.khangse616.serverfashionrs.services.IOrderService;
-import com.khangse616.serverfashionrs.services.IUserService;
+import com.khangse616.serverfashionrs.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +24,14 @@ public class OrderService implements IOrderService {
     @Autowired
     private IUserService userService;
 
-//    @Autowired
-//    private
+    @Autowired
+    private IShippingService shippingService;
+
+    @Autowired
+    private IPaymentService paymentService;
+
+    @Autowired
+    private IStatusOrderService statusOrderService;
 
     @Override
     public Order createOrder(CreateOrderDTO orderInput) {
@@ -51,11 +54,11 @@ public class OrderService implements IOrderService {
         newOrder.setGrandTotal(orderInput.getGrandTotal());
         newOrder.setDiscount(orderInput.getDiscount());
         newOrder.setContent(orderInput.getContent());
-//        newOrder.setShipping();
+        newOrder.setShipping(shippingService.getShippingById(orderInput.getShipping()));
+        newOrder.setPaymentMethod(paymentService.getPaymentById(orderInput.getPaymentMethod()));
+        newOrder.setStatus(statusOrderService.getStatusOrderById(orderInput.getStatus()));
 
-
-
-
+        orderRepository.save(newOrder);
         return null;
     }
 }

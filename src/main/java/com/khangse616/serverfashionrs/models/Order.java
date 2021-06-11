@@ -43,7 +43,7 @@ public class Order implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_method")
-    private Shipping paymentMethod;
+    private Payment paymentMethod;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status")
@@ -140,11 +140,11 @@ public class Order implements Serializable {
         this.shipping = shipping;
     }
 
-    public Shipping getPaymentMethod() {
+    public Payment getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(Shipping paymentMethod) {
+    public void setPaymentMethod(Payment paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 

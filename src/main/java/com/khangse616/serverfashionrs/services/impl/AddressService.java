@@ -78,4 +78,9 @@ public class AddressService implements IAddressService {
     public List<Address> getAddressOfUser(int userId) {
         return addressRepository.findAddressByUserIdOrderByUpdateAtDesc(userId);
     }
+
+    @Override
+    public Address getAddressById(int id) {
+        return addressRepository.findById(id).orElse(null);
+    }
 }

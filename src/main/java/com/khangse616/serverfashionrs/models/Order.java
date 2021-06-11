@@ -25,7 +25,7 @@ public class Order implements Serializable {
     @Column(name = "sub_total")
     private BigDecimal subTotal;
     @Column(name = "shipping_fee")
-    private BigDecimal shippingFree;
+    private BigDecimal shippingFee;
     @Column(name = "grand_total")
     private BigDecimal grandTotal;
     @Column(name = "discount")
@@ -84,12 +84,12 @@ public class Order implements Serializable {
         this.subTotal = subTotal;
     }
 
-    public BigDecimal getShippingFree() {
-        return shippingFree;
+    public BigDecimal getShippingFee() {
+        return shippingFee;
     }
 
-    public void setShippingFree(BigDecimal shippingFree) {
-        this.shippingFree = shippingFree;
+    public void setShippingFee(BigDecimal shippingFee) {
+        this.shippingFee = shippingFee;
     }
 
     public BigDecimal getGrandTotal() {

@@ -9,4 +9,5 @@ public interface IAddressService {
     String updateAddressForUser(Address address);
     String deleteAddressForUser(int addressId);
     List<Address> getAddressOfUser(int userId);
+    Address getAddressById(int id);
 }

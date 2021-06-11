@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "order")
+@Table(name = "order_item")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OrderItem implements Serializable {
 

@@ -31,9 +31,8 @@ public class OrderItem implements Serializable {
     private BigDecimal price;
     @Column(name = "quantity")
     private int quantity;
-    @Column(name = "content")
-    private String content;
-
+    @Column(name="image_url")
+    private String imageUrl;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")
@@ -90,14 +89,6 @@ public class OrderItem implements Serializable {
         this.quantity = quantity;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -112,5 +103,13 @@ public class OrderItem implements Serializable {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

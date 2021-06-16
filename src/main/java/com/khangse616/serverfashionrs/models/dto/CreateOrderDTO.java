@@ -3,6 +3,7 @@ package com.khangse616.serverfashionrs.models.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class CreateOrderDTO {
     private int userId;
@@ -15,6 +16,7 @@ public class CreateOrderDTO {
     private int shipping;
     private int paymentMethod;
     private int status;
+    private List<Integer> listItem;
 
     public CreateOrderDTO() {
     }
@@ -107,5 +109,14 @@ public class CreateOrderDTO {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @JsonProperty("list_item")
+    public List<Integer> getListItem() {
+        return listItem;
+    }
+
+    public void setListItem(List<Integer> listItem) {
+        this.listItem = listItem;
     }
 }

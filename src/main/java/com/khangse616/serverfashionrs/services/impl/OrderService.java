@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.Order;
+import com.khangse616.serverfashionrs.models.OrderItem;
 import com.khangse616.serverfashionrs.models.dto.CreateOrderDTO;
 import com.khangse616.serverfashionrs.repositories.OrderRepository;
 import com.khangse616.serverfashionrs.services.*;
@@ -34,7 +35,7 @@ public class OrderService implements IOrderService {
     private IStatusOrderService statusOrderService;
 
     @Override
-    public Order createOrder(CreateOrderDTO orderInput) {
+    public void createOrder(CreateOrderDTO orderInput) {
         Order newOrder = new Order();
 
         Random rd = new Random();
@@ -58,7 +59,16 @@ public class OrderService implements IOrderService {
         newOrder.setPaymentMethod(paymentService.getPaymentById(orderInput.getPaymentMethod()));
         newOrder.setStatus(statusOrderService.getStatusOrderById(orderInput.getStatus()));
 
-        orderRepository.save(newOrder);
-        return null;
+        Order orderSave = orderRepository.save(newOrder);
+
+        for(Integer cartItemId: orderInput.getListItem()){
+            int idOrderItem;
+            do {
+                idOrderItem = 100 + rd.nextInt(6000001);
+            } while (orderItemService.checkExistsOrderItem(idOrderItem));
+        }
+
+
+
     }
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class CreateOrderDTO {
+public class OrderDTO {
     private int userId;
     private int addressId;
     private BigDecimal subTotal;
@@ -16,9 +16,9 @@ public class CreateOrderDTO {
     private int shipping;
     private int paymentMethod;
     private int status;
-    private List<Integer> listItem;
+    private List<OrderItemDTO> listItem;
 
-    public CreateOrderDTO() {
+    public OrderDTO() {
     }
 
     @JsonProperty("user_id")
@@ -112,11 +112,11 @@ public class CreateOrderDTO {
     }
 
     @JsonProperty("list_item")
-    public List<Integer> getListItem() {
+    public List<OrderItemDTO> getListItem() {
         return listItem;
     }
 
-    public void setListItem(List<Integer> listItem) {
+    public void setListItem(List<OrderItemDTO> listItem) {
         this.listItem = listItem;
     }
 }

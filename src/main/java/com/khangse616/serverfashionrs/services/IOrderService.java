@@ -1,7 +1,7 @@
 package com.khangse616.serverfashionrs.services;
 
-import com.khangse616.serverfashionrs.models.dto.CreateOrderDTO;
+import com.khangse616.serverfashionrs.models.dto.OrderDTO;
 
 public interface IOrderService {
-    void createOrder(CreateOrderDTO orderInput);
+    void createOrder(OrderDTO orderInput);
 }

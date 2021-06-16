@@ -1,19 +1,21 @@
 package com.khangse616.serverfashionrs.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.khangse616.serverfashionrs.models.Product;
 
 import java.math.BigDecimal;
 
-public class CreateOrderItemDTO {
+public class OrderItemDTO {
     private int productId;
     private int productOptionId;
     private String imageUrl;
     private BigDecimal price;
     private int quantity;
 
-    public CreateOrderItemDTO() {
+    public OrderItemDTO() {
     }
 
+    @JsonProperty("product_id")
     public int getProductId() {
         return productId;
     }
@@ -22,6 +24,7 @@ public class CreateOrderItemDTO {
         this.productId = productId;
     }
 
+    @JsonProperty("product_option_id")
     public int getProductOptionId() {
         return productOptionId;
     }
@@ -30,6 +33,7 @@ public class CreateOrderItemDTO {
         this.productOptionId = productOptionId;
     }
 
+    @JsonProperty("image_url")
     public String getImageUrl() {
         return imageUrl;
     }
@@ -38,6 +42,7 @@ public class CreateOrderItemDTO {
         this.imageUrl = imageUrl;
     }
 
+    @JsonProperty("price")
     public BigDecimal getPrice() {
         return price;
     }
@@ -46,6 +51,7 @@ public class CreateOrderItemDTO {
         this.price = price;
     }
 
+    @JsonProperty("quantity")
     public int getQuantity() {
         return quantity;
     }

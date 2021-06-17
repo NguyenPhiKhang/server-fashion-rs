@@ -1,9 +1,12 @@
 package com.khangse616.serverfashionrs.services.impl;
 
+import com.khangse616.serverfashionrs.models.OptionProductInteger;
 import com.khangse616.serverfashionrs.models.Order;
 import com.khangse616.serverfashionrs.models.OrderItem;
+import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.dto.InputOrderItemDTO;
 import com.khangse616.serverfashionrs.repositories.OrderItemRepository;
+import com.khangse616.serverfashionrs.services.IOptionProductIntegerService;
 import com.khangse616.serverfashionrs.services.IOrderItemService;
 import com.khangse616.serverfashionrs.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class OrderItemService implements IOrderItemService {
 
     @Autowired
     private IProductService productService;
+
+    @Autowired
+    private IOptionProductIntegerService optionProductIntegerService;
 
     @Override
     public boolean checkExistsOrderItem(int id) {
@@ -41,8 +47,24 @@ public class OrderItemService implements IOrderItemService {
         orderItem.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         orderItem.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         orderItem.setOrder(order);
-        orderItem.setProduct(productService.findProductById(orderItemDTO.getProductId()));
-        orderItem.setProductOption(productService.findProductById(orderItemDTO.getProductId()));
+//        orderItem.setProduct(productService.findProductById(orderItemDTO.getProductId()));
+
+        Product product = productService.findProductById(orderItemDTO.getProductId());
+        if(product.getTypeId().equals("configurable")){
+            Product productOption = productService.findProductById(orderItemDTO.getProductOptionId());
+            OptionProductInteger optionProductInteger = optionProductIntegerService.getOptionProductIntegerByProductId(orderItemDTO.getProductOptionId());
+            optionProductInteger.setValue(optionProductInteger.getValue() - orderItemDTO.getQuantity());
+            optionProductIntegerService.save(optionProductInteger);
+//            productOption.getOptionProductIntegers().forEach(v-> v.setValue(v.getValue()-orderItemDTO.getQuantity()));
+
+            orderItem.setProductOption(productOption);
+        }
+        else{
+            OptionProductInteger optionProductInteger = optionProductIntegerService.getOptionProductIntegerByProductId(orderItemDTO.getProductId());
+            optionProductInteger.setValue(optionProductInteger.getValue() - orderItemDTO.getQuantity());
+            optionProductIntegerService.save(optionProductInteger);
+        }
+        orderItem.setProduct(product);
 
         orderItemRepository.save(orderItem);
     }

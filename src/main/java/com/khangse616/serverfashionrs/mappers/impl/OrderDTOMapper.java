@@ -31,6 +31,7 @@ public class OrderDTOMapper implements RowMapper<OrderCardDTO, Order> {
                 orderItemDTO.setImageUrl(orderItem.getImageUrl());
                 Product product = orderItem.getProduct();
                 orderItemDTO.setProductId(product.getId());
+                orderItemDTO.setName(product.getName());
 
                 if (product.getTypeId().equals("configurable")) {
                     Product productOption = orderItem.getProductOption();

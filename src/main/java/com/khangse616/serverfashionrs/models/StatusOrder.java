@@ -13,7 +13,7 @@ import java.util.Set;
 public class StatusOrder implements Serializable {
     @Id
     private int id;
-    @Column(name = "name")
+    @Column(name = "status_name")
     private String name;
 
     @OneToMany(targetEntity = Order.class, mappedBy = "status", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -37,5 +37,13 @@ public class StatusOrder implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 }

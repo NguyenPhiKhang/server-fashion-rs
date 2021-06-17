@@ -1,14 +1,15 @@
 package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.Order;
-import com.khangse616.serverfashionrs.models.dto.OrderDTO;
-import com.khangse616.serverfashionrs.models.dto.OrderItemDTO;
+import com.khangse616.serverfashionrs.models.dto.InputOrderDTO;
+import com.khangse616.serverfashionrs.models.dto.InputOrderItemDTO;
 import com.khangse616.serverfashionrs.repositories.OrderRepository;
 import com.khangse616.serverfashionrs.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -35,7 +36,7 @@ public class OrderService implements IOrderService {
     private IStatusOrderService statusOrderService;
 
     @Override
-    public void createOrder(OrderDTO orderInput) {
+    public void createOrder(InputOrderDTO orderInput) {
         Order newOrder = new Order();
 
         Random rd = new Random();
@@ -61,8 +62,13 @@ public class OrderService implements IOrderService {
 
         Order orderSave = orderRepository.save(newOrder);
 
-        for(OrderItemDTO orderItemDTO: orderInput.getListItem()){
+        for(InputOrderItemDTO orderItemDTO: orderInput.getListItem()){
             orderItemService.save(orderItemDTO, orderSave);
         }
+    }
+
+    @Override
+    public List<Order> getListOrderByStatus(int userId, int status) {
+        return orderRepository.findAllByUserIdAndStatusId(userId, status);
     }
 }

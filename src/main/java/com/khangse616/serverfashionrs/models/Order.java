@@ -1,11 +1,13 @@
 package com.khangse616.serverfashionrs.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -48,6 +50,10 @@ public class Order implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status")
     private StatusOrder status;
+
+    @OneToMany(targetEntity = OrderItem.class, mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<OrderItem> orderItems;
 
     public Order() {
     }
@@ -154,5 +160,13 @@ public class Order implements Serializable {
 
     public void setStatus(StatusOrder status) {
         this.status = status;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }

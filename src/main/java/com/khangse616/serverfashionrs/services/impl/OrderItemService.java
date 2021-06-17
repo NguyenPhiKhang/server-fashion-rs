@@ -2,7 +2,7 @@ package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.Order;
 import com.khangse616.serverfashionrs.models.OrderItem;
-import com.khangse616.serverfashionrs.models.dto.OrderItemDTO;
+import com.khangse616.serverfashionrs.models.dto.InputOrderItemDTO;
 import com.khangse616.serverfashionrs.repositories.OrderItemRepository;
 import com.khangse616.serverfashionrs.services.IOrderItemService;
 import com.khangse616.serverfashionrs.services.IProductService;
@@ -26,7 +26,7 @@ public class OrderItemService implements IOrderItemService {
     }
 
     @Override
-    public void save(OrderItemDTO orderItemDTO, Order order) {
+    public void save(InputOrderItemDTO orderItemDTO, Order order) {
         OrderItem orderItem = new OrderItem();
         Random rd = new Random();
         int idOrderItem;

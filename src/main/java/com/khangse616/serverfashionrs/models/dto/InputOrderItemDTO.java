@@ -1,21 +1,21 @@
 package com.khangse616.serverfashionrs.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.khangse616.serverfashionrs.models.Product;
+
 import java.math.BigDecimal;
 
-public class OrderItemDTO {
-    private int id;
+public class InputOrderItemDTO {
     private int productId;
     private int productOptionId;
+    private String imageUrl;
     private BigDecimal price;
     private int quantity;
-    private String name;
-    private String color;
-    private String size;
-    private String imageUrl;
 
-    public OrderItemDTO() {
+    public InputOrderItemDTO() {
     }
 
+    @JsonProperty("product_id")
     public int getProductId() {
         return productId;
     }
@@ -24,6 +24,7 @@ public class OrderItemDTO {
         this.productId = productId;
     }
 
+    @JsonProperty("product_option_id")
     public int getProductOptionId() {
         return productOptionId;
     }
@@ -32,6 +33,16 @@ public class OrderItemDTO {
         this.productOptionId = productOptionId;
     }
 
+    @JsonProperty("image_url")
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @JsonProperty("price")
     public BigDecimal getPrice() {
         return price;
     }
@@ -40,51 +51,12 @@ public class OrderItemDTO {
         this.price = price;
     }
 
+    @JsonProperty("quantity")
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }

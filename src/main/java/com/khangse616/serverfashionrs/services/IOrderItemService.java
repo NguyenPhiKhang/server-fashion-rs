@@ -8,4 +8,5 @@ public interface IOrderItemService {
     boolean checkExistsOrderItem(int id);
     void save(InputOrderItemDTO orderItemDTO, Order order);
     void save(OrderItem orderItem);
+    void updateQuantity(OrderItem orderItem);
 }

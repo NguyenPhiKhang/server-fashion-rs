@@ -73,4 +73,21 @@ public class OrderItemService implements IOrderItemService {
     public void save(OrderItem orderItem) {
         orderItemRepository.save(orderItem);
     }
+
+    @Override
+    public void updateQuantity(OrderItem orderItem) {
+        Product product = orderItem.getProduct();
+        if(product.getTypeId().equals("configurable")){
+            Product productOption = orderItem.getProductOption();
+            OptionProductInteger optionProductInteger = optionProductIntegerService.getOptionProductIntegerByProductId(productOption.getId());
+            optionProductInteger.setValue(optionProductInteger.getValue() + orderItem.getQuantity());
+            optionProductIntegerService.save(optionProductInteger);
+//            productOption.getOptionProductIntegers().forEach(v-> v.setValue(v.getValue()-orderItemDTO.getQuantity()));
+        }
+        else{
+            OptionProductInteger optionProductInteger = optionProductIntegerService.getOptionProductIntegerByProductId(product.getId());
+            optionProductInteger.setValue(optionProductInteger.getValue() + orderItem.getQuantity());
+            optionProductIntegerService.save(optionProductInteger);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.Order;
+import com.khangse616.serverfashionrs.models.OrderItem;
 import com.khangse616.serverfashionrs.models.dto.InputOrderDTO;
 import com.khangse616.serverfashionrs.models.dto.InputOrderItemDTO;
 import com.khangse616.serverfashionrs.repositories.OrderRepository;
@@ -62,7 +63,7 @@ public class OrderService implements IOrderService {
 
         Order orderSave = orderRepository.save(newOrder);
 
-        for(InputOrderItemDTO orderItemDTO: orderInput.getListItem()){
+        for (InputOrderItemDTO orderItemDTO : orderInput.getListItem()) {
             orderItemService.save(orderItemDTO, orderSave);
         }
     }
@@ -70,5 +71,24 @@ public class OrderService implements IOrderService {
     @Override
     public List<Order> getListOrderByStatus(int userId, int status) {
         return orderRepository.findAllByUserIdAndStatusId(userId, status);
+    }
+
+    @Override
+    public void updateStatusOfOrder(int orderId, int status) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+        if(order == null) return;
+        if (status == 5 || status == 6){
+            for(OrderItem orderItem: order.getOrderItems()){
+                orderItemService.updateQuantity(orderItem);
+            }
+        }
+
+        order.setStatus(statusOrderService.getStatusOrderById(status));
+        orderRepository.save(order);
+    }
+
+    @Override
+    public Order getDetailOrder(int orderId) {
+        return orderRepository.findById(orderId).orElse(null);
     }
 }

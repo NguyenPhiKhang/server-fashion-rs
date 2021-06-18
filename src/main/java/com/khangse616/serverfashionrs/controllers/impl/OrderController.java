@@ -2,8 +2,11 @@ package com.khangse616.serverfashionrs.controllers.impl;
 
 
 import com.khangse616.serverfashionrs.controllers.IOrderController;
+import com.khangse616.serverfashionrs.mappers.impl.DetailOrderDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.OrderDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.ProductItemDTOMapper;
+import com.khangse616.serverfashionrs.models.Order;
+import com.khangse616.serverfashionrs.models.dto.DetailOrderDTO;
 import com.khangse616.serverfashionrs.models.dto.InputOrderDTO;
 import com.khangse616.serverfashionrs.models.dto.OrderCardDTO;
 import com.khangse616.serverfashionrs.services.IOrderService;
@@ -30,5 +33,16 @@ public class OrderController implements IOrderController {
     public List<OrderCardDTO> getListOrderByStatus(int userId, int status) {
         return orderService.getListOrderByStatus(userId, status).stream()
                 .map(value -> new OrderDTOMapper().mapRow(value)).collect(Collectors.toList());
+    }
+
+    @Override
+    public String updateStatusOfOrder(int orderId, int status) {
+        orderService.updateStatusOfOrder(orderId, status);
+        return "Cập nhật thành công.";
+    }
+
+    @Override
+    public DetailOrderDTO getDetailOrder(int orderId) {
+        return new DetailOrderDTOMapper().mapRow(orderService.getDetailOrder(orderId));
     }
 }

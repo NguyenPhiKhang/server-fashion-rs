@@ -38,6 +38,8 @@ public class Order implements Serializable {
     private Timestamp createdAt;
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+    @Column(name = "pay_at")
+    private Timestamp payAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shipping_unit")
@@ -168,5 +170,13 @@ public class Order implements Serializable {
 
     public void setOrderItems(Set<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public Timestamp getPayAt() {
+        return payAt;
+    }
+
+    public void setPayAt(Timestamp payAt) {
+        this.payAt = payAt;
     }
 }

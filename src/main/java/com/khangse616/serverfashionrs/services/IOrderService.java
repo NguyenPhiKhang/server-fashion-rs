@@ -8,4 +8,6 @@ import java.util.List;
 public interface IOrderService {
     void createOrder(InputOrderDTO orderInput);
     List<Order> getListOrderByStatus(int userId, int status);
+    void updateStatusOfOrder(int orderId, int status);
+    Order getDetailOrder(int orderId);
 }

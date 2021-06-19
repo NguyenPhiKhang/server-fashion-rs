@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface ImageDataRepository extends JpaRepository<ImageData, Integer> {
-    ImageData findById(String id);
+public interface ImageDataRepository extends JpaRepository<ImageData, String> {
+    ImageData findImageDataById(String id);
     List<ImageData> findByIdIn(List<String> ids);
 }

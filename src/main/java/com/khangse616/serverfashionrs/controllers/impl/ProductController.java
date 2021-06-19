@@ -10,13 +10,10 @@ import com.khangse616.serverfashionrs.models.Category;
 import com.khangse616.serverfashionrs.models.CosineSimilarity;
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.RecommendRating;
-import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
-import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
-import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
+import com.khangse616.serverfashionrs.models.dto.*;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RecommendForUser;
-import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import com.khangse616.serverfashionrs.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -591,5 +588,11 @@ public class ProductController implements IProductController {
     @Override
     public List<ProductItemDTO> productsMightAlsoLike(int userId, int page) {
         return productService.getProductsAlsoLike(userId, imageDataService, page);
+    }
+
+    @Override
+    public ResponseEntity<String> reviewProduct(int user_id, InputReviewProductDTO inputReview) {
+
+        return ResponseEntity.ok().body("đánh giá thành công");
     }
 }

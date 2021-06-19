@@ -9,4 +9,5 @@ public interface IOrderItemService {
     void save(InputOrderItemDTO orderItemDTO, Order order);
     void save(OrderItem orderItem);
     void updateQuantity(OrderItem orderItem);
+    OrderItem getOrderItem(int id);
 }

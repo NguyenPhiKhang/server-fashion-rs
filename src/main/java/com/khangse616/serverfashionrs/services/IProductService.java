@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.services;
 
 import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
+import com.khangse616.serverfashionrs.models.dto.InputReviewProductDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import org.springframework.data.domain.Page;
@@ -24,4 +25,5 @@ public interface IProductService {
     List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService, int page);
     List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService, int page);
     List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page);
+    void reviewProduct(int userId, InputReviewProductDTO inputReview);
 }

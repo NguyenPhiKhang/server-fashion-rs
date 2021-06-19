@@ -90,4 +90,9 @@ public class OrderItemService implements IOrderItemService {
             optionProductIntegerService.save(optionProductInteger);
         }
     }
+
+    @Override
+    public OrderItem getOrderItem(int id) {
+        return orderItemRepository.findById(id).orElse(null);
+    }
 }

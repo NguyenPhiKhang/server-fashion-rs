@@ -4,6 +4,8 @@ import com.khangse616.serverfashionrs.messages.ResponseMessage;
 import com.khangse616.serverfashionrs.models.ImageData;
 import com.khangse616.serverfashionrs.models.ImageDataSave;
 import com.khangse616.serverfashionrs.services.IImageDataSaveService;
+import com.khangse616.serverfashionrs.services.impl.ImageDataService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
@@ -103,5 +105,19 @@ public class ImageUtil {
                 multipartFiles.add(file);
         }
         return multipartFiles;
+    }
+
+    public static String fileName(ImageDataService imageService, String typeImage) {
+        String nameImage = "";
+        do {
+            nameImage = RandomStringUtils.randomAlphanumeric(20).concat(".").concat(typeImage.toLowerCase());
+        } while (imageService.checkExistsId(nameImage));
+        return nameImage;
+
+//        return RandomStringUtils.randomAlphanumeric(20);
+    }
+
+    public static String fileName() {
+        return RandomStringUtils.randomAlphanumeric(20);
     }
 }

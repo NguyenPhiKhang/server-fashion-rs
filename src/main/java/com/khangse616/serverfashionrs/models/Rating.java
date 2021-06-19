@@ -16,6 +16,8 @@ public class Rating {
     private String comment;
     @Column(name = "star")
     private int star;
+    @Column(name = "incognito")
+    private int incognito;
     @Column(name = "time_created")
     private Timestamp timeCreated;
     @Column(name = "time_updated")
@@ -106,10 +108,6 @@ public class Rating {
         return dataImages;
     }
 
-    public void setImageDataImages(Set<ImageData> dataImages) {
-        this.dataImages = dataImages;
-    }
-
     public void setDataImages(Set<ImageData> dataImages) {
         this.dataImages = dataImages;
     }
@@ -120,6 +118,14 @@ public class Rating {
 
     public void setProductAttribute(Product productAttribute) {
         this.productAttribute = productAttribute;
+    }
+
+    public int getIncognito() {
+        return incognito;
+    }
+
+    public void setIncognito(int incognito) {
+        this.incognito = incognito;
     }
 }
 

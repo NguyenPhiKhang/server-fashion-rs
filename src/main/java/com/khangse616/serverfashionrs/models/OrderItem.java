@@ -33,6 +33,8 @@ public class OrderItem implements Serializable {
     private int quantity;
     @Column(name="image_url")
     private String imageUrl;
+    @Column(name = "review_status")
+    private boolean reviewStatus;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")
@@ -111,5 +113,13 @@ public class OrderItem implements Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isReviewStatus() {
+        return reviewStatus;
+    }
+
+    public void setReviewStatus(boolean reviewStatus) {
+        this.reviewStatus = reviewStatus;
     }
 }

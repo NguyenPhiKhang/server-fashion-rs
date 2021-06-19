@@ -1,9 +1,11 @@
 package com.khangse616.serverfashionrs.services.impl;
 
+import com.khangse616.serverfashionrs.Utils.ImageUtil;
 import com.khangse616.serverfashionrs.Utils.RecommendSystemUtil;
 import com.khangse616.serverfashionrs.mappers.impl.ProductItemDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.SearchProductDTOMapper;
 import com.khangse616.serverfashionrs.models.*;
+import com.khangse616.serverfashionrs.models.dto.InputReviewProductDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.DescriptionCountDTO;
 import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
@@ -13,8 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +34,17 @@ public class ProductService implements IProductService {
 
     @Autowired
     private IRecommendRatingService recommendRatingService;
+
+    @Autowired
+    private IRatingService ratingService;
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private IOrderItemService orderItemService;
+
+    @Autowired
 
     @Override
     public Product findProductByIdVisibleTrue(int id) {
@@ -212,5 +229,40 @@ public class ProductService implements IProductService {
                 .limit(15)
                 .map(v -> new ProductItemDTOMapper().mapRow(v.getKey(), imageDataService))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void reviewProduct(int userId, InputReviewProductDTO inputReview) {
+        Rating rating = new Rating();
+        Random rd = new Random();
+        int idRating;
+        do {
+            idRating = 100 + rd.nextInt(6000001);
+        } while (ratingService.checkExistId(idRating));
+
+        rating.setId(idRating);
+        rating.setStar(inputReview.getStar());
+        rating.setComment(inputReview.getComment());
+        rating.setUser(userService.getUserById(userId));
+        OrderItem orderItem = orderItemService.getOrderItem(inputReview.getOrderItem());
+        rating.setProduct(orderItem.getProduct());
+        rating.setProductAttribute(orderItem.getProductOption());
+        rating.setTimeCreated(new Timestamp(System.currentTimeMillis()));
+        rating.setTimeUpdated(new Timestamp(System.currentTimeMillis()));
+        rating.setIncognito(inputReview.getIncognito());
+
+        List<MultipartFile> multipartFiles = new ArrayList<>();
+
+        inputReview.getListImage().forEach(file -> {
+            String fileName = ImageUtil.fileName().concat(".").concat(Objects.requireNonNull(file.getContentType()).split("/")[1]);
+            try {
+                MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, file.getContentType(), file.getInputStream());
+                multipartFiles.add(multipartFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+
     }
 }

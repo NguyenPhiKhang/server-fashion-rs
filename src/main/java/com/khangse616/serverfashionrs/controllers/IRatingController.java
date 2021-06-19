@@ -1,5 +1,6 @@
 package com.khangse616.serverfashionrs.controllers;
 
+import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.dto.RatingProductDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

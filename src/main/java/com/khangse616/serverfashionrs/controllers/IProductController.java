@@ -1,12 +1,10 @@
 package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.Product;
+import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.RecommendRating;
-import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
-import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
-import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
+import com.khangse616.serverfashionrs.models.dto.*;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RecommendForUser;
-import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,4 +51,7 @@ public interface IProductController {
 
     @GetMapping("/user/{userId}/products-also-like")
     List<ProductItemDTO> productsMightAlsoLike(@PathVariable int userId, @RequestParam(value = "p", defaultValue = "1") int page);
+
+    @PostMapping("/user/{userId}/review-product")
+    ResponseEntity<String> reviewProduct(@PathVariable("userId") int user_id, @RequestBody InputReviewProductDTO inputReview);
 }

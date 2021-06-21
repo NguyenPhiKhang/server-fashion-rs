@@ -17,7 +17,7 @@ public class Rating {
     @Column(name = "star")
     private int star;
     @Column(name = "incognito")
-    private int incognito;
+    private boolean incognito;
     @Column(name = "time_created")
     private Timestamp timeCreated;
     @Column(name = "time_updated")
@@ -120,11 +120,11 @@ public class Rating {
         this.productAttribute = productAttribute;
     }
 
-    public int getIncognito() {
+    public boolean getIncognito() {
         return incognito;
     }
 
-    public void setIncognito(int incognito) {
+    public void setIncognito(boolean incognito) {
         this.incognito = incognito;
     }
 }

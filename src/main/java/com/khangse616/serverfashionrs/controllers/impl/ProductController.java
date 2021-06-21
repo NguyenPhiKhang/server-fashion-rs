@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -592,7 +593,7 @@ public class ProductController implements IProductController {
 
     @Override
     public ResponseEntity<String> reviewProduct(int user_id, InputReviewProductDTO inputReview) {
-
+        productService.reviewProduct(user_id, inputReview);
         return ResponseEntity.ok().body("đánh giá thành công");
     }
 }

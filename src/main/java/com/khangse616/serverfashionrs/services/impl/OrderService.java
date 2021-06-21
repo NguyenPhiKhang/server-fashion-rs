@@ -83,7 +83,11 @@ public class OrderService implements IOrderService {
             }
         }
 
+        if(status == 4)
+            order.setPayAt(new Timestamp(System.currentTimeMillis()));
+
         order.setStatus(statusOrderService.getStatusOrderById(status));
+        order.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
         orderRepository.save(order);
     }
 

@@ -5,8 +5,10 @@ import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.RecommendRating;
 import com.khangse616.serverfashionrs.models.dto.*;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RecommendForUser;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +54,8 @@ public interface IProductController {
     @GetMapping("/user/{userId}/products-also-like")
     List<ProductItemDTO> productsMightAlsoLike(@PathVariable int userId, @RequestParam(value = "p", defaultValue = "1") int page);
 
-    @PostMapping("/user/{userId}/review-product")
-    ResponseEntity<String> reviewProduct(@PathVariable("userId") int user_id, @RequestBody InputReviewProductDTO inputReview);
+//    @PostMapping("/user/{userId}/review-product")
+//    @RequestMapping(value = "/user/{userId}/review-product", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    @RequestMapping(value = "/user/{userId}/review-product", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<String> reviewProduct(@PathVariable("userId") int user_id, @ModelAttribute("input_review") InputReviewProductDTO input_review);
 }

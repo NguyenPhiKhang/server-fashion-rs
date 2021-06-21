@@ -47,6 +47,8 @@ public class ImageDataService implements IImageDataService {
             String fileName = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
             ImageData FileDB = new ImageData(fileName, fileName, file.getContentType(), file.getBytes());
 
+            System.out.println(fileName);
+
             images.add(FileDB);
         }
         return imageDataRepository.saveAll(images);

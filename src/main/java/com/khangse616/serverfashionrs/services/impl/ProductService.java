@@ -11,6 +11,7 @@ import com.khangse616.serverfashionrs.models.dto.RecommendSystem.DescriptionCoun
 import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
 import com.khangse616.serverfashionrs.services.*;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -45,6 +47,7 @@ public class ProductService implements IProductService {
     private IOrderItemService orderItemService;
 
     @Autowired
+    private IImageDataService imageDataService;
 
     @Override
     public Product findProductByIdVisibleTrue(int id) {
@@ -232,6 +235,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @Transactional
     public void reviewProduct(int userId, InputReviewProductDTO inputReview) {
         Rating rating = new Rating();
         Random rd = new Random();
@@ -251,10 +255,23 @@ public class ProductService implements IProductService {
         rating.setTimeUpdated(new Timestamp(System.currentTimeMillis()));
         rating.setIncognito(inputReview.getIncognito());
 
-        List<MultipartFile> multipartFiles = new ArrayList<>();
+        Rating ratingSave = ratingService.save(rating);
 
-        inputReview.getListImage().forEach(file -> {
-            String fileName = ImageUtil.fileName().concat(".").concat(Objects.requireNonNull(file.getContentType()).split("/")[1]);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                saveImage(ratingSave, imageDataService, inputReview.getListImage(), ratingService);
+            }
+        }).start();
+
+//        saveImage(rating, imageDataService, inputReview.getListImage(), ratingService);
+    }
+
+    @SneakyThrows
+    private void saveImage(Rating rating, IImageDataService imageDataService, List<MultipartFile> files, IRatingService ratingService){
+        List<MultipartFile> multipartFiles = new ArrayList<>();
+        files.forEach(file -> {
+            String fileName = ImageUtil.fileName(imageDataService, file);
             try {
                 MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, file.getContentType(), file.getInputStream());
                 multipartFiles.add(multipartFile);
@@ -263,6 +280,9 @@ public class ProductService implements IProductService {
             }
         });
 
+        List<ImageData> imageDataList = imageDataService.storesImageData(multipartFiles);
 
+        rating.setDataImages(new HashSet<>(imageDataList));
+        ratingService.save(rating);
     }
 }

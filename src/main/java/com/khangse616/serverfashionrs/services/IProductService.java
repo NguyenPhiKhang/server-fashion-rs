@@ -7,6 +7,7 @@ import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;

@@ -4,6 +4,7 @@ import com.khangse616.serverfashionrs.messages.ResponseMessage;
 import com.khangse616.serverfashionrs.models.ImageData;
 import com.khangse616.serverfashionrs.models.ImageDataSave;
 import com.khangse616.serverfashionrs.services.IImageDataSaveService;
+import com.khangse616.serverfashionrs.services.IImageDataService;
 import com.khangse616.serverfashionrs.services.impl.ImageDataService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ImageUtil {
     public static ResponseEntity<ResponseMessage<ImageDataSave>> uploadImage(IImageDataSaveService imageService, MultipartFile file) {
@@ -119,5 +121,13 @@ public class ImageUtil {
 
     public static String fileName() {
         return RandomStringUtils.randomAlphanumeric(20);
+    }
+
+    public static String fileName(IImageDataService imageDataService, MultipartFile file){
+        String nameImage = "";
+        do {
+            nameImage = RandomStringUtils.randomAlphanumeric(20).concat(".").concat(Objects.requireNonNull(file.getContentType()).split("/")[1]);
+        } while (imageDataService.checkExistsId(nameImage));
+        return nameImage;
     }
 }

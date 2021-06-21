@@ -18,6 +18,6 @@ public interface IImageSaveController {
     @PostMapping("/images/upload-multi-url")
     ResponseEntity<ResponseMessage<List<ImageDataSave>>> uploadFiles();
 
-    @GetMapping("/image/{id}")
+    @GetMapping("/image-save/{id}")
     ResponseEntity<byte[]> getFile(@PathVariable String id);
 }

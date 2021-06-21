@@ -10,6 +10,7 @@ import com.khangse616.serverfashionrs.models.dto.RatingDTO;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,14 @@ public class RatingDTOMapper implements RowMapper<RatingDTO, Rating> {
 
 //            ratingDTO.setImageRating(rating.getDataImages().stream().map(v->"http:"+ v.getLink().replace("fill_size", "255x298")).collect(Collectors.toList()));
 
-            System.out.println(EnvUtil.getInstance().getServerUrlPrefix());
+            ratingDTO.setImageRating(rating.getDataImages().stream().map(v-> {
+                try {
+                    return v.getData() != null?EnvUtil.getInstance().getServerUrlPrefix() + "/api/v1/image/"+v.getId():"http:"+ v.getLink().replace("fill_size", "255x298");
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }).collect(Collectors.toList()));
 
             rating.getProductAttribute().getOptionProductVarchars().forEach(v -> {
                 if (v.getAttribute().getId() == 80) {

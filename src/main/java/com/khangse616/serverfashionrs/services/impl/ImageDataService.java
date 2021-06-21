@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ImageDataService implements IImageDataService {
@@ -52,5 +53,10 @@ public class ImageDataService implements IImageDataService {
             images.add(FileDB);
         }
         return imageDataRepository.saveAll(images);
+    }
+
+    @Override
+    public Optional<ImageData> getFile(String id) {
+        return imageDataRepository.findById(id);
     }
 }

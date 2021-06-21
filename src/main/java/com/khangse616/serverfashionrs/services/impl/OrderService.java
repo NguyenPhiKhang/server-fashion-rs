@@ -70,6 +70,8 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getListOrderByStatus(int userId, int status) {
+        if(status==0)
+            return orderRepository.findAllOrderByUpdatedAtDesc();
         return orderRepository.findAllByUserIdAndStatusId(userId, status);
     }
 

@@ -27,4 +27,5 @@ public interface IProductService {
     List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService, int page);
     List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page);
     void reviewProduct(int userId, InputReviewProductDTO inputReview);
+    Product save(Product product);
 }

@@ -267,6 +267,11 @@ public class ProductService implements IProductService {
 //        saveImage(rating, imageDataService, inputReview.getListImage(), ratingService);
     }
 
+    @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
     @SneakyThrows
     private void saveImage(Rating rating, IImageDataService imageDataService, List<MultipartFile> files, IRatingService ratingService){
         List<MultipartFile> multipartFiles = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.Order;
 import com.khangse616.serverfashionrs.models.OrderItem;
+import com.khangse616.serverfashionrs.models.Product;
 import com.khangse616.serverfashionrs.models.dto.InputOrderDTO;
 import com.khangse616.serverfashionrs.models.dto.InputOrderItemDTO;
 import com.khangse616.serverfashionrs.repositories.OrderRepository;
@@ -70,7 +71,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getListOrderByStatus(int userId, int status) {
-        if(status==0)
+        if (status == 0)
             return orderRepository.findAllOrderByUpdatedAtDesc();
         return orderRepository.findAllByUserIdAndStatusId(userId, status);
     }
@@ -78,15 +79,17 @@ public class OrderService implements IOrderService {
     @Override
     public void updateStatusOfOrder(int orderId, int status) {
         Order order = orderRepository.findById(orderId).orElse(null);
-        if(order == null) return;
-        if (status == 5 || status == 6){
-            for(OrderItem orderItem: order.getOrderItems()){
-                orderItemService.updateQuantity(orderItem);
+        if (order == null) return;
+        if (status == 5 || status == 6) {
+            for (OrderItem orderItem : order.getOrderItems()) {
+                orderItemService.updateWhenCancelOrReturns(orderItem);
             }
         }
 
-        if(status == 4)
+        if (status == 4) {
             order.setPayAt(new Timestamp(System.currentTimeMillis()));
+
+        }
 
         order.setStatus(statusOrderService.getStatusOrderById(status));
         order.setUpdatedAt(new Timestamp(System.currentTimeMillis()));

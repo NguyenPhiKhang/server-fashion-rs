@@ -50,7 +50,7 @@ public class OrderItemService implements IOrderItemService {
 //        orderItem.setProduct(productService.findProductById(orderItemDTO.getProductId()));
 
         Product product = productService.findProductById(orderItemDTO.getProductId());
-        if(product.getTypeId().equals("configurable")){
+        if (product.getTypeId().equals("configurable")) {
             Product productOption = productService.findProductById(orderItemDTO.getProductOptionId());
             OptionProductInteger optionProductInteger = optionProductIntegerService.getOptionProductIntegerByProductId(orderItemDTO.getProductOptionId());
             optionProductInteger.setValue(optionProductInteger.getValue() - orderItemDTO.getQuantity());
@@ -58,13 +58,14 @@ public class OrderItemService implements IOrderItemService {
 //            productOption.getOptionProductIntegers().forEach(v-> v.setValue(v.getValue()-orderItemDTO.getQuantity()));
 
             orderItem.setProductOption(productOption);
-        }
-        else{
+        } else {
             OptionProductInteger optionProductInteger = optionProductIntegerService.getOptionProductIntegerByProductId(orderItemDTO.getProductId());
             optionProductInteger.setValue(optionProductInteger.getValue() - orderItemDTO.getQuantity());
             optionProductIntegerService.save(optionProductInteger);
         }
-        orderItem.setProduct(product);
+
+        product.setOrderCount(product.getOrderCount() + 1);
+        orderItem.setProduct(productService.save(product));
 
         orderItemRepository.save(orderItem);
     }
@@ -75,20 +76,22 @@ public class OrderItemService implements IOrderItemService {
     }
 
     @Override
-    public void updateQuantity(OrderItem orderItem) {
+    public void updateWhenCancelOrReturns(OrderItem orderItem) {
         Product product = orderItem.getProduct();
-        if(product.getTypeId().equals("configurable")){
+        product.setOrderCount(product.getOrderCount()-1);
+        if (product.getTypeId().equals("configurable")) {
             Product productOption = orderItem.getProductOption();
             OptionProductInteger optionProductInteger = optionProductIntegerService.getOptionProductIntegerByProductId(productOption.getId());
             optionProductInteger.setValue(optionProductInteger.getValue() + orderItem.getQuantity());
             optionProductIntegerService.save(optionProductInteger);
 //            productOption.getOptionProductIntegers().forEach(v-> v.setValue(v.getValue()-orderItemDTO.getQuantity()));
-        }
-        else{
+        } else {
             OptionProductInteger optionProductInteger = optionProductIntegerService.getOptionProductIntegerByProductId(product.getId());
             optionProductInteger.setValue(optionProductInteger.getValue() + orderItem.getQuantity());
             optionProductIntegerService.save(optionProductInteger);
         }
+
+        productService.save(product);
     }
 
     @Override

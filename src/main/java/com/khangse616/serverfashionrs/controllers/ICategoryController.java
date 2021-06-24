@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 
 @RequestMapping("/default")
+@CrossOrigin(value = {"http://localhost:3000"})
 public interface ICategoryController {
     @GetMapping("/categories/{parentId}/sub-categories")
     ResponseEntity<Set<Category>> getCategoriesByParentCategory(@PathVariable("parentId") int parentId);

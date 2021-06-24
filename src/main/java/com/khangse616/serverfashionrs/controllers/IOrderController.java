@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequestMapping("/default")
+@CrossOrigin(value = {"http://localhost:3000"})
 public interface IOrderController {
     @PostMapping("/order/create-order")
     String createOrder(@RequestBody InputOrderDTO orderInput);

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequestMapping("/default")
+@CrossOrigin(value = {"http://localhost:3000"})
 public interface IAddressController {
     @PostMapping("/user/{userId}/add-address")
     String addAddressForUser(@PathVariable("userId") int userId, @RequestParam("ward") int wardId, @RequestBody Address address);

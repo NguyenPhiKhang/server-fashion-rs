@@ -1,14 +1,12 @@
 package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("/default")
+@CrossOrigin(value = {"http://localhost:3000"})
 public interface IFavoriteController {
     @PostMapping("/{userId}/{productId}/update-favorite")
     String createOrUpdateFavoriteOfUser(@PathVariable("userId") int userId, @PathVariable("productId") int productId);

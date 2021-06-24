@@ -16,6 +16,8 @@ public class ProductItemDTO {
     private String imgUrl;
     private float percentStar;
     private int countRating;
+    private int quantity;
+    private String shortDescription;
 
     public ProductItemDTO() {
     }
@@ -105,5 +107,23 @@ public class ProductItemDTO {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    @JsonProperty("quantity")
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @JsonProperty("short_description")
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 }

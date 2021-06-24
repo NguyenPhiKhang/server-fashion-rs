@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RequestMapping("/default")
+@CrossOrigin(value = {"http://localhost:3000"})
 public interface IProductController {
     @GetMapping("/product/{id}")
     ResponseEntity<ProductDetailDTO> getProductById(@PathVariable int id, @RequestParam(value = "user", defaultValue = "0") int userId);

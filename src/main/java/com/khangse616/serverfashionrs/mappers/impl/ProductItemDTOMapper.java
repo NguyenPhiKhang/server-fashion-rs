@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.mappers.impl;
 
 import com.khangse616.serverfashionrs.mappers.RowMapper;
 import com.khangse616.serverfashionrs.models.*;
+import com.khangse616.serverfashionrs.models.dto.OptionProductDTO;
 import com.khangse616.serverfashionrs.models.dto.PriceResultDTO;
 import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.services.IImageDataService;
@@ -40,6 +41,8 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
             BigDecimal priceMax = new BigDecimal(0);
             BigDecimal priceMin = new BigDecimal(0);
 
+            int quantity = 0;
+
             if (product.getProductLinks().size() > 0) {
                 for (Product pd : product.getProductLinks()) {
                     for (OptionProductDecimal optionProductDecimal : pd.getOptionProductDecimals()) {
@@ -51,6 +54,10 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
 
                         if (optionProductDecimal.getValue().compareTo(priceMax) == -1)
                             priceMin = optionProductDecimal.getValue();
+                    }
+
+                    for (OptionProductInteger optionProductInteger : pd.getOptionProductIntegers()) {
+                        quantity += optionProductInteger.getValue();
                     }
                 }
 
@@ -72,6 +79,10 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
                     if (optionProductDecimal.getValue().compareTo(priceMax) == -1)
                         priceMin = optionProductDecimal.getValue();
                 }
+
+                for (OptionProductInteger optionProductInteger : product.getOptionProductIntegers()) {
+                    quantity += optionProductInteger.getValue();
+                }
             }
             if (optionProductImg == null) {
                 for (OptionProductVarchar optionProductVarchar : product.getOptionProductVarchars()) {
@@ -90,6 +101,8 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
             ImageData imageData = imageDataService.findImageById(optionProductImg.getValue());
             productItemDTO.setImgUrl(imageData != null ? "http:" + imageData.getLink().replace("fill_size", "255x298") : "");
 
+            productItemDTO.setQuantity(quantity);
+            productItemDTO.setShortDescription(product.getShortDescription());
             return productItemDTO;
         } catch (Exception ex) {
             return null;

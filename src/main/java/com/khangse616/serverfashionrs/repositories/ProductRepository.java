@@ -63,11 +63,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 //    List<String> getShortDescriptionOrNameByUser(@Param("userId") int userId);
 
 
-    @Query(value = "Select (case when (p.short_description <> '' and p.short_description is not null) then p.short_description else p.name end) as txt_description, s.count as count_seen, s.product_id as product_id \n" +
-            "    from fashionshop_db.products p \n" +
-            "    join fashionshop_db.seen_products s \n" +
-            "    on p.id = s.product_id \n" +
-            "    where s.user_id = :userId and CURRENT_TIMESTAMP - last_time < 7000000 \n" +
-            "    order by last_time desc", nativeQuery = true)
+    @Query(value = "Select case when (p.short_description <> '' and p.short_description is not null) then p.short_description else p.name end as txt_description, s.count as count_seen, s.product_id as product_id from `fashionshop_db`.`products` as p inner join `fashionshop_db`.`seen_products` as s on p.id = s.product_id where s.user_id = :userId and CURRENT_TIMESTAMP - s.last_time < 7000000 order by s.last_time desc", nativeQuery = true)
     Page<Object[]> getShortDescriptionOrNameByUser(@Param("userId") int userId, Pageable pageable);
 }

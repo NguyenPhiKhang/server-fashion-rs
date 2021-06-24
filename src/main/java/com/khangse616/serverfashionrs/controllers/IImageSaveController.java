@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/default")
+@CrossOrigin(value = {"http://localhost:3000"})
 public interface IImageSaveController {
     @PostMapping("/images/upload-url")
     ResponseEntity<ResponseMessage<ImageDataSave>> uploadFile(@RequestBody ImageData imageData);

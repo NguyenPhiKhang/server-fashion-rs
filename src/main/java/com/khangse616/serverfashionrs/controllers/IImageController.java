@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RequestMapping("/default")
+@CrossOrigin(value = {"http://localhost:3000"})
 public interface IImageController {
     @GetMapping("/image/{id}")
     ResponseEntity<byte[]> getFile(@PathVariable String id);

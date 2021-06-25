@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.models.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.khangse616.serverfashionrs.models.ImageData;
 import com.khangse616.serverfashionrs.models.Product;
 
 import java.sql.Timestamp;
@@ -15,7 +16,7 @@ public class RatingDTO {
     private String size;
     private String color;
     private String comment;
-    private List<String> imageRating;
+    private List<FileRatingDTO> fileRating;
     private String timeUpdated;
 
 
@@ -49,7 +50,7 @@ public class RatingDTO {
         this.userName = userName;
     }
 
-    @JsonProperty("image-avatar")
+    @JsonProperty("image_avatar")
     public String getImageAvatar() {
         return imageAvatar;
     }
@@ -94,16 +95,16 @@ public class RatingDTO {
         this.comment = comment;
     }
 
-    @JsonProperty("images-rating")
-    public List<String> getImageRating() {
-        return imageRating;
+    @JsonProperty("file_rating")
+    public List<FileRatingDTO> getFileRating() {
+        return fileRating;
     }
 
-    public void setImageRating(List<String> imageRating) {
-        this.imageRating = imageRating;
+    public void setFileRating(List<FileRatingDTO> fileRating) {
+        this.fileRating = fileRating;
     }
 
-    @JsonProperty("time-updated")
+    @JsonProperty("time_updated")
     public String getTimeUpdated() {
         return timeUpdated;
     }

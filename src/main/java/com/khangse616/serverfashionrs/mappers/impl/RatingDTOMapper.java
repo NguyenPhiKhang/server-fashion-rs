@@ -32,14 +32,7 @@ public class RatingDTOMapper implements RowMapper<RatingDTO, Rating> {
 
 //            ratingDTO.setImageRating(rating.getDataImages().stream().map(v->"http:"+ v.getLink().replace("fill_size", "255x298")).collect(Collectors.toList()));
 
-            ratingDTO.setImageRating(rating.getDataImages().stream().map(v-> {
-                try {
-                    return v.getData() != null?EnvUtil.getInstance().getServerUrlPrefix() + "/api/v1/image/"+v.getId():"http:"+ v.getLink().replace("fill_size", "255x298");
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }).collect(Collectors.toList()));
+            ratingDTO.setFileRating(rating.getDataImages().stream().map(v-> new FileRatingDTOMapper().mapRow(v)).collect(Collectors.toList()));
 
             rating.getProductAttribute().getOptionProductVarchars().forEach(v -> {
                 if (v.getAttribute().getId() == 80) {

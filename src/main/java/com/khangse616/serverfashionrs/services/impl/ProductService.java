@@ -249,6 +249,8 @@ public class ProductService implements IProductService {
         rating.setComment(inputReview.getComment());
         rating.setUser(userService.getUserById(userId));
         OrderItem orderItem = orderItemService.getOrderItem(inputReview.getOrderItem());
+        orderItem.setReviewStatus(true);
+        orderItemService.save(orderItem);
         rating.setProduct(orderItem.getProduct());
         rating.setProductAttribute(orderItem.getProductOption());
         rating.setTimeCreated(new Timestamp(System.currentTimeMillis()));

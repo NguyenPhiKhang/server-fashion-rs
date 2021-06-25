@@ -12,6 +12,7 @@ public class OrderItemDTO {
     private String color;
     private String size;
     private String imageUrl;
+    private boolean reviewStatus;
 
     public OrderItemDTO() {
     }
@@ -86,5 +87,13 @@ public class OrderItemDTO {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isReviewStatus() {
+        return reviewStatus;
+    }
+
+    public void setReviewStatus(boolean reviewStatus) {
+        this.reviewStatus = reviewStatus;
     }
 }

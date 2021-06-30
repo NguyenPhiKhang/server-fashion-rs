@@ -9,5 +9,7 @@ import java.util.Set;
 public interface ICategoryService {
     Set<Category> findCategoriesByParentId(int id);
     List<String> getAllNameCategories();
+    String autoSetIconCategory(int idCategory);
+    Category findCategoryById(int id);
 //    Set<String> recommendSearch(String keyword);
 }

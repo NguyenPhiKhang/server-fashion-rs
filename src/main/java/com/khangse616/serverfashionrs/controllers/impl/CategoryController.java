@@ -23,6 +23,11 @@ public class CategoryController implements ICategoryController {
         return ResponseEntity.ok().body(categoryScreenDTO);
     }
 
+    @Override
+    public String autoAddIconCategories(int idCategory) {
+        return categoryService.autoSetIconCategory(idCategory);
+    }
+
     //    @GetMapping("/categories")
 //    public ResponseEntity<List<CategoryScreenDTO>> getCategoriesLevel1(@RequestParam(value = "level", required = false, defaultValue = "0") int level){
 //        List<CategoryScreenDTO> categoryScreenDTO = level!=0?categoryService.findCategoryByLevel(level).stream().map(value->new CategoryScreenDTOMapper().mapRow(value)).collect(Collectors.toList())

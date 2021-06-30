@@ -28,4 +28,5 @@ public interface IProductService {
     List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page);
     void reviewProduct(int userId, InputReviewProductDTO inputReview);
     Product save(Product product);
+    Page<Product> getProductByCategoryOrderPopular(int id, Pageable pageable);
 }

@@ -274,6 +274,11 @@ public class ProductService implements IProductService {
         return productRepository.save(product);
     }
 
+    @Override
+    public Page<Product> getProductByCategoryOrderPopular(int id, Pageable pageable) {
+        return productRepository.findProductByCategoryIdAndVisibilityTrueOrderByPurpose(id, pageable);
+    }
+
     @SneakyThrows
     private void saveImage(Rating rating, IImageDataService imageDataService, List<MultipartFile> files, IRatingService ratingService){
         List<MultipartFile> multipartFiles = new ArrayList<>();

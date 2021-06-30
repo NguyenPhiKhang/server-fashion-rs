@@ -55,8 +55,9 @@ public interface IProductController {
     @GetMapping("/user/{userId}/products-also-like")
     List<ProductItemDTO> productsMightAlsoLike(@PathVariable int userId, @RequestParam(value = "p", defaultValue = "1") int page);
 
-//    @PostMapping("/user/{userId}/review-product")
+    //    @PostMapping("/user/{userId}/review-product")
 //    @RequestMapping(value = "/user/{userId}/review-product", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+//@RequestMapping(value = "/upload", headers = ("content-type=multipart/*"), method = RequestMethod.POST, consumes = { "multipart/mixed", MediaType.MULTIPART_FORM_DATA_VALUE })
     @RequestMapping(value = "/user/{userId}/review-product", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<String> reviewProduct(@PathVariable("userId") int user_id, @ModelAttribute("input_review") InputReviewProductDTO input_review);
 }

@@ -1,5 +1,6 @@
 package com.khangse616.serverfashionrs.controllers.impl;
 
+import com.khangse616.serverfashionrs.Utils.CategoryUtil;
 import com.khangse616.serverfashionrs.controllers.IProductController;
 import com.khangse616.serverfashionrs.controllers.ISeenProductController;
 import com.khangse616.serverfashionrs.mappers.impl.AttributeOptionDTOMapper;
@@ -59,9 +60,9 @@ public class ProductController implements IProductController {
     @Override
     public ResponseEntity<ProductDetailDTO> getProductById(int id, int userId) {
         Product product = productService.findProductByIdVisibleTrue(id);
-        if(userId!=0){
+        if (userId != 0) {
             seenProductController.createOrUpdateSeenProduct(userId, id);
-            if(favoriteService.checkUserLikedProduct(userId, id)){
+            if (favoriteService.checkUserLikedProduct(userId, id)) {
                 product.setLiked(true);
             }
         }
@@ -71,10 +72,12 @@ public class ProductController implements IProductController {
 
     @Override
     public ResponseEntity<List<ProductItemDTO>> getProductsByCategory(int idCategory, String filter, int page) {
-        Set<Category> list = categoryService.findCategoriesByParentId(idCategory);
+        Category category = categoryService.findCategoryById(idCategory);
 
         List<Integer> listId = new ArrayList<>();
-        getListIdCategory(list, listId);
+//        if (list.size() != 0)
+        CategoryUtil.getListIdCategory(category, listId);
+//        else listId.add(idCategory);
 
         Pageable pageable = PageRequest.of(page - 1, 20);
 
@@ -368,18 +371,18 @@ public class ProductController implements IProductController {
 //                limit(2).collect(Collectors.toList());
     }
 
-    private void getListIdCategory(Set<Category> list, List<Integer> listId) {
-        if (list.size() == 0)
-            return;
-        list.forEach(c -> {
-            Set<Category> listCAT = c.getCategories();
-            if (listCAT.size() > 0) {
-                getListIdCategory(listCAT, listId);
-            } else {
-                listId.add(c.getId());
-            }
-        });
-    }
+//    private void getListIdCategory(Set<Category> list, List<Integer> listId) {
+//        if (list.size() == 0)
+//            return;
+//        list.forEach(c -> {
+//            Set<Category> listCAT = c.getCategories();
+//            if (listCAT.size() > 0) {
+//                getListIdCategory(listCAT, listId);
+//            } else {
+//                listId.add(c.getId());
+//            }
+//        });
+//    }
 
     private void calcCosineSimilarity(List<Integer> list_product_rated, List<RatingRSDTO> listRatingNormalized, List<CosineSimilarity> cosSimilarities) {
         int size_list = list_product_rated.size();
@@ -490,7 +493,7 @@ public class ProductController implements IProductController {
             List<RatingRSDTO> user_rated_product1 = calcUserRatedProduct(listRatingNormalized, product_id1);
             for (int j = i - 1; j >= 0; j--) {
 
-                for(int k = 0; k <list_users.size();k++){
+                for (int k = 0; k < list_users.size(); k++) {
 
                 }
                 int product_id2 = list_product.get(j);

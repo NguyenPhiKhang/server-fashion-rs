@@ -11,5 +11,6 @@ public interface ICategoryService {
     List<String> getAllNameCategories();
     String autoSetIconCategory(int idCategory);
     Category findCategoryById(int id);
+    String addIconCategories(String[] arrIcon);
 //    Set<String> recommendSearch(String keyword);
 }

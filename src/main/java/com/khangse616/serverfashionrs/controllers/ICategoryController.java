@@ -18,4 +18,7 @@ public interface ICategoryController {
 
     @PostMapping("/categories/auto-add-icon")
     String autoAddIconCategories(@RequestParam("id") int idCategory);
+
+    @PostMapping("/categories/add-icon")
+    String AddIconCategory();
 }

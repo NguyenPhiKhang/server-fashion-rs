@@ -68,6 +68,20 @@ public class CategoryService implements ICategoryService {
         return categoryRepository.findCategoryById(id);
     }
 
+    @Override
+    public String addIconCategories(String[] arrIcon) {
+        List<Category> categories = categoryRepository.getAllCategoryOrderById();
+
+        for (int i =0 ;i< categories.size(); i++){
+            categories.get(i).setIcon(arrIcon[i]);
+//            categoryRepository.save(categories.get(i));
+        }
+
+        categoryRepository.saveAll(categories);
+
+        return "Xong";
+    }
+
 //    @Override
 //    public Set<String> recommendSearch(String keyword) {
 //        Set<String> newWord = new HashSet<>();

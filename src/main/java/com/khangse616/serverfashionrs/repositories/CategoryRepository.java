@@ -26,4 +26,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     List<String> getAllName();
 
     Category findCategoryById(int id);
+
+    @Query(value = "select * from categories order by id asc", nativeQuery = true)
+    List<Category> getAllCategoryOrderById();
 }

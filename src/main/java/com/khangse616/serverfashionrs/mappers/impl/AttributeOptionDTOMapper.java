@@ -5,6 +5,7 @@ import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.AttributeDTO;
 import com.khangse616.serverfashionrs.models.dto.AttributeOptionDTO;
 import com.khangse616.serverfashionrs.models.dto.OptionProductDTO;
+import com.khangse616.serverfashionrs.models.dto.OptionProductVarcharDTO;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class AttributeOptionDTOMapper implements RowMapper<AttributeOptionDTO, P
                     OptionProductDTO optionProductDTO = new OptionProductDTO();
                     optionProductDTO.setProductAttributeId(pd.getId());
                     for (OptionProductVarchar optionProductVarchar : pd.getOptionProductVarchars()) {
-                        boolean isImage = optionProductDTO.getOptionProductVarcharList().stream().noneMatch(c -> c.getAttribute().getCode().equals("image"));
-                        createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, optionProductDTO, isImage);
+                        boolean isImage = optionProductDTO.getOptionProductVarcharList().stream().noneMatch(c -> c.getAttributeId() == 240799);
+                        createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, optionProductDTO, isImage, repository);
                     }
                     for (OptionProductInteger optionProductInteger : pd.getOptionProductIntegers()) {
                         quantity += optionProductInteger.getValue();
@@ -48,7 +49,7 @@ public class AttributeOptionDTOMapper implements RowMapper<AttributeOptionDTO, P
             } else {
                 OptionProductDTO optionProductDTO = new OptionProductDTO();
                 product.getOptionProductVarchars().forEach(optionProductVarchar -> {
-                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false);
+                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false, repository);
                 });
                 for (OptionProductInteger optionProductInteger : product.getOptionProductIntegers()) {
                     quantity += optionProductInteger.getValue();
@@ -63,7 +64,7 @@ public class AttributeOptionDTOMapper implements RowMapper<AttributeOptionDTO, P
             boolean checkHaveImages = attributeDTOVarchar.stream().anyMatch(img -> img.getCode().equals("image"));
             if (!checkHaveImages) {
                 product.getOptionProductVarchars().forEach(optionProductVarchar -> {
-                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false);
+                    createAttributeVarchar(optionProductVarchar, attributeDTOVarchar, listIdImage, null, false, repository);
                 });
             }
 
@@ -88,7 +89,7 @@ public class AttributeOptionDTOMapper implements RowMapper<AttributeOptionDTO, P
     }
 
     private void createAttributeVarchar(OptionProductVarchar optionProductVarchar, List<AttributeDTO<OptionProductVarchar>> attributeDTOVarchar
-            , List<String> listIdImage, OptionProductDTO optionProductDTO, boolean isImage) {
+            , List<String> listIdImage, OptionProductDTO optionProductDTO, boolean isImage, IImageDataService repository) {
         Attribute attr = optionProductVarchar.getAttribute();
         AttributeDTO<OptionProductVarchar> attributeDTOStream = attributeDTOVarchar.stream().filter(c -> c.getId() == attr.getId()).findFirst().orElse(null);
         if (attributeDTOStream == null) {
@@ -113,9 +114,22 @@ public class AttributeOptionDTOMapper implements RowMapper<AttributeOptionDTO, P
             }
         }
 
-        if (optionProductDTO != null && (!attr.getCode().equals("image") || (attr.getCode().equals("image") && isImage))) {
-            List<OptionProductVarchar> list = optionProductDTO.getOptionProductVarcharList();
-            list.add(optionProductVarchar);
+        if (optionProductDTO != null ) {
+            List<OptionProductVarcharDTO> list = optionProductDTO.getOptionProductVarcharList();
+
+            if (attr.getCode().equals("image")) {
+                List<OptionProductVarcharDTO> listImg = optionProductDTO.getListImages();
+                OptionProductVarcharDTO opVarchar = new OptionProductVarcharDTOMapper().mapRow(optionProductVarchar);
+                ImageData imgData = repository.findImageById(opVarchar.getValue());
+                opVarchar.setValue(imgData != null ? "https:" + imgData.getLink().replace("fill_size", "700x817") : "");
+                listImg.add(opVarchar);
+                if (isImage) {
+                    list.add(opVarchar);
+                }
+                optionProductDTO.setListImages(listImg);
+            } else {
+                list.add(new OptionProductVarcharDTOMapper().mapRow(optionProductVarchar));
+            }
             optionProductDTO.setOptionProductVarcharList(list);
         }
     }

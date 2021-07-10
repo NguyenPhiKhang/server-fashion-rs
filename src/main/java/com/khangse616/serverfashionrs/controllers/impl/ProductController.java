@@ -77,6 +77,8 @@ public class ProductController implements IProductController {
         List<Integer> listId = new ArrayList<>();
 //        if (list.size() != 0)
         CategoryUtil.getListIdCategory(category, listId);
+
+        System.out.println(listId);
 //        else listId.add(idCategory);
 
         Pageable pageable = PageRequest.of(page - 1, 20);

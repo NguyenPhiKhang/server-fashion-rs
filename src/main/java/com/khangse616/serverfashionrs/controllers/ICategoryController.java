@@ -16,9 +16,21 @@ public interface ICategoryController {
 //    @GetMapping("/recommend-search")
 //    ResponseEntity<Set<String>> getRecommendSearch(@RequestParam("keyword") String keyword);
 
+    @PutMapping("/categories/create-path")
+    String autoCreatePath();
+
     @PostMapping("/categories/auto-add-icon")
     String autoAddIconCategories(@RequestParam("id") int idCategory);
 
     @PostMapping("/categories/add-icon")
     String AddIconCategory();
+
+    @GetMapping("/categories")
+    List<Category> getCategoriesByLevel(@RequestParam("level") int level);
+
+    @GetMapping("/category/{id}")
+    Category getCategoryById(@PathVariable int id);
+
+    @GetMapping("/category/{id}/get-path")
+    String getPathCategory(@PathVariable int id);
 }

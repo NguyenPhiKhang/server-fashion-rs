@@ -21,10 +21,11 @@ public class ProductDetailDTO {
     private boolean freeShip;
     private Category category;
     private String categories;
-    private String brand;
+    private Brand brand;
     private String material;
     private String purpose;
     private String suitable_season;
+    private String style;
     private String madeIn;
     private boolean liked;
     private float promotionPercent;
@@ -152,11 +153,11 @@ public class ProductDetailDTO {
         this.category = category;
     }
 
-    public String getBrand() {
+    public Brand getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(Brand brand) {
         this.brand = brand;
     }
 
@@ -249,6 +250,14 @@ public class ProductDetailDTO {
 
     public void setRatings(RatingProductDTO ratings) {
         this.ratings = ratings;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
     }
 }
 

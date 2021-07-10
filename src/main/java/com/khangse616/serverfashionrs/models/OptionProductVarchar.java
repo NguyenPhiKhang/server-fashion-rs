@@ -23,7 +23,7 @@ public class OptionProductVarchar implements Serializable, Comparable {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "attribute_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Attribute attribute = new Attribute();
 
     @ManyToMany(targetEntity = Product.class, mappedBy = "optionProductVarchars", cascade = CascadeType.ALL)

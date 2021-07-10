@@ -24,7 +24,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setPromotionPercent(product.getPromotionPercent());
             productDetailDTO.setPromotion(product.getPromotionPercent() > 0);
             productDetailDTO.setActive(product.isActive());
-            productDetailDTO.setBrand(product.getBrand() != null ? product.getBrand().getName() : "khác");
+            productDetailDTO.setBrand(product.getBrand());
             productDetailDTO.setDescription(product.getDescription());
             productDetailDTO.setShortDescription(product.getShortDescription());
             productDetailDTO.setHighlight(product.getHighlight());
@@ -37,6 +37,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
             productDetailDTO.setTypeId(product.getTypeId());
             productDetailDTO.setRatingStar(product.getRatingStar());
             productDetailDTO.setLiked(product.isLiked());
+            productDetailDTO.setStyle(product.getStyle());
 
             AttributeOptionDTO attributeOptionDTO = new AttributeOptionDTOMapper().mapRow(product, imageDataService);
 
@@ -46,16 +47,7 @@ public class ProductDetailDTOMapper implements RowMapper<ProductDetailDTO, Produ
 
             productDetailDTO.setCategory(product.getCategory());
 
-            Category category = product.getCategory();
-            StringBuilder categoriesStr = new StringBuilder();
-
-            for (int i = product.getCategory().getLevel(); i >= 0; i--) {
-                categoriesStr.insert(0, "/" + category.getId());
-                category = category.getParentCategory();
-            }
-            categoriesStr.insert(0, 0);
-
-            productDetailDTO.setCategories(categoriesStr.toString());
+            productDetailDTO.setCategories(product.getCategory().getPath());
 
             RatingProductDTO ratingProductDTO = new RatingProductDTO();
             Set<Rating> ratings = product.getRatings().stream().sorted(Comparator.comparing(Rating::getTimeUpdated)).limit(2).collect(Collectors.toSet());;

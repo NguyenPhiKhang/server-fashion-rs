@@ -24,6 +24,28 @@ public class CategoryController implements ICategoryController {
     }
 
     @Override
+    public String autoCreatePath() {
+        List<Category> categories = categoryService.findAllCategories();
+
+        categories.forEach(c -> {
+            StringBuilder categoriesStr = new StringBuilder();
+            Category category = c;
+
+            for (int i = c.getLevel(); i >= 0; i--) {
+                categoriesStr.insert(0, "/" + category.getId());
+                category = category.getParentCategory();
+            }
+            categoriesStr.insert(0, 0);
+
+            c.setPath(categoriesStr.toString());
+        });
+
+        categoryService.saveAll(categories);
+
+        return "done";
+    }
+
+    @Override
     public String autoAddIconCategories(int idCategory) {
         return categoryService.autoSetIconCategory(idCategory);
     }
@@ -145,6 +167,21 @@ public class CategoryController implements ICategoryController {
                 "http://img.zanado.com/media/catalog/product/cache/all/thumbnail/255x298/7b8fef0172c2eb72dd8fd366c999954c/1/2/nuoc_hoa_nu_ahaperfumes_aha691_carolina_herrera_212_sexy_30ml_9a77.jpg"};
 
         return categoryService.addIconCategories(listIconLink);
+    }
+
+    @Override
+    public List<Category> getCategoriesByLevel(int level) {
+        return categoryService.findCategoryByLevel(level);
+    }
+
+    @Override
+    public Category getCategoryById(int id) {
+        return categoryService.findCategoryById(id);
+    }
+
+    @Override
+    public String getPathCategory(int id) {
+        return categoryService.getPathCategory(id);
     }
 
     //    @GetMapping("/categories")

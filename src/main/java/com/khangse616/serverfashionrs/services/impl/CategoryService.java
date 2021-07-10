@@ -82,6 +82,26 @@ public class CategoryService implements ICategoryService {
         return "Xong";
     }
 
+    @Override
+    public List<Category> findAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Category> findCategoryByLevel(int level) {
+        return categoryRepository.findByLevel(level);
+    }
+
+    @Override
+    public void saveAll(List<Category> categories) {
+        categoryRepository.saveAll(categories);
+    }
+
+    @Override
+    public String getPathCategory(int id) {
+        return categoryRepository.findPathCategory(id);
+    }
+
 //    @Override
 //    public Set<String> recommendSearch(String keyword) {
 //        Set<String> newWord = new HashSet<>();

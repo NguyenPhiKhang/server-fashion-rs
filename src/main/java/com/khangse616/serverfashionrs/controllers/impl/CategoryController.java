@@ -1,8 +1,11 @@
 package com.khangse616.serverfashionrs.controllers.impl;
 
 import com.khangse616.serverfashionrs.controllers.ICategoryController;
+import com.khangse616.serverfashionrs.mappers.impl.CategoryScreenDTOMapper;
+import com.khangse616.serverfashionrs.mappers.impl.PathCategoryDTOMapper;
 import com.khangse616.serverfashionrs.models.Category;
 import com.khangse616.serverfashionrs.models.dto.CategoryScreenDTO;
+import com.khangse616.serverfashionrs.models.dto.PathCategoryDTO;
 import com.khangse616.serverfashionrs.services.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -180,8 +183,13 @@ public class CategoryController implements ICategoryController {
     }
 
     @Override
-    public String getPathCategory(int id) {
-        return categoryService.getPathCategory(id);
+    public PathCategoryDTO getPathCategory(int id) {
+        return new PathCategoryDTOMapper().mapRow(categoryService.findCategoryById(id));
+    }
+
+    @Override
+    public List<CategoryScreenDTO> getAllCategories() {
+        return categoryService.findAllCategoriesOrderByLevel().stream().map(v->new CategoryScreenDTOMapper().mapRow(v)).collect(Collectors.toList());
     }
 
     //    @GetMapping("/categories")

@@ -7,8 +7,17 @@ public class CategoryScreenDTO {
     private int level;
     private String name;
     private String icon;
+    private String path;
 
     public CategoryScreenDTO() {
+    }
+
+    public CategoryScreenDTO(int id, int level, String name, String icon, String path) {
+        this.id = id;
+        this.level = level;
+        this.name = name;
+        this.icon = icon;
+        this.path = path;
     }
 
     public int getId() {
@@ -41,5 +50,13 @@ public class CategoryScreenDTO {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

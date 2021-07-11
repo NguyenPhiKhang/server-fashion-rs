@@ -88,6 +88,11 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    public List<Category> findAllCategoriesOrderByLevel() {
+        return categoryRepository.findAllCategoriesOrderByLevel();
+    }
+
+    @Override
     public List<Category> findCategoryByLevel(int level) {
         return categoryRepository.findByLevel(level);
     }

@@ -1,6 +1,8 @@
 package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.Category;
+import com.khangse616.serverfashionrs.models.dto.CategoryScreenDTO;
+import com.khangse616.serverfashionrs.models.dto.PathCategoryDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,5 +34,8 @@ public interface ICategoryController {
     Category getCategoryById(@PathVariable int id);
 
     @GetMapping("/category/{id}/get-path")
-    String getPathCategory(@PathVariable int id);
+    PathCategoryDTO getPathCategory(@PathVariable int id);
+
+    @GetMapping("/categories/get-all")
+    List<CategoryScreenDTO> getAllCategories();
 }

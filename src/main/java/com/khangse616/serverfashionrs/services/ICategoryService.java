@@ -13,6 +13,7 @@ public interface ICategoryService {
     Category findCategoryById(int id);
     String addIconCategories(String[] arrIcon);
     List<Category> findAllCategories();
+    List<Category> findAllCategoriesOrderByLevel();
     List<Category> findCategoryByLevel(int level);
     void saveAll(List<Category> categories);
     String getPathCategory(int id);

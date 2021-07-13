@@ -2,10 +2,10 @@ package com.khangse616.serverfashionrs.controllers.impl;
 
 import com.khangse616.serverfashionrs.controllers.ICategoryController;
 import com.khangse616.serverfashionrs.mappers.impl.CategoryScreenDTOMapper;
-import com.khangse616.serverfashionrs.mappers.impl.PathCategoryDTOMapper;
+import com.khangse616.serverfashionrs.mappers.impl.CategoryDetailDTOMapper;
 import com.khangse616.serverfashionrs.models.Category;
 import com.khangse616.serverfashionrs.models.dto.CategoryScreenDTO;
-import com.khangse616.serverfashionrs.models.dto.PathCategoryDTO;
+import com.khangse616.serverfashionrs.models.dto.CategoryDetailDTO;
 import com.khangse616.serverfashionrs.services.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -183,13 +183,18 @@ public class CategoryController implements ICategoryController {
     }
 
     @Override
-    public PathCategoryDTO getPathCategory(int id) {
-        return new PathCategoryDTOMapper().mapRow(categoryService.findCategoryById(id));
+    public CategoryDetailDTO getPathCategory(int id) {
+        return new CategoryDetailDTOMapper().mapRow(categoryService.findCategoryById(id));
     }
 
     @Override
-    public List<CategoryScreenDTO> getAllCategories() {
-        return categoryService.findAllCategoriesOrderByLevel().stream().map(v->new CategoryScreenDTOMapper().mapRow(v)).collect(Collectors.toList());
+    public List<CategoryScreenDTO> getAllCategories(int page, int pageSize) {
+        return categoryService.findAllCategoriesOrderByLevel(page, pageSize).stream().map(v->new CategoryScreenDTOMapper().mapRow(v)).collect(Collectors.toList());
+    }
+
+    @Override
+    public int countCategories() {
+        return categoryService.countCategories();
     }
 
     //    @GetMapping("/categories")

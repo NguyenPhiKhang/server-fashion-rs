@@ -1,6 +1,8 @@
 package com.khangse616.serverfashionrs.repositories;
 
 import com.khangse616.serverfashionrs.models.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,5 +36,8 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     String findPathCategory(@Param("id") int id);
 
     @Query("select c from Category c order by c.level")
-    List<Category> findAllCategoriesOrderByLevel();
+    Page<Category> findAllCategoriesOrderByLevel(Pageable pageable);
+
+    @Query("select count(c) from Category c order by c.level")
+    int countCategories();
 }

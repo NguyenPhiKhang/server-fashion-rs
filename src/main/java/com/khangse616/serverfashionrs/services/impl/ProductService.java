@@ -141,7 +141,7 @@ public class ProductService implements IProductService {
         System.out.println(page);
 
         return RecommendSystemUtil.calcCosineSimilarityText(search, list).entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-                .skip(page* 15L)
+                .skip(page * 15L)
                 .limit(15)
                 .map(entry -> new SearchProductDTOMapper().mapRow(entry, imageDataService))
                 .collect(Collectors.toList());
@@ -159,7 +159,7 @@ public class ProductService implements IProductService {
 
         return RecommendSystemUtil.calcCosineSimilarityText(shortDescOrName, list).entrySet().stream()
                 .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-                .skip(page* 15L)
+                .skip(page * 15L)
                 .limit(15)
                 .map(v -> new ProductItemDTOMapper().mapRow(v.getKey(), imageDataService))
                 .collect(Collectors.toList());
@@ -172,7 +172,7 @@ public class ProductService implements IProductService {
         Page<Object[]> pageSeen = productRepository.getShortDescriptionOrNameByUser(userId, pageable);
         List<DescriptionCountDTO> listSeen = pageSeen.getContent().stream().map(v -> {
             listIdProduct.add((Integer) v[2]);
-            return new DescriptionCountDTO((String) v[0], (int)v[1]);
+            return new DescriptionCountDTO((String) v[0], (int) v[1]);
         }).collect(Collectors.toList());
 
         List<Product> list = productRepository.getProductAndShortDescriptionExceptListProduct(listIdProduct);
@@ -228,7 +228,7 @@ public class ProductService implements IProductService {
 
         return listProductAlsoLike.entrySet().stream()
                 .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-                .skip(page* 15L)
+                .skip(page * 15L)
                 .limit(15)
                 .map(v -> new ProductItemDTOMapper().mapRow(v.getKey(), imageDataService))
                 .collect(Collectors.toList());
@@ -279,8 +279,25 @@ public class ProductService implements IProductService {
         return productRepository.findProductByCategoryIdAndVisibilityTrueOrderByPurpose(id, pageable);
     }
 
+    @Override
+    public List<Product> getProductFilter(String search, int status, List<Integer> listCategories, int page, int pageSize) {
+//        Pageable pageable = PageRequest.of(page, pageSize);
+        int pageNew = page < 1 ? 0 : (page - 1) * pageSize;
+        return productRepository.findProductFilter(search, status, listCategories, pageNew, pageSize);
+    }
+
+    @Override
+    public int countProductFilter(String search, int status, List<Integer> listCategories) {
+        return productRepository.countProductFilter(search, status, listCategories);
+    }
+
+    @Override
+    public List<Integer> getListIdCategoriesOfProducts() {
+        return productRepository.listIdCategoriesOfProduct();
+    }
+
     @SneakyThrows
-    private void saveImage(Rating rating, IImageDataService imageDataService, List<MultipartFile> files, IRatingService ratingService){
+    private void saveImage(Rating rating, IImageDataService imageDataService, List<MultipartFile> files, IRatingService ratingService) {
         List<MultipartFile> multipartFiles = new ArrayList<>();
         files.forEach(file -> {
             String fileName = ImageUtil.fileName(imageDataService, file);

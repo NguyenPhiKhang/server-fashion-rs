@@ -44,7 +44,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> topRatingProducts(@Param("m") float m, @Param("C") float C, @Param("page") int page);
 
     @Query("select u from Product u where u.id in (:products)")
-    List<Product> findProductByListIdProduct(@Param("products")List<Integer> products);
+    List<Product> findProductByListIdProduct(@Param("products") List<Integer> products);
 
     @Query("select p.shortDescription from Product p where p.visibility = true")
     List<String> getShortDescriptionByVisibilityTrue();
@@ -67,4 +67,26 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "Select case when (p.short_description <> '' and p.short_description is not null) then p.short_description else p.name end as txt_description, s.count as count_seen, s.product_id as product_id from `fashionshop_db`.`products` as p inner join `fashionshop_db`.`seen_products` as s on p.id = s.product_id where s.user_id = :userId and CURRENT_TIMESTAMP - s.last_time < 7000000 order by s.last_time desc", nativeQuery = true)
     Page<Object[]> getShortDescriptionOrNameByUser(@Param("userId") int userId, Pageable pageable);
+
+    //    @Query("select p from Product p " +
+//            "where p.visibility = true " +
+//            "and p.name like %:search% " +
+//            "and p.active = CASE WHEN :status = -1 THEN p.active WHEN :status = 1 THEN true ELSE false END " +
+//            "and p.category in :listCategories")
+    @Query(value = "select * from products p " +
+            "where p.visibility = 1 " +
+            "and p.name like %:search% " +
+            "and p.is_active = CASE WHEN :status = -1 THEN p.is_active WHEN :status = 1 THEN 1 ELSE 0 END " +
+            "and p.category_id in (:listCategories) order by updated_at desc limit :page, :pageSize", nativeQuery = true)
+    List<Product> findProductFilter(@Param("search") String search, @Param("status") int status, @Param("listCategories") List<Integer> listCategories, @Param("page") int page, @Param("pageSize") int pageSize);
+
+    @Query(value = "select count(*) from products p " +
+            "where p.visibility = 1 " +
+            "and p.name like %:search% " +
+            "and p.is_active = CASE WHEN :status = -1 THEN p.is_active WHEN :status = 1 THEN 1 ELSE 0 END " +
+            "and p.category_id in (:listCategories) order by updated_at desc", nativeQuery = true)
+    int countProductFilter(@Param("search") String search, @Param("status") int status, @Param("listCategories") List<Integer> listCategories);
+
+    @Query(value = "SELECT distinct p.category_id FROM fashionshop_db.products p where p.category_id is not null;", nativeQuery = true)
+    List<Integer> listIdCategoriesOfProduct();
 }

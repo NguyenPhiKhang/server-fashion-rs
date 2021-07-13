@@ -17,6 +17,9 @@ public class Brand {
     @Column(name = "name")
     private String name;
 
+    @Column(name="icon")
+    private String icon;
+
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Product> products;
@@ -51,5 +54,13 @@ public class Brand {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

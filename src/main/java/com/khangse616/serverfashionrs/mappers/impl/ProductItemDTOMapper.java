@@ -27,6 +27,7 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
             productItemDTO.setFreeShip(product.isFreeShip());
             productItemDTO.setPromotionPercent(product.getPromotionPercent());
             productItemDTO.setOrderCount(product.getOrderCount());
+            productItemDTO.setBrand(product.getBrand()==null?"Khác":product.getBrand().getName());
 
             productItemDTO.setCountRating(product.getRatings().size());
             RatingStar ratingStar = product.getRatingStar();
@@ -97,9 +98,11 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
 
             productItemDTO.setPrice(price);
 
-            assert optionProductImg != null;
-            ImageData imageData = imageDataService.findImageById(optionProductImg.getValue());
-            productItemDTO.setImgUrl(imageData != null ? "http:" + imageData.getLink().replace("fill_size", "255x298") : "");
+            if(optionProductImg!=null){
+                ImageData imageData = imageDataService.findImageById(optionProductImg.getValue());
+                productItemDTO.setImgUrl(imageData != null ? "http:" + imageData.getLink().replace("fill_size", "255x298") : "");
+            }else productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
+
 
             productItemDTO.setQuantity(quantity);
             productItemDTO.setShortDescription(product.getShortDescription());

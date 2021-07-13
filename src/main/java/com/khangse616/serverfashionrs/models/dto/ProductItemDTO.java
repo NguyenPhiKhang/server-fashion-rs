@@ -12,6 +12,7 @@ public class ProductItemDTO {
     private boolean freeShip;
     private PriceResultDTO price;
     private float promotionPercent;
+    private String brand;
     private int orderCount;
     private String imgUrl;
     private float percentStar;
@@ -125,5 +126,13 @@ public class ProductItemDTO {
 
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }

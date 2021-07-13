@@ -78,7 +78,6 @@ public class ProductController implements IProductController {
 //        if (list.size() != 0)
         CategoryUtil.getListIdCategory(category, listId);
 
-        System.out.println(listId);
 //        else listId.add(idCategory);
 
         Pageable pageable = PageRequest.of(page - 1, 20);
@@ -98,6 +97,37 @@ public class ProductController implements IProductController {
         }
 
         return ResponseEntity.ok().body(listProduct);
+    }
+
+    @Override
+    public ResponseEntity<List<ProductItemDTO>> getAllProductFilter(int idCategory, int status, String search, int page, int pageSize) {
+        List<Integer> listCategories;
+        if (idCategory == 0)
+            listCategories = productService.getListIdCategoriesOfProducts();
+        else {
+            Category category = categoryService.findCategoryById(idCategory);
+            listCategories = new ArrayList<>();
+            CategoryUtil.getListIdCategory(category, listCategories);
+        }
+
+        List<ProductItemDTO> listProducts = productService.getProductFilter(search, status, listCategories, page, pageSize)
+                .stream().map(p -> new ProductItemDTOMapper().mapRow(p, imageDataService)).collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listProducts);
+    }
+
+
+    @Override
+    public int countProductFilter(int idCategory, int status, String search) {
+        List<Integer> listCategories;
+        if (idCategory == 0)
+            listCategories = productService.getListIdCategoriesOfProducts();
+        else {
+            Category category = categoryService.findCategoryById(idCategory);
+            listCategories = new ArrayList<>();
+            CategoryUtil.getListIdCategory(category, listCategories);
+        }
+        return productService.countProductFilter(search, status, listCategories);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.khangse616.serverfashionrs.models.dto.ProductItemDTO;
 import com.khangse616.serverfashionrs.models.dto.SearchProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -29,4 +30,7 @@ public interface IProductService {
     void reviewProduct(int userId, InputReviewProductDTO inputReview);
     Product save(Product product);
     Page<Product> getProductByCategoryOrderPopular(int id, Pageable pageable);
+    List<Product> getProductFilter(String search, int status, List<Integer> listCategories, int page, int pageSize);
+    int countProductFilter(String search, int status, List<Integer> listCategories);
+    List<Integer> getListIdCategoriesOfProducts();
 }

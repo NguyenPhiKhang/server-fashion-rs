@@ -22,6 +22,13 @@ public interface IProductController {
     @GetMapping("/cat/{idCategory}/products")
     ResponseEntity<List<ProductItemDTO>> getProductsByCategory(@PathVariable("idCategory") int idCategory, @RequestParam(value = "filter", defaultValue = "popular") String filter, @RequestParam(value = "p", defaultValue = "1") int page);
 
+    @GetMapping("/products/get-all-filter")
+    ResponseEntity<List<ProductItemDTO>> getAllProductFilter(@RequestParam(value = "category_id", defaultValue = "0") int idCategory,
+                                                             @RequestParam(value = "status", defaultValue = "-1") int status,
+                                                             @RequestParam(value = "search", defaultValue = "") String search,
+                                                             @RequestParam(value = "p", defaultValue = "1") int page,
+                                                             @RequestParam(value = "p_size", defaultValue = "20") int pageSize);
+
     @PostMapping("/product/generate-id-rating-star")
     ResponseEntity<String> generateIdRatingStarForProduct();
 
@@ -60,4 +67,9 @@ public interface IProductController {
 //@RequestMapping(value = "/upload", headers = ("content-type=multipart/*"), method = RequestMethod.POST, consumes = { "multipart/mixed", MediaType.MULTIPART_FORM_DATA_VALUE })
     @RequestMapping(value = "/user/{userId}/review-product", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<String> reviewProduct(@PathVariable("userId") int user_id, @ModelAttribute("input_review") InputReviewProductDTO input_review);
+
+    @GetMapping("/products/count-product-filter")
+    int countProductFilter(@RequestParam(value = "category_id", defaultValue = "0") int idCategory,
+                           @RequestParam(value = "status", defaultValue = "-1") int status,
+                           @RequestParam(value = "search", defaultValue = "") String search);
 }

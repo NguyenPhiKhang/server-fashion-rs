@@ -50,12 +50,12 @@ public class CategoryService implements ICategoryService {
 
         Pageable pageable = PageRequest.of(0, 1);
 
-        listCategory.forEach(c->{
+        listCategory.forEach(c -> {
             Page<Product> pageProduct = productService.getProductByCategoryOrderPopular(c.getId(), pageable);
             Product product = pageProduct.getContent().get(0);
             ProductItemDTO productItemDTO = new ProductItemDTOMapper().mapRow(product, imageDataService);
-            System.out.println("Category "+c.getId());
-            System.out.println("Product "+ productItemDTO.getId());
+            System.out.println("Category " + c.getId());
+            System.out.println("Product " + productItemDTO.getId());
             c.setIcon(productItemDTO.getImgUrl());
             categoryRepository.save(c);
         });
@@ -72,7 +72,7 @@ public class CategoryService implements ICategoryService {
     public String addIconCategories(String[] arrIcon) {
         List<Category> categories = categoryRepository.getAllCategoryOrderById();
 
-        for (int i =0 ;i< categories.size(); i++){
+        for (int i = 0; i < categories.size(); i++) {
             categories.get(i).setIcon(arrIcon[i]);
 //            categoryRepository.save(categories.get(i));
         }
@@ -88,8 +88,14 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public List<Category> findAllCategoriesOrderByLevel() {
-        return categoryRepository.findAllCategoriesOrderByLevel();
+    public List<Category> findAllCategoriesOrderByLevel(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        return categoryRepository.findAllCategoriesOrderByLevel(pageable).getContent();
+    }
+
+    @Override
+    public int countCategories() {
+        return categoryRepository.countCategories();
     }
 
     @Override

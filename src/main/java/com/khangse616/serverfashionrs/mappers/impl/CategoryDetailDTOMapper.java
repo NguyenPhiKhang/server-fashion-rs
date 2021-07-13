@@ -3,21 +3,19 @@ package com.khangse616.serverfashionrs.mappers.impl;
 import com.khangse616.serverfashionrs.Utils.StringUtil;
 import com.khangse616.serverfashionrs.mappers.RowMapper;
 import com.khangse616.serverfashionrs.models.Category;
-import com.khangse616.serverfashionrs.models.dto.PathCategoryDTO;
+import com.khangse616.serverfashionrs.models.dto.CategoryDetailDTO;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Collections;
-
-public class PathCategoryDTOMapper implements RowMapper<PathCategoryDTO, Category> {
+public class CategoryDetailDTOMapper implements RowMapper<CategoryDetailDTO, Category> {
     @Override
-    public PathCategoryDTO mapRow(Category category) {
+    public CategoryDetailDTO mapRow(Category category) {
         try {
-            PathCategoryDTO pathCategoryDTO = new PathCategoryDTO();
-            pathCategoryDTO.setId(category.getId());
-            pathCategoryDTO.setName(category.getName());
+            CategoryDetailDTO categoryDetailDTO = new CategoryDetailDTO();
+            categoryDetailDTO.setId(category.getId());
+            categoryDetailDTO.setName(category.getName());
             boolean isSubPath = category.getCategories().size() > 0;
-            pathCategoryDTO.setSubCategory(isSubPath);
+            categoryDetailDTO.setSubCategory(isSubPath);
             String pathCategory = category.getPath();
             String[] ids = pathCategory.split("/");
             String[] arrIdCat;
@@ -27,16 +25,21 @@ public class PathCategoryDTOMapper implements RowMapper<PathCategoryDTO, Categor
                 arrIdCat = StringUtil.removeElementInArray(ids, new int[]{0, ids.length - 1});
             }
             ArrayUtils.reverse(arrIdCat);
-            pathCategoryDTO.setCategoryIds(arrIdCat);
+            categoryDetailDTO.setCategoryIds(arrIdCat);
 
-            return pathCategoryDTO;
+            categoryDetailDTO.setIcon(category.getIcon());
+            categoryDetailDTO.setLevel(category.getLevel());
+            categoryDetailDTO.setPathIds(category.getPath());
+            categoryDetailDTO.setPathUrl(category.getPathVarchar());
+
+            return categoryDetailDTO;
         } catch (Exception ex) {
             return null;
         }
     }
 
     @Override
-    public PathCategoryDTO mapRow(Category category, IImageDataService repository) {
+    public CategoryDetailDTO mapRow(Category category, IImageDataService repository) {
         return null;
     }
 }

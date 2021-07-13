@@ -24,8 +24,10 @@ public class Category implements Serializable, Cloneable{
     private String icon;
     @Column(name="level")
     private int level;
-    @Column(name = "path")
+    @Column(name = "path_id")
     private String path;
+    @Column(name="path_varchar")
+    private String pathVarchar;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -115,5 +117,13 @@ public class Category implements Serializable, Cloneable{
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public String getPathVarchar() {
+        return pathVarchar;
+    }
+
+    public void setPathVarchar(String pathVarchar) {
+        this.pathVarchar = pathVarchar;
     }
 }

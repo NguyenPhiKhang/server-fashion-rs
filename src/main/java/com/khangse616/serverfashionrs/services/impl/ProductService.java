@@ -296,6 +296,11 @@ public class ProductService implements IProductService {
         return productRepository.listIdCategoriesOfProduct();
     }
 
+    @Override
+    public int countProductByBrandIsNull() {
+        return productRepository.countProductByBrandIsNull();
+    }
+
     @SneakyThrows
     private void saveImage(Rating rating, IImageDataService imageDataService, List<MultipartFile> files, IRatingService ratingService) {
         List<MultipartFile> multipartFiles = new ArrayList<>();

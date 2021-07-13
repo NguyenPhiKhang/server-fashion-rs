@@ -27,16 +27,19 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
             productItemDTO.setFreeShip(product.isFreeShip());
             productItemDTO.setPromotionPercent(product.getPromotionPercent());
             productItemDTO.setOrderCount(product.getOrderCount());
-            productItemDTO.setBrand(product.getBrand()==null?"Khác":product.getBrand().getName());
+            productItemDTO.setBrand(product.getBrand() == null ? "Không rõ" : product.getBrand().getName());
 
             productItemDTO.setCountRating(product.getRatings().size());
             RatingStar ratingStar = product.getRatingStar();
-            int totalStar = ratingStar.getStar1() + ratingStar.getStar2() + ratingStar.getStar3() + ratingStar.getStar4() + ratingStar.getStar5();
-            float percentStar = totalStar > 0 ? (float) (ratingStar.getStar1() + ratingStar.getStar2() * 2 + ratingStar.getStar3() * 3 + ratingStar.getStar4() * 4 + ratingStar.getStar5() * 5)
-                    / totalStar : 0;
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-            productItemDTO.setPercentStar(Float.parseFloat(decimalFormat.format(percentStar)));
-            productItemDTO.setCountRating(totalStar);
+            if (ratingStar != null) {
+                int totalStar = ratingStar.getStar1() + ratingStar.getStar2() + ratingStar.getStar3() + ratingStar.getStar4() + ratingStar.getStar5();
+                float percentStar = totalStar > 0 ? (float) (ratingStar.getStar1() + ratingStar.getStar2() * 2 + ratingStar.getStar3() * 3 + ratingStar.getStar4() * 4 + ratingStar.getStar5() * 5)
+                        / totalStar : 0;
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                productItemDTO.setPercentStar(Float.parseFloat(decimalFormat.format(percentStar)));
+                productItemDTO.setCountRating(totalStar);
+            }
+
 
             OptionProductVarchar optionProductImg = null;
             BigDecimal priceMax = new BigDecimal(0);
@@ -98,10 +101,11 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
 
             productItemDTO.setPrice(price);
 
-            if(optionProductImg!=null){
+            if (optionProductImg != null) {
                 ImageData imageData = imageDataService.findImageById(optionProductImg.getValue());
                 productItemDTO.setImgUrl(imageData != null ? "http:" + imageData.getLink().replace("fill_size", "255x298") : "");
-            }else productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
+            } else
+                productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
 
 
             productItemDTO.setQuantity(quantity);

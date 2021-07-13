@@ -1,9 +1,8 @@
 package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.Brand;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.khangse616.serverfashionrs.models.dto.BrandDTO;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -11,5 +10,11 @@ import java.util.List;
 @CrossOrigin(value = {"http://localhost:3000"})
 public interface IBrandController {
     @GetMapping("/brand/get-all")
-    List<Brand> getAllBrand();
+    List<BrandDTO> getAllBrand();
+
+    @GetMapping("/brand/get-filter")
+    List<BrandDTO> getBrandFilter(@RequestParam(value = "search", defaultValue = "") String search);
+
+    @GetMapping("/brand/{id}")
+    BrandDTO getBrandById(@PathVariable("id") int id);
 }

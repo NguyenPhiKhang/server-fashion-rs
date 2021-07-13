@@ -33,4 +33,5 @@ public interface IProductService {
     List<Product> getProductFilter(String search, int status, List<Integer> listCategories, int page, int pageSize);
     int countProductFilter(String search, int status, List<Integer> listCategories);
     List<Integer> getListIdCategoriesOfProducts();
+    int countProductByBrandIsNull();
 }

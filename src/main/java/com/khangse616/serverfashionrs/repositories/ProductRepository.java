@@ -89,4 +89,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "SELECT distinct p.category_id FROM fashionshop_db.products p where p.category_id is not null;", nativeQuery = true)
     List<Integer> listIdCategoriesOfProduct();
+
+    @Query(value = "SELECT count(*) FROM fashionshop_db.products where brand_id is null and visibility=1", nativeQuery = true)
+    int countProductByBrandIsNull();
 }

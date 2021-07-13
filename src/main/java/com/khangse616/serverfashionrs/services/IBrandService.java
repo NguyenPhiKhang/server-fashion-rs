@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface IBrandService {
     List<Brand> getAllBrand();
+    List<Brand> getBrandFilter(String search);
+    Brand getBrandById(int id);
 }

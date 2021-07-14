@@ -1,10 +1,7 @@
 package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.dto.UserDTO;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,4 +17,7 @@ public interface IUserController {
     @GetMapping("/users/count-users-filter")
     int countUsersFilter(@RequestParam(value = "search", defaultValue = "") String search,
                          @RequestParam(value = "status", defaultValue = "-1") int active);
+
+    @PostMapping("/users/auto-created-email")
+    String createEmailAuto();
 }

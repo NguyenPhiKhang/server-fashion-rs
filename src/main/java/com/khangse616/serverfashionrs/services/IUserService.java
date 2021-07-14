@@ -9,4 +9,7 @@ public interface IUserService {
     List<Integer> getListIdUser();
     List<User> getListUserFilter(String search, int active, int page, int pageSize);
     int countListUserFilter(String search, int active);
+    void autoCreateEmail();
+    boolean checkExistEmail(String email);
+    User registerUser(String name, String email);
 }

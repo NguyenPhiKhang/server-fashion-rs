@@ -26,4 +26,10 @@ public class UserController implements IUserController {
     public int countUsersFilter(String search, int active) {
         return userService.countListUserFilter(search, active);
     }
+
+    @Override
+    public String createEmailAuto() {
+        userService.autoCreateEmail();
+        return "done";
+    }
 }

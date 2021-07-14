@@ -15,9 +15,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "select u.id from User u")
     List<Integer> getAllIdUser();
 
-    @Query(value = "select * from users u where u.name like %:search% and u.active = case when :active = -1 then u.active else :active end order by u.time_created desc limit :page, :pageSize", nativeQuery = true)
+    @Query(value = "select * from users u join accounts a on a.user_id = u.id where a.permission_id = 2 and u.name like %:search% and u.active = case when :active = -1 then u.active else :active end order by u.time_created desc limit :page, :pageSize", nativeQuery = true)
     List<User> getListUserFilter(@Param("search") String search, @Param("active") int active, @Param("page") int page, @Param("pageSize") int pageSize);
 
-    @Query(value = "select count(*) from users u where u.name like %:search% and u.active = case when :active = -1 then u.active else :active end", nativeQuery = true)
+    @Query(value = "select count(*) from users u join accounts a on a.user_id = u.id where a.permission_id = 2 and u.name like %:search% and u.active = case when :active = -1 then u.active else :active end", nativeQuery = true)
     int countListUserFilter(@Param("search") String search, @Param("active") int active);
+
+    boolean existsUserByEmail(String email);
 }

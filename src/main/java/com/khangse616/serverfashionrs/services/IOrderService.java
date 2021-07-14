@@ -10,4 +10,6 @@ public interface IOrderService {
     List<Order> getListOrderByStatus(int userId, int status);
     void updateStatusOfOrder(int orderId, int status);
     Order getDetailOrder(int orderId);
+    List<Order> getOrdersFilterForAdmin(int userId, int statusId, String searchUser, int page, int pageSize);
+    int countOrdersFilterForAdmin(int userId, int statusId, String searchUser);
 }

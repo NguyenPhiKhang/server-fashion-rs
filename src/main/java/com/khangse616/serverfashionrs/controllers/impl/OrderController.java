@@ -4,11 +4,13 @@ package com.khangse616.serverfashionrs.controllers.impl;
 import com.khangse616.serverfashionrs.controllers.IOrderController;
 import com.khangse616.serverfashionrs.mappers.impl.DetailOrderDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.OrderDTOMapper;
+import com.khangse616.serverfashionrs.mappers.impl.OrderManagerDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.ProductItemDTOMapper;
 import com.khangse616.serverfashionrs.models.Order;
 import com.khangse616.serverfashionrs.models.dto.DetailOrderDTO;
 import com.khangse616.serverfashionrs.models.dto.InputOrderDTO;
 import com.khangse616.serverfashionrs.models.dto.OrderCardDTO;
+import com.khangse616.serverfashionrs.models.dto.OrderManagerDTO;
 import com.khangse616.serverfashionrs.services.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,5 +46,16 @@ public class OrderController implements IOrderController {
     @Override
     public DetailOrderDTO getDetailOrder(int orderId) {
         return new DetailOrderDTOMapper().mapRow(orderService.getDetailOrder(orderId));
+    }
+
+    @Override
+    public List<OrderManagerDTO> getOrdersForAdmin(int userId, int status, String searchUser, int page, int pageSize) {
+        return orderService.getOrdersFilterForAdmin(userId, status, searchUser, page, pageSize).stream()
+                .map(value -> new OrderManagerDTOMapper().mapRow(value)).collect(Collectors.toList());
+    }
+
+    @Override
+    public int countOrdersForAdmin(int userId, int status, String searchUser) {
+        return orderService.countOrdersFilterForAdmin(userId, status, searchUser);
     }
 }

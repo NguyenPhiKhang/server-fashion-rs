@@ -2,6 +2,8 @@ package com.khangse616.serverfashionrs.models.dto;
 
 import com.khangse616.serverfashionrs.models.Payment;
 import com.khangse616.serverfashionrs.models.Shipping;
+import com.khangse616.serverfashionrs.models.StatusOrder;
+import com.khangse616.serverfashionrs.models.User;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -17,10 +19,12 @@ public class DetailOrderDTO {
     private BigDecimal shippingFee;
     private BigDecimal discount;
     private String content;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private String createdAt;
+    private String updatedAt;
     private Timestamp payAt;
     List<OrderItemDTO> listItem;
+    private User user;
+    private StatusOrder statusOrder;
 
     public DetailOrderDTO() {
     }
@@ -97,19 +101,19 @@ public class DetailOrderDTO {
         this.content = content;
     }
 
-    public Timestamp getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -127,5 +131,21 @@ public class DetailOrderDTO {
 
     public void setListItem(List<OrderItemDTO> listItem) {
         this.listItem = listItem;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public StatusOrder getStatusOrder() {
+        return statusOrder;
+    }
+
+    public void setStatusOrder(StatusOrder statusOrder) {
+        this.statusOrder = statusOrder;
     }
 }

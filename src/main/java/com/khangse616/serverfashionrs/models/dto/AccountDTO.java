@@ -1,37 +1,22 @@
-package com.khangse616.serverfashionrs.models;
+package com.khangse616.serverfashionrs.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.khangse616.serverfashionrs.models.AccountPermission;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name="accounts")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Account {
-    @Id
-    @Column(name="username")
+public class AccountDTO {
     private String username;
-
-    @Column(name = "password")
     private String password;
-
-    @Column(name="active")
     private boolean active;
-
-    @OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id", referencedColumnName = "id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "permission_id")
     private AccountPermission permission;
+    private UserDTO user;
 
-    public Account() {
+    public AccountDTO() {
     }
 
-    public Account(String username, String password, User user) {
+    public AccountDTO(String username, String password, boolean active, AccountPermission permission, UserDTO user) {
         this.username = username;
         this.password = password;
+        this.active = active;
+        this.permission = permission;
         this.user = user;
     }
 
@@ -51,14 +36,6 @@ public class Account {
         this.password = password;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -74,5 +51,12 @@ public class Account {
     public void setPermission(AccountPermission permission) {
         this.permission = permission;
     }
-}
 
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+}

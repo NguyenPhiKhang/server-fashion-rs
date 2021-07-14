@@ -100,4 +100,15 @@ public class OrderService implements IOrderService {
     public Order getDetailOrder(int orderId) {
         return orderRepository.findById(orderId).orElse(null);
     }
+
+    @Override
+    public List<Order> getOrdersFilterForAdmin(int userId, int statusId, String searchUser, int page, int pageSize) {
+        int pageNew = page < 1 ? 0 : (page - 1) * pageSize;
+        return orderRepository.findOrdersFilterForAdmin(userId, statusId, searchUser, pageNew, pageSize);
+    }
+
+    @Override
+    public int countOrdersFilterForAdmin(int userId, int statusId, String searchUser) {
+        return orderRepository.countOrdersFilterForAdmin(userId, statusId, searchUser);
+    }
 }

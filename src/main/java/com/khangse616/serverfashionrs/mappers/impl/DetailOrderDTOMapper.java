@@ -1,5 +1,6 @@
 package com.khangse616.serverfashionrs.mappers.impl;
 
+import com.khangse616.serverfashionrs.Utils.StringUtil;
 import com.khangse616.serverfashionrs.mappers.RowMapper;
 import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.DetailOrderDTO;
@@ -25,9 +26,11 @@ public class DetailOrderDTOMapper implements RowMapper<DetailOrderDTO, Order> {
             detailOrderDTO.setShippingFee(order.getShippingFee());
             detailOrderDTO.setDiscount(order.getDiscount());
             detailOrderDTO.setContent(order.getContent());
-            detailOrderDTO.setCreatedAt(order.getCreatedAt());
-            detailOrderDTO.setUpdatedAt(order.getUpdatedAt());
+            detailOrderDTO.setCreatedAt(StringUtil.convertTimestampToString(order.getCreatedAt()));
+            detailOrderDTO.setUpdatedAt(StringUtil.convertTimestampToString(order.getUpdatedAt()));
             detailOrderDTO.setPayAt(order.getPayAt());
+            detailOrderDTO.setUser(order.getUser());
+            detailOrderDTO.setStatusOrder(order.getStatus());
 
             List<OrderItemDTO> orderItems = new ArrayList<>();
 

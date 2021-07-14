@@ -22,4 +22,15 @@ public class UserService implements IUserService {
     public List<Integer> getListIdUser() {
         return userRepository.getAllIdUser();
     }
+
+    @Override
+    public List<User> getListUserFilter(String search, int active, int page, int pageSize) {
+        int pageNew = page < 1 ? 0 : (page - 1) * pageSize;
+        return userRepository.getListUserFilter(search, active, pageNew, pageSize);
+    }
+
+    @Override
+    public int countListUserFilter(String search, int active) {
+        return userRepository.countListUserFilter(search, active);
+    }
 }

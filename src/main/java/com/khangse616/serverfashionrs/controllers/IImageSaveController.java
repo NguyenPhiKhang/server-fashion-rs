@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/default")
-@CrossOrigin(value = {"http://localhost:3000"})
+@CrossOrigin(value = {"http://localhost:3000", "https://adminfashion-shop.azurewebsites.net"})
 public interface IImageSaveController {
     @PostMapping("/images/upload-url")
     ResponseEntity<ResponseMessage<ImageDataSave>> uploadFile(@RequestBody ImageData imageData);

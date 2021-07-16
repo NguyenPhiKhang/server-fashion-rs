@@ -16,7 +16,8 @@ public class FileRatingDTOMapper implements RowMapper<FileRatingDTO, ImageData> 
             FileRatingDTO fileRatingDTO = new FileRatingDTO();
             fileRatingDTO.setId(imageData.getId());
             fileRatingDTO.setContentType(imageData.getType().split("/")[0]);
-            fileRatingDTO.setLinkUrl(imageData.getData() != null ? EnvUtil.getInstance().getServerUrlPrefix() + "/api/v1/image/" + imageData.getId() : "http:" + imageData.getLink().replace("fill_size", "255x298"));
+//            fileRatingDTO.setLinkUrl(imageData.getData() != null ? EnvUtil.getInstance().getServerUrlPrefix() + "/api/v1/image/" + imageData.getId() : "http:" + imageData.getLink().replace("fill_size", "255x298"));
+            fileRatingDTO.setLinkUrl(imageData.getData() != null ? "http://localhost:8080/api/v1/image/" + imageData.getId() : "http:" + imageData.getLink().replace("fill_size", "255x298"));
             return fileRatingDTO;
         } catch (Exception ex) {
             return null;

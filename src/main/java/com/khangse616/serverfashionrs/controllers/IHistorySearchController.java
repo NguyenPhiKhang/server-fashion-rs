@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequestMapping("/default")
-@CrossOrigin(value = {"http://localhost:3000"})
+@CrossOrigin(value = {"http://localhost:3000", "https://adminfashion-shop.azurewebsites.net"})
 public interface IHistorySearchController {
     @PostMapping("/{userId}/history-search")
     String createOrUpdateHistorySearch(@PathVariable("userId") int userId, @RequestParam(value = "keyword") String keyword);

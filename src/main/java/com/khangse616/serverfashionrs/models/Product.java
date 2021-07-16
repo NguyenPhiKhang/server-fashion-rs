@@ -131,6 +131,10 @@ public class Product implements Serializable {
 //    @JsonIgnore
 //    private Set<Favorite> favoriteProducts;
 
+    @OneToMany(targetEntity = FlashSaleProduct.class, mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<FlashSaleProduct> flashSaleProducts;
+
     public Product() {
     }
 

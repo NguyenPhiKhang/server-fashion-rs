@@ -1,8 +1,12 @@
 package com.khangse616.serverfashionrs.controllers;
 
+import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.models.dto.InputUserUpdateDTO;
 import com.khangse616.serverfashionrs.models.dto.UserDTO;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RequestMapping("/default")
@@ -20,4 +24,12 @@ public interface IUserController {
 
     @PostMapping("/users/auto-created-email")
     String createEmailAuto();
+
+    @GetMapping("/user/{userId}/get-detail")
+    UserDTO getDetailUserById(@PathVariable("userId") int userId);
+
+    @RequestMapping(value = "/user/update", method = RequestMethod.PUT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    UserDTO updateUser(@ModelAttribute("input_user")InputUserUpdateDTO input_user) throws ParseException;
+
+
 }

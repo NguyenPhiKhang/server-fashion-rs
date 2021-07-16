@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @RequestMapping("/default")
-@CrossOrigin(value = {"http://localhost:3000"})
+@CrossOrigin(value = {"http://localhost:3000", "https://adminfashion-shop.azurewebsites.net"})
 public interface IDistrictController{
     @GetMapping("/province/{provinceId}/get-districts")
     List<District> getDistrictByProvince( @PathVariable int provinceId);

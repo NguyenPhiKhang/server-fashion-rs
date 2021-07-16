@@ -1,7 +1,6 @@
 package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.ImageData;
-import com.khangse616.serverfashionrs.models.ImageDataSave;
 import com.khangse616.serverfashionrs.repositories.ImageDataRepository;
 import com.khangse616.serverfashionrs.services.IImageDataService;
 import lombok.SneakyThrows;
@@ -53,6 +52,35 @@ public class ImageDataService implements IImageDataService {
             images.add(FileDB);
         }
         return imageDataRepository.saveAll(images);
+    }
+
+    @SneakyThrows
+    @Override
+    public ImageData storeImageData(MultipartFile multipartFile) {
+        String fileName = StringUtils.cleanPath((Objects.requireNonNull(multipartFile.getOriginalFilename())));
+        ImageData FileDB = new ImageData(fileName, fileName, multipartFile.getContentType(), multipartFile.getBytes());
+
+        System.out.println(fileName);
+
+        return imageDataRepository.save(FileDB);
+    }
+
+//    @SneakyThrows
+//    @Override
+//    public ImageData storeImageData(MultipartFile multipartFile, String id) {
+//
+//        return new ImageData(id, id, multipartFile.getContentType(), multipartFile.getBytes());
+//    }
+
+
+    @Override
+    public void saveImage(ImageData imageData) {
+        imageDataRepository.save(imageData);
+    }
+
+    @Override
+    public void removeImageById(String id) {
+        imageDataRepository.deleteById(id);
     }
 
     @Override

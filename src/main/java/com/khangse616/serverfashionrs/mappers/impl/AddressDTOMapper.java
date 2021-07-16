@@ -10,7 +10,7 @@ import com.khangse616.serverfashionrs.services.IImageDataService;
 public class AddressDTOMapper implements RowMapper<AddressDTO, Address> {
     @Override
     public AddressDTO mapRow(Address address) {
-        try{
+        try {
             AddressDTO addressDTO = new AddressDTO();
             addressDTO.setId(address.getId());
             addressDTO.setName(address.getName());
@@ -18,13 +18,17 @@ public class AddressDTOMapper implements RowMapper<AddressDTO, Address> {
             addressDTO.setSpecificAddress(address.getSpecificAddress());
             addressDTO.setCreatedAt(StringUtil.convertTimestampToString(address.getCreatedAt()));
             addressDTO.setUpdateAt(StringUtil.convertTimestampToString(address.getCreatedAt()));
-            addressDTO.setProvince(address.getWard().getProvince());
-            addressDTO.setDistrict(address.getWard().getDistrict());
-            addressDTO.setWard(address.getWard());
+
+            if (address.getWard() != null) {
+                addressDTO.setProvince(address.getWard().getProvince());
+                addressDTO.setDistrict(address.getWard().getDistrict());
+                addressDTO.setWard(address.getWard());
+            }
+
             addressDTO.setDefaultIs(address.isDefaultIs());
 
             return addressDTO;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return null;
         }
     }

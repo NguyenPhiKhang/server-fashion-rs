@@ -2,12 +2,15 @@ package com.khangse616.serverfashionrs.controllers.impl;
 
 import com.khangse616.serverfashionrs.controllers.IUserController;
 import com.khangse616.serverfashionrs.mappers.impl.UserDTOMapper;
+import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.models.dto.InputUserUpdateDTO;
 import com.khangse616.serverfashionrs.models.dto.UserDTO;
 import com.khangse616.serverfashionrs.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,5 +34,15 @@ public class UserController implements IUserController {
     public String createEmailAuto() {
         userService.autoCreateEmail();
         return "done";
+    }
+
+    @Override
+    public UserDTO getDetailUserById(int userId) {
+        return new UserDTOMapper().mapRow(userService.getUserById(userId));
+    }
+
+    @Override
+    public UserDTO updateUser(InputUserUpdateDTO input_user) throws ParseException {
+        return new UserDTOMapper().mapRow(userService.updateUser(input_user));
     }
 }

@@ -122,4 +122,12 @@ public class Address {
     public void setDefaultIs(boolean defaultIs) {
         this.defaultIs = defaultIs;
     }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
 }

@@ -12,5 +12,9 @@ public interface IImageDataService {
     List<ImageData> getAllImages();
     boolean checkExistsId(String id);
     List<ImageData> storesImageData(List<MultipartFile> multipartFiles);
+    ImageData storeImageData(MultipartFile multipartFile);
+//    ImageData storeImageData(MultipartFile multipartFile, String id);
     Optional<ImageData> getFile(String id);
+    void saveImage(ImageData imageData);
+    void removeImageById(String id);
 }

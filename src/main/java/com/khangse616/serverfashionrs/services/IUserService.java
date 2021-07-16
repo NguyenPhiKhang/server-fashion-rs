@@ -1,7 +1,9 @@
 package com.khangse616.serverfashionrs.services;
 
 import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.models.dto.InputUserUpdateDTO;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface IUserService {
@@ -12,4 +14,5 @@ public interface IUserService {
     void autoCreateEmail();
     boolean checkExistEmail(String email);
     User registerUser(String name, String email);
+    User updateUser(InputUserUpdateDTO input_user) throws ParseException;
 }

@@ -7,6 +7,7 @@ import com.khangse616.serverfashionrs.models.Account;
 import com.khangse616.serverfashionrs.models.User;
 import com.khangse616.serverfashionrs.models.dto.AccountDTO;
 import com.khangse616.serverfashionrs.models.dto.AccountRegisterDTO;
+import com.khangse616.serverfashionrs.models.dto.InputChangePassword;
 import com.khangse616.serverfashionrs.services.IAccountService;
 import com.khangse616.serverfashionrs.services.IUserService;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -42,5 +43,15 @@ public class AccountController implements IAccountController {
         User user = userService.registerUser(account.getName(), account.getEmail());
 
         return ResponseEntity.ok().body(new ResponseMessage<>("Đăng ký thành công", new AccountDTOMapper().mapRow(accountService.registerAccount(account.getPassword(), user, role))));
+    }
+
+    @Override
+    public ResponseEntity<ResponseMessage<Integer>> changePassword(int userId, InputChangePassword input) {
+        if(accountService.checkPasswordCorrect(userId, input.getOldPassword())){
+            accountService.updatePassword(userId, input.getNewPassword());
+            return ResponseEntity.ok().body(new ResponseMessage<>("Thay đổi mật khẩu thành công!", 1));
+        }else{
+            return ResponseEntity.ok().body(new ResponseMessage<>("Mật khẩu không đúng!", -1));
+        }
     }
 }

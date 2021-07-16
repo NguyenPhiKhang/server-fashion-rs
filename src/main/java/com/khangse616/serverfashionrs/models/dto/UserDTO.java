@@ -10,7 +10,7 @@ public class UserDTO {
 
     private String name;
     private String email;
-    private Date birthday;
+    private String birthday;
     private String phoneNumber;
     private String sex;
     private boolean active;
@@ -19,10 +19,12 @@ public class UserDTO {
 
     private String image_url;
 
+    private AddressDTO address;
+
     public UserDTO() {
     }
 
-    public UserDTO(int id, String name, String email, Date birthday, String phoneNumber, String sex, boolean active, String timeCreated, String timeUpdated, String image_url) {
+    public UserDTO(int id, String name, String email, String birthday, String phoneNumber, String sex, boolean active, String timeCreated, String timeUpdated, String image_url) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -33,6 +35,20 @@ public class UserDTO {
         this.timeCreated = timeCreated;
         this.timeUpdated = timeUpdated;
         this.image_url = image_url;
+    }
+
+    public UserDTO(int id, String name, String email, String birthday, String phoneNumber, String sex, boolean active, String timeCreated, String timeUpdated, String image_url, AddressDTO address) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.birthday = birthday;
+        this.phoneNumber = phoneNumber;
+        this.sex = sex;
+        this.active = active;
+        this.timeCreated = timeCreated;
+        this.timeUpdated = timeUpdated;
+        this.image_url = image_url;
+        this.address = address;
     }
 
     public int getId() {
@@ -59,11 +75,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -113,5 +129,13 @@ public class UserDTO {
 
     public void setImage_url(String image_url) {
         this.image_url = image_url;
+    }
+
+    public AddressDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressDTO address) {
+        this.address = address;
     }
 }

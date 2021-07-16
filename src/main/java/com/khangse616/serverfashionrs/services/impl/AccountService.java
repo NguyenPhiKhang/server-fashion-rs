@@ -32,4 +32,14 @@ public class AccountService implements IAccountService {
 
         return accountRepository.save(account);
     }
+
+    @Override
+    public boolean checkPasswordCorrect(int userId, String password) {
+        return accountRepository.checkPasswordCorrect(userId, password)>0;
+    }
+
+    @Override
+    public void updatePassword(int userId, String newPassword) {
+        accountRepository.updatePassword(newPassword, userId);
+    }
 }

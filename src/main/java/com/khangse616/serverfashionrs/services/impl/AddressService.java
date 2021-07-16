@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.services.impl;
 
 import com.khangse616.serverfashionrs.models.Address;
+import com.khangse616.serverfashionrs.models.User;
 import com.khangse616.serverfashionrs.repositories.AddressRepository;
 import com.khangse616.serverfashionrs.services.IAddressService;
 import com.khangse616.serverfashionrs.services.IUserService;
@@ -53,11 +54,13 @@ public class AddressService implements IAddressService {
             addressUpdate.setName(address.getName());
             addressUpdate.setNumberPhone(address.getNumberPhone());
             addressUpdate.setDefaultIs(address.isDefaultIs());
-            if (address.isDefaultIs())
-                addressRepository.setDefaultIsFalse(address.getUser().getId());
+            if (address.isDefaultIs()){
+                addressRepository.setDefaultIsFalse(addressUpdate.getUser().getId());
+            }
+
             addressUpdate.setUpdateAt(new Timestamp(System.currentTimeMillis()));
             addressUpdate.setSpecificAddress(address.getSpecificAddress());
-            addressUpdate.setWard(address.getWard());
+            addressUpdate.setWard(address.getWard().getId()==0?null:address.getWard());
 
             addressRepository.save(addressUpdate);
             return "udpate địa chỉ thành công";

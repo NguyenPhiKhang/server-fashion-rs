@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.controllers;
 
-import com.khangse616.serverfashionrs.models.Province;
+
+import com.khangse616.serverfashionrs.models.FlashSale;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @RequestMapping("/default")
-@CrossOrigin(value = {"http://localhost:3000", "https://adminfashion-shop.azurewebsites.net"})
-public interface IProvinceController {
-    @GetMapping("/province/get-all")
-    List<Province> getAllProvince();
+@CrossOrigin(value = {"http://localhost:3000"})
+public interface IFlashSaleController {
+    @GetMapping("/flashsale/get-all")
+    List<FlashSale> getAllFlashSale();
 }

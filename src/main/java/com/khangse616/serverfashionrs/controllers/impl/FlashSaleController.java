@@ -71,11 +71,11 @@ public class FlashSaleController implements IFlashSaleController {
             int dateProgram = Integer.parseInt(v.getDateProgram().toString().replace("-", ""));
             int dateNow = Integer.parseInt(new Date(System.currentTimeMillis()).toString().replace("-", ""));
 
-            if (dateProgram == dateNow) {
-                int timeNow = Integer.parseInt(new Time(System.currentTimeMillis()).toString().replace(":", ""));
-                int timeStart = Integer.parseInt(v.getStartTime().toString().replace(":", ""));
-                int timeEnd = Integer.parseInt(v.getEndTime().toString().replace(":", ""));
+            int timeNow = Integer.parseInt(new Time(System.currentTimeMillis()).toString().replace(":", ""));
+            int timeStart = Integer.parseInt(v.getStartTime().toString().replace(":", ""));
+            int timeEnd = Integer.parseInt(v.getEndTime().toString().replace(":", ""));
 
+            if (dateProgram == dateNow) {
                 if (timeNow == timeStart || (timeNow > timeStart && timeNow < timeEnd))
                     flashSaleDTO.setStatus("Đang diễn ra");
                 else if (timeNow > timeEnd)
@@ -85,7 +85,11 @@ public class FlashSaleController implements IFlashSaleController {
             } else {
                 if (dateProgram < dateNow)
                     flashSaleDTO.setStatus("Đã kết thúc");
-                else flashSaleDTO.setStatus("Chưa diễn ra");
+                else {
+                    if (dateProgram - dateNow == 1 && ((240000-timeNow) + timeStart)<120000)
+                        flashSaleDTO.setStatus("Sắp diễn ra");
+                    else flashSaleDTO.setStatus("Chưa diễn ra");
+                }
             }
 
             return flashSaleDTO;

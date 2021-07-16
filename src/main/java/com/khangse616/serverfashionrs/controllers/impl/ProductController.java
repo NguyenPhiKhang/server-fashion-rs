@@ -7,10 +7,7 @@ import com.khangse616.serverfashionrs.mappers.impl.AttributeOptionDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.ProductDetailDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.ProductItemDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.RatingRSDTOMapper;
-import com.khangse616.serverfashionrs.models.Category;
-import com.khangse616.serverfashionrs.models.CosineSimilarity;
-import com.khangse616.serverfashionrs.models.Product;
-import com.khangse616.serverfashionrs.models.RecommendRating;
+import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.*;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
@@ -57,6 +54,9 @@ public class ProductController implements IProductController {
     @Autowired
     private IHistorySearchService historySearchService;
 
+    @Autowired
+    private IFlashSaleProductService flashSaleProductService;
+
     @Override
     public ResponseEntity<ProductDetailDTO> getProductById(int id, int userId) {
         Product product = productService.findProductByIdVisibleTrue(id);
@@ -66,7 +66,14 @@ public class ProductController implements IProductController {
                 product.setLiked(true);
             }
         }
+
+        FlashSaleProduct flashSaleProduct = flashSaleProductService.getProductFlashSaleInProgress(product.getId());
+
+        if (flashSaleProduct != null)
+            product.setPromotionPercent(flashSaleProduct.getPercentDiscount());
+
         ProductDetailDTO productDetailDTO = new ProductDetailDTOMapper().mapRow(product, imageDataService);
+        productDetailDTO.setFlashSaleProduct(flashSaleProduct);
         return ResponseEntity.ok().body(productDetailDTO);
     }
 
@@ -87,7 +94,15 @@ public class ProductController implements IProductController {
         if (filter.equals("popular")) {
             Page<Product> pageProduct = productService.getProductsByCategoriesOrderByPopular(listId, pageable);
             listProduct = pageProduct.getContent().stream()
-                    .map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
+                    .map(value -> {
+                        ProductItemDTO productItemDTO = new ProductItemDTOMapper().mapRow(value, imageDataService);
+                        FlashSaleProduct flashSaleProduct = flashSaleProductService.getProductFlashSaleInProgress(value.getId());
+
+                        if (flashSaleProduct != null)
+                            productItemDTO.setPromotionPercent(flashSaleProduct.getPercentDiscount());
+
+                        return productItemDTO;
+                    }).collect(Collectors.toList());
         } else {
             if (filter.equals("new")) {
                 Page<Product> pageProduct = productService.getProductsByCategoriesOrderByNew(listId, pageable);
@@ -111,7 +126,15 @@ public class ProductController implements IProductController {
         }
 
         List<ProductItemDTO> listProducts = productService.getProductFilter(search, status, listCategories, page, pageSize)
-                .stream().map(p -> new ProductItemDTOMapper().mapRow(p, imageDataService)).collect(Collectors.toList());
+                .stream().map(p -> {
+                    ProductItemDTO productItemDTO =  new ProductItemDTOMapper().mapRow(p, imageDataService);
+                    FlashSaleProduct flashSaleProduct = flashSaleProductService.getProductFlashSaleInProgress(p.getId());
+
+                    if (flashSaleProduct != null)
+                        productItemDTO.setPromotionPercent(flashSaleProduct.getPercentDiscount());
+
+                    return productItemDTO;
+                }).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(listProducts);
     }
@@ -142,12 +165,29 @@ public class ProductController implements IProductController {
         List<ProductItemDTO> list;
 
         if (userId == 0 || !(ratingService.checkUserIsRated(userId) > 0)) {
-            list = productService.productTopRating((page - 1) * 10).stream().map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
+            list = productService.productTopRating((page - 1) * 10).stream().map(value -> {
+                ProductItemDTO productItemDTO = new ProductItemDTOMapper().mapRow(value, imageDataService);
+                FlashSaleProduct flashSaleProduct = flashSaleProductService.getProductFlashSaleInProgress(value.getId());
+
+                if (flashSaleProduct != null)
+                    productItemDTO.setPromotionPercent(flashSaleProduct.getPercentDiscount());
+
+                return productItemDTO;
+            }).collect(Collectors.toList());
         } else {
             if (!recommendRatingService.checkExistUser(userId)) {
                 recommend_product_for_user(userId);
             }
-            list = productService.productRecommendForUser(userId).stream().map(value -> new ProductItemDTOMapper().mapRow(value, imageDataService)).collect(Collectors.toList());
+            list = productService.productRecommendForUser(userId).stream().map(value -> {
+                ProductItemDTO productItemDTO = new ProductItemDTOMapper().mapRow(value, imageDataService);
+
+                FlashSaleProduct flashSaleProduct = flashSaleProductService.getProductFlashSaleInProgress(value.getId());
+
+                if (flashSaleProduct != null)
+                    productItemDTO.setPromotionPercent(flashSaleProduct.getPercentDiscount());
+
+                return productItemDTO;
+            }).collect(Collectors.toList());
         }
 
         long endTime = new Date().getTime();

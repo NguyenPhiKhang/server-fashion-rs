@@ -1,11 +1,9 @@
 package com.khangse616.serverfashionrs.services.impl;
 
-import com.khangse616.serverfashionrs.models.OptionProductInteger;
-import com.khangse616.serverfashionrs.models.Order;
-import com.khangse616.serverfashionrs.models.OrderItem;
-import com.khangse616.serverfashionrs.models.Product;
+import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.InputOrderItemDTO;
 import com.khangse616.serverfashionrs.repositories.OrderItemRepository;
+import com.khangse616.serverfashionrs.services.IFlashSaleProductService;
 import com.khangse616.serverfashionrs.services.IOptionProductIntegerService;
 import com.khangse616.serverfashionrs.services.IOrderItemService;
 import com.khangse616.serverfashionrs.services.IProductService;
@@ -25,6 +23,9 @@ public class OrderItemService implements IOrderItemService {
 
     @Autowired
     private IOptionProductIntegerService optionProductIntegerService;
+
+    @Autowired
+    private IFlashSaleProductService flashSaleProductService;
 
     @Override
     public boolean checkExistsOrderItem(int id) {
@@ -66,6 +67,12 @@ public class OrderItemService implements IOrderItemService {
 
         product.setOrderCount(product.getOrderCount() + 1);
         orderItem.setProduct(productService.save(product));
+
+        FlashSaleProduct flashSaleProduct = flashSaleProductService.getProductFlashSaleInProgress(orderItemDTO.getProductId());
+        if(flashSaleProduct!=null){
+            flashSaleProduct.setSaleAmount(orderItemDTO.getQuantity());
+            flashSaleProductService.saveFlashSaveProduct(flashSaleProduct);
+        }
 
         orderItemRepository.save(orderItem);
     }

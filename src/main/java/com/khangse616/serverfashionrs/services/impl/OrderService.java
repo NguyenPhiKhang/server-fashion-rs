@@ -37,6 +37,9 @@ public class OrderService implements IOrderService {
     @Autowired
     private IStatusOrderService statusOrderService;
 
+    @Autowired
+    private IFlashSaleProductService flashSaleProductService;
+
     @Override
     public void createOrder(InputOrderDTO orderInput) {
         Order newOrder = new Order();

@@ -31,6 +31,7 @@ public class ProductDetailDTO {
     private float promotionPercent;
     private int totalQuantity;
     private RatingProductDTO ratings;
+    private FlashSaleProduct flashSaleProduct;
 
     private List<AttributeDTO<OptionProductVarchar>> listAttributeVarchar;
 
@@ -258,6 +259,14 @@ public class ProductDetailDTO {
 
     public void setStyle(String style) {
         this.style = style;
+    }
+
+    public FlashSaleProduct getFlashSaleProduct() {
+        return flashSaleProduct;
+    }
+
+    public void setFlashSaleProduct(FlashSaleProduct flashSaleProduct) {
+        this.flashSaleProduct = flashSaleProduct;
     }
 }
 

@@ -28,7 +28,7 @@ public class FlashSaleProduct {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flashsale_id")
-    @JsonIgnore
+//    @JsonIgnore
     private FlashSale flashSale;
 
     public FlashSaleProduct() {

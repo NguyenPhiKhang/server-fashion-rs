@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/v1")
 public interface IFlashSaleProductService {
     List<FlashSaleProduct> getListProductFlashSaleForMobile(int id, int page, int pageSize);
+    FlashSaleProduct getProductFlashSaleInProgress(int productId);
+    void saveFlashSaveProduct(FlashSaleProduct flashSaleProduct);
 }

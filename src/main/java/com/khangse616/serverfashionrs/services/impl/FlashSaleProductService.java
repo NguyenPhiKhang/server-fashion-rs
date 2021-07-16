@@ -19,4 +19,14 @@ public class FlashSaleProductService implements IFlashSaleProductService {
         int pageNew = page < 1 ? 0 : (page - 1) * pageSize;
         return flashSaleProductRepository.getListProductFlashSaleByIdForMobile(id, pageNew, pageSize);
     }
+
+    @Override
+    public FlashSaleProduct getProductFlashSaleInProgress(int productId) {
+        return flashSaleProductRepository.findProductFlashSaleInProgress(productId);
+    }
+
+    @Override
+    public void saveFlashSaveProduct(FlashSaleProduct flashSaleProduct) {
+        flashSaleProductRepository.save(flashSaleProduct);
+    }
 }

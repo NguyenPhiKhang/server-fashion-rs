@@ -1,5 +1,7 @@
 package com.khangse616.serverfashionrs.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class FlashSaleCardDTO {
     private int id;
     private ProductItemDTO productItemDTO;
@@ -18,6 +20,7 @@ public class FlashSaleCardDTO {
         this.id = id;
     }
 
+    @JsonProperty("product_item")
     public ProductItemDTO getProductItemDTO() {
         return productItemDTO;
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+
 public class FlashSaleService implements IFlashSaleService {
 
     @Autowired
@@ -17,5 +18,10 @@ public class FlashSaleService implements IFlashSaleService {
     @Override
     public List<FlashSale> getAllFlashSale() {
         return flashSaleRepository.findAll();
+    }
+
+    @Override
+    public List<FlashSale> getFlashSaleTime() {
+        return flashSaleRepository.getFlashSaleTime();
     }
 }

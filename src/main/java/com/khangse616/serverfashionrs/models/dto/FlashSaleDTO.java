@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.models.dto;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FlashSaleDTO {
@@ -14,6 +15,7 @@ public class FlashSaleDTO {
     private List<FlashSaleCardDTO> flashSaleCards;
 
     public FlashSaleDTO() {
+        flashSaleCards = new ArrayList<>();
     }
 
     public int getId() {

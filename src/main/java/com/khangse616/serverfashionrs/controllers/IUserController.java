@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.util.List;
 
 @RequestMapping("/default")
-@CrossOrigin(value = {"http://localhost:3000"})
+@CrossOrigin(value = {"http://localhost:3000", "https://adminfashion-shop.azurewebsites.net"})
 public interface IUserController {
     @GetMapping("/users/get-users-filter")
     List<UserDTO> getListUserFilter(@RequestParam(value = "search", defaultValue = "") String search,
@@ -30,6 +30,7 @@ public interface IUserController {
 
     @RequestMapping(value = "/user/update", method = RequestMethod.PUT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     UserDTO updateUser(@ModelAttribute("input_user")InputUserUpdateDTO input_user) throws ParseException;
+
 
 
 }

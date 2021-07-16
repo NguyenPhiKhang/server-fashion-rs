@@ -2,10 +2,12 @@ package com.khangse616.serverfashionrs.repositories;
 
 import com.khangse616.serverfashionrs.models.FlashSaleProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -19,4 +21,10 @@ public interface FlashSaleProductRepository extends JpaRepository<FlashSaleProdu
             "where (date_program = curdate()) and (curtime()=start_time or (curtime()>start_time and curtime()<end_time))\n" +
             "and fp.product_id=:productId and fp.sale_amount < quantity", nativeQuery = true)
     FlashSaleProduct findProductFlashSaleInProgress(@Param("productId") int productId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "INSERT INTO `fashionshop_db`.`flashsale_product` (`flashsale_id`, `product_id`, `percent_discount`, `quantity`) " +
+            "VALUES (:flashsaleId, :productId, :discount, :quantity)", nativeQuery = true)
+    void insertFlashSale(@Param("flashsaleId") int flashsaleId, @Param("productId") int productId, @Param("discount") int discount, @Param("quantity") int quantity);
 }

@@ -2,6 +2,7 @@ package com.khangse616.serverfashionrs.services;
 
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
+import com.khangse616.serverfashionrs.models.dto.InputRatingUpdateDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
 
@@ -47,4 +48,6 @@ public interface IRatingService {
     List<Rating> getRatingByUserAndStar(int userId, int star, int page, int pageSize);
 
     Rating getRatingByProductAndProductOption(int userId, int productId, int productOptionId);
+
+    void updateReview(int ratingId, InputRatingUpdateDTO inputReview);
 }

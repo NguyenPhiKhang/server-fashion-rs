@@ -1,26 +1,27 @@
 package com.khangse616.serverfashionrs.services.impl;
 
-import com.khangse616.serverfashionrs.models.Product;
-import com.khangse616.serverfashionrs.models.Rating;
-import com.khangse616.serverfashionrs.models.RatingStar;
-import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.Utils.ImageUtil;
+import com.khangse616.serverfashionrs.models.*;
 import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
+import com.khangse616.serverfashionrs.models.dto.InputRatingUpdateDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.AVGRatedProductDTO;
 import com.khangse616.serverfashionrs.models.dto.RecommendSystem.RatingRSDTO;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
 import com.khangse616.serverfashionrs.repositories.RatingRepository;
 import com.khangse616.serverfashionrs.repositories.RatingStarRepository;
 import com.khangse616.serverfashionrs.repositories.UserRepository;
+import com.khangse616.serverfashionrs.services.IImageDataService;
 import com.khangse616.serverfashionrs.services.IRatingService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,8 @@ public class RatingService implements IRatingService {
     private ProductRepository productRepository;
     @Autowired
     private RatingStarRepository ratingStarRepository;
+    @Autowired
+    private IImageDataService imageDataService;
 
     @Override
     public int checkUserIsRated(int uId) {
@@ -247,21 +250,21 @@ public class RatingService implements IRatingService {
         List<Object[]> objects = ratingRepository.countStarRatingByUser(id);
 
         for (Object[] o : objects) {
-            switch ((int)o[0]){
+            switch ((int) o[0]) {
                 case 1:
-                    countRatingProductDTO.setTotalStar1(((BigInteger)o[1]).intValue());
+                    countRatingProductDTO.setTotalStar1(((BigInteger) o[1]).intValue());
                     break;
                 case 2:
-                    countRatingProductDTO.setTotalStar2(((BigInteger)o[1]).intValue());
+                    countRatingProductDTO.setTotalStar2(((BigInteger) o[1]).intValue());
                     break;
                 case 3:
-                    countRatingProductDTO.setTotalStar3(((BigInteger)o[1]).intValue());
+                    countRatingProductDTO.setTotalStar3(((BigInteger) o[1]).intValue());
                     break;
                 case 4:
-                    countRatingProductDTO.setTotalStar4(((BigInteger)o[1]).intValue());
+                    countRatingProductDTO.setTotalStar4(((BigInteger) o[1]).intValue());
                     break;
                 case 5:
-                    countRatingProductDTO.setTotalStar5(((BigInteger)o[1]).intValue());
+                    countRatingProductDTO.setTotalStar5(((BigInteger) o[1]).intValue());
                     break;
             }
         }
@@ -277,5 +280,52 @@ public class RatingService implements IRatingService {
     @Override
     public Rating getRatingByProductAndProductOption(int userId, int productId, int productOptionId) {
         return ratingRepository.findRatingByProductAndProductOption(userId, productId, productOptionId);
+    }
+
+    @Override
+    public void updateReview(int ratingId, InputRatingUpdateDTO inputReview) {
+        Rating rating = ratingRepository.findById(ratingId).orElse(null);
+        if (rating != null) {
+            rating.setComment(inputReview.getComment());
+            rating.setIncognito(inputReview.isIncognito());
+            rating.setStar(inputReview.getStar());
+
+            Rating ratingSave = ratingRepository.save(rating);
+
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+            saveImage(ratingSave, imageDataService, inputReview.getListFiles());
+//                }
+//            }).start();
+        }
+    }
+
+    @SneakyThrows
+    private void saveImage(Rating rating, IImageDataService imageDataService, List<MultipartFile> files) {
+        if (!(files == null || files.size() == 0)) {
+            Set<ImageData> imageData = new HashSet<>(rating.getDataImages());
+
+            List<MultipartFile> multipartFiles = new ArrayList<>();
+            files.forEach(file -> {
+                String fileName = ImageUtil.fileName(imageDataService, file);
+                try {
+                    MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, file.getContentType(), file.getInputStream());
+                    multipartFiles.add(multipartFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            List<ImageData> imageDataList = imageDataService.storesImageData(multipartFiles);
+
+            rating.setDataImages(new HashSet<>(imageDataList));
+            ratingRepository.save(rating);
+
+            imageData.forEach(v -> {
+                imageDataService.removeImageById(v.getId());
+            });
+
+        }
     }
 }

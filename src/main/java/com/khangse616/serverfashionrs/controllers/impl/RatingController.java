@@ -5,6 +5,7 @@ import com.khangse616.serverfashionrs.mappers.impl.RatingDTOMapper;
 import com.khangse616.serverfashionrs.models.Rating;
 import com.khangse616.serverfashionrs.models.RatingStar;
 import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
+import com.khangse616.serverfashionrs.models.dto.InputRatingUpdateDTO;
 import com.khangse616.serverfashionrs.models.dto.RatingProductDTO;
 import com.khangse616.serverfashionrs.services.IRatingService;
 import com.khangse616.serverfashionrs.services.IRatingStarService;
@@ -60,5 +61,11 @@ import java.util.stream.Collectors;
         ratingProductDTO.setData(ratings.stream()
                 .map(value -> new RatingDTOMapper().mapRow(value)).collect(Collectors.toList()));
         return ResponseEntity.ok().body(ratingProductDTO);
+    }
+
+    @Override
+    public String updateRating(int ratingId, InputRatingUpdateDTO input_review) {
+        ratingService.updateReview(ratingId, input_review);
+        return "Cập nhật thành công!";
     }
 }

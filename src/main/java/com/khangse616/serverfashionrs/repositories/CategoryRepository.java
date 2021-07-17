@@ -35,9 +35,9 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     @Query(value="select c.path from categories c where c.id = :id", nativeQuery = true)
     String findPathCategory(@Param("id") int id);
 
-    @Query("select c from Category c order by c.level")
-    Page<Category> findAllCategoriesOrderByLevel(Pageable pageable);
+    @Query("select c from Category c where c.name like %:search% order by c.level")
+    Page<Category> findAllCategoriesOrderByLevel(@Param("search") String search, Pageable pageable);
 
-    @Query("select count(c) from Category c order by c.level")
-    int countCategories();
+    @Query("select count(c) from Category c where c.name like %:search% order by c.level")
+    int countCategories(@Param("search") String search);
 }

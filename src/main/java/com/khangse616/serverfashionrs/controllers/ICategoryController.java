@@ -1,8 +1,12 @@
 package com.khangse616.serverfashionrs.controllers;
 
+import com.khangse616.serverfashionrs.messages.ResponseMessage;
 import com.khangse616.serverfashionrs.models.Category;
 import com.khangse616.serverfashionrs.models.dto.CategoryScreenDTO;
 import com.khangse616.serverfashionrs.models.dto.CategoryDetailDTO;
+import com.khangse616.serverfashionrs.models.dto.InputCategoryDTO;
+import com.khangse616.serverfashionrs.models.dto.InputUserUpdateDTO;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +41,14 @@ public interface ICategoryController {
     CategoryDetailDTO getPathCategory(@PathVariable int id);
 
     @GetMapping("/categories/get-all")
-    List<CategoryScreenDTO> getAllCategories(@RequestParam(value = "p", defaultValue = "1") int page, @RequestParam(value = "p_size", defaultValue = "5") int pageSize);
+    List<CategoryScreenDTO> getAllCategories(@RequestParam(value = "p", defaultValue = "1") int page, @RequestParam(value = "p_size", defaultValue = "5") int pageSize, @RequestParam(value = "search", defaultValue = "") String search);
 
     @GetMapping("/categories/count-record")
-    int countCategories();
+    int countCategories(@RequestParam(value = "search", defaultValue = "") String search);
+
+    @RequestMapping(value = "/category/create-new", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    String createNewCategory(@ModelAttribute("input_category") InputCategoryDTO inputCategory);
+
+    @DeleteMapping("/category/{idCategory}/delete")
+    ResponseEntity<ResponseMessage<Integer>> deleteCategoryById(@PathVariable int idCategory);
 }

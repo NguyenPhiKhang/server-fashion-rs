@@ -2,11 +2,15 @@ package com.khangse616.serverfashionrs.controllers.impl;
 
 import com.khangse616.serverfashionrs.controllers.IBrandController;
 import com.khangse616.serverfashionrs.mappers.impl.BrandDTOMapper;
+import com.khangse616.serverfashionrs.messages.ResponseMessage;
 import com.khangse616.serverfashionrs.models.Brand;
 import com.khangse616.serverfashionrs.models.dto.BrandDTO;
+import com.khangse616.serverfashionrs.models.dto.InputBrandDTO;
+import com.khangse616.serverfashionrs.repositories.BrandRepository;
 import com.khangse616.serverfashionrs.services.IBrandService;
 import com.khangse616.serverfashionrs.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +25,9 @@ public class BrandController implements IBrandController {
 
     @Autowired
     private IProductService productService;
+
+    @Autowired
+    private BrandRepository brandRepository;
 
     @Override
     public List<BrandDTO> getAllBrand() {
@@ -44,5 +51,23 @@ public class BrandController implements IBrandController {
     @Override
     public BrandDTO getBrandById(int id) {
         return new BrandDTOMapper().mapRow(brandService.getBrandById(id));
+    }
+
+    @Override
+    public String createNewBrand(InputBrandDTO inputBrand) {
+        brandService.createNewCategory(inputBrand);
+        if(inputBrand.getId()==0)
+            return "Tạo danh mục thành công!";
+        else return "Cập nhật thành công!";
+    }
+
+    @Override
+    public ResponseEntity<ResponseMessage<Integer>> deleteBrandById(int idBrand) {
+        try{
+            brandRepository.deleteById(idBrand);
+            return ResponseEntity.ok().body(new ResponseMessage<>("Xoá thành công", 1));
+        }catch (Exception ex){
+            return ResponseEntity.ok().body(new ResponseMessage<>("Không xoá được", -1));
+        }
     }
 }

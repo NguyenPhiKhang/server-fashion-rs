@@ -45,4 +45,9 @@ public class UserController implements IUserController {
     public UserDTO updateUser(InputUserUpdateDTO input_user) throws ParseException {
         return new UserDTOMapper().mapRow(userService.updateUser(input_user));
     }
+
+    @Override
+    public void getRatingByUser(String userId) {
+
+    }
 }

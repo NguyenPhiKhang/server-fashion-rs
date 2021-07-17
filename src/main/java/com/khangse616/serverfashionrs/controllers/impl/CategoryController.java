@@ -3,9 +3,12 @@ package com.khangse616.serverfashionrs.controllers.impl;
 import com.khangse616.serverfashionrs.controllers.ICategoryController;
 import com.khangse616.serverfashionrs.mappers.impl.CategoryScreenDTOMapper;
 import com.khangse616.serverfashionrs.mappers.impl.CategoryDetailDTOMapper;
+import com.khangse616.serverfashionrs.messages.ResponseMessage;
 import com.khangse616.serverfashionrs.models.Category;
 import com.khangse616.serverfashionrs.models.dto.CategoryScreenDTO;
 import com.khangse616.serverfashionrs.models.dto.CategoryDetailDTO;
+import com.khangse616.serverfashionrs.models.dto.InputCategoryDTO;
+import com.khangse616.serverfashionrs.repositories.CategoryRepository;
 import com.khangse616.serverfashionrs.services.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,9 @@ import java.util.stream.Collectors;
 public class CategoryController implements ICategoryController {
     @Autowired
     private ICategoryService categoryService;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public ResponseEntity<Set<Category>> getCategoriesByParentCategory(int parentId) {
@@ -188,13 +194,31 @@ public class CategoryController implements ICategoryController {
     }
 
     @Override
-    public List<CategoryScreenDTO> getAllCategories(int page, int pageSize) {
-        return categoryService.findAllCategoriesOrderByLevel(page, pageSize).stream().map(v->new CategoryScreenDTOMapper().mapRow(v)).collect(Collectors.toList());
+    public List<CategoryScreenDTO> getAllCategories(int page, int pageSize, String search) {
+        return categoryService.findAllCategoriesOrderByLevel(page, pageSize, search).stream().map(v->new CategoryScreenDTOMapper().mapRow(v)).collect(Collectors.toList());
     }
 
     @Override
-    public int countCategories() {
-        return categoryService.countCategories();
+    public int countCategories(String search) {
+        return categoryService.countCategories(search);
+    }
+
+    @Override
+    public String createNewCategory(InputCategoryDTO inputCategory) {
+        categoryService.createNewCategory(inputCategory);
+        if(inputCategory.getId()==0)
+            return "Tạo danh mục thành công!";
+        else return "Cập nhật thành công!";
+    }
+
+    @Override
+    public ResponseEntity<ResponseMessage<Integer>> deleteCategoryById(int idCategory) {
+        try{
+            categoryRepository.deleteById(idCategory);
+            return ResponseEntity.ok().body(new ResponseMessage<>("Xoá thành công", 1));
+        }catch (Exception ex){
+            return ResponseEntity.ok().body(new ResponseMessage<>("Không xoá được", -1));
+        }
     }
 
     //    @GetMapping("/categories")

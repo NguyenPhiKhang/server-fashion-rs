@@ -31,6 +31,7 @@ public interface IUserController {
     @RequestMapping(value = "/user/update", method = RequestMethod.PUT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     UserDTO updateUser(@ModelAttribute("input_user")InputUserUpdateDTO input_user) throws ParseException;
 
-
+    @GetMapping("/user/{userId}/get-rating")
+    void getRatingByUser(@PathVariable String userId);
 
 }

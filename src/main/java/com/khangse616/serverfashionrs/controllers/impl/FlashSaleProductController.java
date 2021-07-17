@@ -46,7 +46,7 @@ public class FlashSaleProductController implements IFlashSaleProductController {
     public void autoCreateProductFlashSale() {
         List<Integer> listId = productRepository.getListIdProductRandom();
         Random rd = new Random();
-        for(int i =4;i<11;i++){
+        for(int i =11;i<16;i++){
             int n_rd = 18 + rd.nextInt(25);
             for (int j = 0; j<n_rd;j++){
                 FlashSaleProduct flashSaleProduct = new FlashSaleProduct();

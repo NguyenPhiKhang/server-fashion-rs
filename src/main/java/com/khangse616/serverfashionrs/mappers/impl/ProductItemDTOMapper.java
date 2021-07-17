@@ -102,7 +102,7 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
             productItemDTO.setPrice(price);
 
             if (optionProductImg != null) {
-                if (optionProductImg.getValue() == null)
+                if (optionProductImg.getValue() == null || optionProductImg.getValue().isEmpty())
                     productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
                 else if (optionProductImg.getValue().contains("http")) {
                     productItemDTO.setImgUrl(optionProductImg.getValue());
@@ -116,7 +116,7 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
                             productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
                         } else productItemDTO.setImgUrl("http:" + imageData.getLink().replace("fill_size", "255x298"));
                     } else {
-                        productItemDTO.setImgUrl("http:" + imageData.getLink().replace("fill_size", "255x298"));
+                        productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
                     }
                 }
             } else

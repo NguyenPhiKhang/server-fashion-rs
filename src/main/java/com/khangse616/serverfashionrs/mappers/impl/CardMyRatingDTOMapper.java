@@ -94,7 +94,7 @@ public class CardMyRatingDTOMapper implements RowMapper<CardMyRatingDTO, Rating>
                         } else
                             cardMyRatingDTO.setImageProduct("http:" + imageData.getLink().replace("fill_size", "255x298"));
                     } else {
-                        cardMyRatingDTO.setImageProduct("http:" + imageData.getLink().replace("fill_size", "255x298"));
+                        cardMyRatingDTO.setImageProduct("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
                     }
                 }
             } else

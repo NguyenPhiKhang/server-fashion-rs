@@ -43,6 +43,7 @@ public class DetailOrderDTOMapper implements RowMapper<DetailOrderDTO, Order> {
                 Product product = orderItem.getProduct();
                 orderItemDTO.setProductId(product.getId());
                 orderItemDTO.setName(product.getName());
+                orderItemDTO.setReviewStatus(orderItem.isReviewStatus());
 
                 if (product.getTypeId().equals("configurable")) {
                     Product productOption = orderItem.getProductOption();

@@ -13,6 +13,16 @@ public interface IFlashSaleProductController {
                                                             @RequestParam(value = "p", defaultValue = "1") int page,
                                                             @RequestParam(value = "p_size", defaultValue = "10") int pageSize);
 
+    @GetMapping("/flashsale/{id}/products-fs-admin")
+    List<FlashSaleCardDTO> getListProductFlashSaleForAdmin(@PathVariable("id") int id,
+                                                            @RequestParam(value = "s", defaultValue = "") String search,
+                                                            @RequestParam(value = "p", defaultValue = "1") int page,
+                                                            @RequestParam(value = "p_size", defaultValue = "10") int pageSize);
+
     @PostMapping("/flashsale/auto-create-product-flashsale")
     void autoCreateProductFlashSale();
+
+    @GetMapping("/flashsale/{id}/count-product-fs-admin")
+    int countListProductFlashSaleForAdmin(@PathVariable("id") int id,
+                                          @RequestParam(value = "s", defaultValue = "") String search);
 }

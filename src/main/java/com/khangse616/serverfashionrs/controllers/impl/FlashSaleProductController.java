@@ -43,6 +43,11 @@ public class FlashSaleProductController implements IFlashSaleProductController {
     }
 
     @Override
+    public List<FlashSaleCardDTO> getListProductFlashSaleForAdmin(int id, String search, int page, int pageSize) {
+        return flashSaleProductService.getListProductFlashSaleForAdmin(id, search, page, pageSize).stream().map(v->new FlashSaleCardDTOMapper().mapRow(v, imageDataService)).collect(Collectors.toList());
+    }
+
+    @Override
     public void autoCreateProductFlashSale() {
         List<Integer> listId = productRepository.getListIdProductRandom();
         Random rd = new Random();
@@ -60,5 +65,10 @@ public class FlashSaleProductController implements IFlashSaleProductController {
                 listId.remove(0);
             }
         }
+    }
+
+    @Override
+    public int countListProductFlashSaleForAdmin(int id, String search) {
+        return flashSaleProductService.countListProductFlashSaleForAdmin(id, search);
     }
 }

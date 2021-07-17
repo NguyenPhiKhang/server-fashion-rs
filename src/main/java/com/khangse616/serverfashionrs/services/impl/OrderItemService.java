@@ -105,4 +105,14 @@ public class OrderItemService implements IOrderItemService {
     public OrderItem getOrderItem(int id) {
         return orderItemRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public void updateIsReview(int id, int reviewStatus) {
+        OrderItem orderItem = orderItemRepository.findById(id).orElse(null);
+        if(orderItem!=null){
+            orderItem.setReviewStatus(reviewStatus==1);
+            orderItem.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            orderItemRepository.save(orderItem);
+        }
+    }
 }

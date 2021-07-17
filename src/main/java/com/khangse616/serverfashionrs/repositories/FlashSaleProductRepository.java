@@ -15,6 +15,21 @@ public interface FlashSaleProductRepository extends JpaRepository<FlashSaleProdu
     @Query(value = "SELECT * FROM fashionshop_db.flashsale_product where flashsale_id = :id and sale_amount < quantity order by percent_discount desc, sale_amount desc limit :page, :pageSize", nativeQuery = true)
     List<FlashSaleProduct> getListProductFlashSaleByIdForMobile(@Param("id") int id, @Param("page") int page, @Param("pageSize") int pageSize);
 
+    @Query(value = "SELECT * FROM \n" +
+            "fashionshop_db.flashsale_product fp join fashionshop_db.products p \n" +
+            "on fp.product_id = p.id \n" +
+            "where flashsale_id = :flashsaleId and p.name like %:search% \n" +
+            "order by fp.percent_discount desc, fp.sale_amount desc \n" +
+            "limit :page, :pageSize", nativeQuery = true)
+    List<FlashSaleProduct> getListProductFlashSaleByIdForAdmin(@Param("flashsaleId") int flashsaleId, @Param("search") String search, @Param("page") int page, @Param("pageSize") int pageSize);
+
+    @Query(value = "SELECT count(*) FROM \n" +
+            "fashionshop_db.flashsale_product fp join fashionshop_db.products p \n" +
+            "on fp.product_id = p.id \n" +
+            "where flashsale_id = :flashsaleId and p.name like %:search% \n" +
+            "order by fp.percent_discount desc, fp.sale_amount desc \n", nativeQuery = true)
+    int countListProductFlashSaleByIdForAdmin(@Param("flashsaleId") int flashsaleId, @Param("search") String search);
+
     @Query(value = "SELECT fp.* FROM \n" +
             "fashionshop_db.flashsale f join fashionshop_db.flashsale_product fp\n" +
             "on f.id = fp.flashsale_id\n" +

@@ -10,4 +10,5 @@ public interface IOrderItemService {
     void save(OrderItem orderItem);
     void updateWhenCancelOrReturns(OrderItem orderItem);
     OrderItem getOrderItem(int id);
+    void updateIsReview(int id, int reviewStatus);
 }

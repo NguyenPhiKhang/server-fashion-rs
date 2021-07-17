@@ -10,4 +10,6 @@ public interface IFlashSaleProductService {
     List<FlashSaleProduct> getListProductFlashSaleForMobile(int id, int page, int pageSize);
     FlashSaleProduct getProductFlashSaleInProgress(int productId);
     void saveFlashSaveProduct(FlashSaleProduct flashSaleProduct);
+    List<FlashSaleProduct> getListProductFlashSaleForAdmin(int id, String search, int page, int pageSize);
+    int countListProductFlashSaleForAdmin(int id, String search);
 }

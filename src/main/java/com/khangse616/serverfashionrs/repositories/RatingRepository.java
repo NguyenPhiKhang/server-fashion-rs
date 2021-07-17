@@ -76,4 +76,10 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
 
     @Query(value = "select u.id as userId, r.product_id as productId, r.star from users u left join ratings r on u.id = r.user_id order by u.id" ,nativeQuery = true)
     List<Object[]> getUserLeftJoinRating();
+
+    @Query(value = "SELECT star, count(*) as amount FROM fashionshop_db.ratings where user_id = :userId group by star order by star asc", nativeQuery = true)
+    List<Object[]> countStarRatingByUser(@Param("userId") int userId);
+
+    @Query(value = "SELECT * FROM fashionshop_db.ratings where user_id = :userId and star = case when :star=0 then star else :star end order by time_updated desc limit :page, :pageSize", nativeQuery = true)
+    List<Rating> findRatingByUserAndStar(@Param("userId") int userId, @Param("star") int star, @Param("page") int page, @Param("pageSize") int pageSize);
 }

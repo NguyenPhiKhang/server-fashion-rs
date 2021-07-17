@@ -41,4 +41,8 @@ public interface IRatingService {
     void autoInsertRating();
 
     List<RatingRSDTO> getUserLeftJoinRating();
+
+    CountRatingProductDTO countStarRatingByUser(int id);
+
+    List<Rating> getRatingByUserAndStar(int userId, int star, int page, int pageSize);
 }

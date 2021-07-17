@@ -15,6 +15,7 @@ import com.khangse616.serverfashionrs.services.IRatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -237,5 +238,39 @@ public class RatingService implements IRatingService {
             ratingRSDTOList.add(dto);
         }
         return ratingRSDTOList;
+    }
+
+    @Override
+    public CountRatingProductDTO countStarRatingByUser(int id) {
+        CountRatingProductDTO countRatingProductDTO = new CountRatingProductDTO();
+
+        List<Object[]> objects = ratingRepository.countStarRatingByUser(id);
+
+        for (Object[] o : objects) {
+            switch ((int)o[0]){
+                case 1:
+                    countRatingProductDTO.setTotalStar1(((BigInteger)o[1]).intValue());
+                    break;
+                case 2:
+                    countRatingProductDTO.setTotalStar2(((BigInteger)o[1]).intValue());
+                    break;
+                case 3:
+                    countRatingProductDTO.setTotalStar3(((BigInteger)o[1]).intValue());
+                    break;
+                case 4:
+                    countRatingProductDTO.setTotalStar4(((BigInteger)o[1]).intValue());
+                    break;
+                case 5:
+                    countRatingProductDTO.setTotalStar5(((BigInteger)o[1]).intValue());
+                    break;
+            }
+        }
+        return countRatingProductDTO;
+    }
+
+    @Override
+    public List<Rating> getRatingByUserAndStar(int userId, int star, int page, int pageSize) {
+        int pageNew = page < 1 ? 0 : (page - 1) * pageSize;
+        return ratingRepository.findRatingByUserAndStar(userId, star, pageNew, pageSize);
     }
 }

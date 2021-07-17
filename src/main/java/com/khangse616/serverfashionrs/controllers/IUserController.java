@@ -1,6 +1,8 @@
 package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.User;
+import com.khangse616.serverfashionrs.models.dto.CardMyRatingDTO;
+import com.khangse616.serverfashionrs.models.dto.CountRatingProductDTO;
 import com.khangse616.serverfashionrs.models.dto.InputUserUpdateDTO;
 import com.khangse616.serverfashionrs.models.dto.UserDTO;
 import org.springframework.http.MediaType;
@@ -32,6 +34,12 @@ public interface IUserController {
     UserDTO updateUser(@ModelAttribute("input_user")InputUserUpdateDTO input_user) throws ParseException;
 
     @GetMapping("/user/{userId}/get-rating")
-    void getRatingByUser(@PathVariable String userId);
+    List<CardMyRatingDTO> getRatingByUser(@PathVariable("userId") int userId,
+                                          @RequestParam(value = "star", defaultValue = "0") int star,
+                                          @RequestParam(value = "p", defaultValue = "1") int page,
+                                          @RequestParam(value = "p_size", defaultValue = "10") int pageSize);
+
+    @GetMapping("/user/{userId}/count-star-rating")
+    CountRatingProductDTO countStarRatingByUser(@PathVariable int userId);
 
 }

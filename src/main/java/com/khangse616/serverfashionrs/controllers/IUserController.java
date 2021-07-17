@@ -42,4 +42,7 @@ public interface IUserController {
     @GetMapping("/user/{userId}/count-star-rating")
     CountRatingProductDTO countStarRatingByUser(@PathVariable int userId);
 
+    @GetMapping("/user/{userId}/get-rating-of_oder")
+    CardMyRatingDTO getRatingOfOrderByUser(@PathVariable("userId") int userId, @RequestParam("product_id")int productId, @RequestParam("product_option") int productOptionId);
+
 }

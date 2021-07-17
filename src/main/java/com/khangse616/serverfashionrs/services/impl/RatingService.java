@@ -273,4 +273,9 @@ public class RatingService implements IRatingService {
         int pageNew = page < 1 ? 0 : (page - 1) * pageSize;
         return ratingRepository.findRatingByUserAndStar(userId, star, pageNew, pageSize);
     }
+
+    @Override
+    public Rating getRatingByProductAndProductOption(int userId, int productId, int productOptionId) {
+        return ratingRepository.findRatingByProductAndProductOption(userId, productId, productOptionId);
+    }
 }

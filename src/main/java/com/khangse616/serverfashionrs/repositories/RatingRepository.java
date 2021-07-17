@@ -82,4 +82,7 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
 
     @Query(value = "SELECT * FROM fashionshop_db.ratings where user_id = :userId and star = case when :star=0 then star else :star end order by time_updated desc limit :page, :pageSize", nativeQuery = true)
     List<Rating> findRatingByUserAndStar(@Param("userId") int userId, @Param("star") int star, @Param("page") int page, @Param("pageSize") int pageSize);
+
+    @Query(value = "select * from fashionshop_db.ratings where user_id = :userId and product_id = :productId and product_attribute_id = :productOptionId order by time_updated desc limit 1", nativeQuery = true)
+    Rating findRatingByProductAndProductOption(@Param("userId") int userId, @Param("productId") int productId, @Param("productOptionId") int productOptionId);
 }

@@ -34,10 +34,10 @@ public class OrderDTOMapper implements RowMapper<OrderCardDTO, Order> {
                 orderItemDTO.setName(product.getName());
                 orderItemDTO.setReviewStatus(orderItem.isReviewStatus());
 
-                if (product.getTypeId().equals("configurable")) {
-                    Product productOption = orderItem.getProductOption();
-                    orderItemDTO.setProductOptionId(productOption.getId());
+                Product productOption = orderItem.getProductOption();
+                orderItemDTO.setProductOptionId(productOption.getId());
 
+                if (product.getTypeId().equals("configurable")) {
                     for (OptionProductVarchar optionProductVarchar : productOption.getOptionProductVarchars()) {
                         Attribute attribute = optionProductVarchar.getAttribute();
                         if (attribute.getId() == 80) {

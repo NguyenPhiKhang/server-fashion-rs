@@ -68,4 +68,9 @@ public class UserController implements IUserController {
     public CountRatingProductDTO countStarRatingByUser(int userId) {
         return ratingService.countStarRatingByUser(userId);
     }
+
+    @Override
+    public CardMyRatingDTO getRatingOfOrderByUser(int userId, int productId, int productOptionId) {
+        return new CardMyRatingDTOMapper().mapRow(ratingService.getRatingByProductAndProductOption(userId, productId, productOptionId), imageDataService);
+    }
 }

@@ -93,6 +93,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query(value = "SELECT count(*) FROM fashionshop_db.products where brand_id is null and visibility=1", nativeQuery = true)
     int countProductByBrandIsNull();
 
-    @Query(value = "SELECT id FROM fashionshop_db.products where visibility = 1 order by short_description desc limit 300", nativeQuery = true)
+    @Query(value = "SELECT id FROM fashionshop_db.products where visibility = 1 order by material desc limit 400", nativeQuery = true)
     List<Integer> getListIdProductRandom();
 }

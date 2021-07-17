@@ -303,29 +303,31 @@ public class RatingService implements IRatingService {
 
     @SneakyThrows
     private void saveImage(Rating rating, IImageDataService imageDataService, List<MultipartFile> files) {
-        if (!(files == null || files.size() == 0)) {
+        if (files != null) {
             Set<ImageData> imageData = new HashSet<>(rating.getDataImages());
 
-            List<MultipartFile> multipartFiles = new ArrayList<>();
-            files.forEach(file -> {
-                String fileName = ImageUtil.fileName(imageDataService, file);
-                try {
-                    MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, file.getContentType(), file.getInputStream());
-                    multipartFiles.add(multipartFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+            if (files.size() > 0) {
+                List<MultipartFile> multipartFiles = new ArrayList<>();
+                files.forEach(file -> {
+                    String fileName = ImageUtil.fileName(imageDataService, file);
+                    try {
+                        MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, file.getContentType(), file.getInputStream());
+                        multipartFiles.add(multipartFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
 
-            List<ImageData> imageDataList = imageDataService.storesImageData(multipartFiles);
+                List<ImageData> imageDataList = imageDataService.storesImageData(multipartFiles);
 
-            rating.setDataImages(new HashSet<>(imageDataList));
+                rating.setDataImages(new HashSet<>(imageDataList));
+            }else{
+                rating.setDataImages(null);
+            }
             ratingRepository.save(rating);
-
             imageData.forEach(v -> {
                 imageDataService.removeImageById(v.getId());
             });
-
         }
     }
 }

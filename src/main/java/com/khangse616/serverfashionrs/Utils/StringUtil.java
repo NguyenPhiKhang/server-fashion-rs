@@ -125,4 +125,15 @@ public class StringUtil {
 
         return proxyArray;
     }
+
+    public static String incognitoName(String str){
+        int len = str.length();
+        StringBuilder sb = new StringBuilder(len);
+        for(int i = 0; i < len-1; i++){
+            if(i>len/3)
+                sb.append('*');
+            else sb.append(str.charAt(i));
+        }
+        return sb.toString();
+    }
 }

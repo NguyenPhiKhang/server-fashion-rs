@@ -28,7 +28,11 @@ public class RatingDTOMapper implements RowMapper<RatingDTO, Rating> {
             ratingDTO.setStar(rating.getStar());
             ratingDTO.setImageAvatar(user.getImageAvatar() == null ? "https://media3.scdn.vn/images/apps/icon_user_default.png" : user.getImageAvatar().getLink());
             ratingDTO.setTimeUpdated(StringUtil.convertTimestampToString(rating.getTimeUpdated()));
-            ratingDTO.setUserName(user.getName());
+
+            if(rating.getIncognito())
+                ratingDTO.setUserName(StringUtil.incognitoName(user.getName()));
+            else ratingDTO.setUserName(user.getName());
+
 
 //            ratingDTO.setImageRating(rating.getDataImages().stream().map(v->"http:"+ v.getLink().replace("fill_size", "255x298")).collect(Collectors.toList()));
 

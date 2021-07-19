@@ -3,10 +3,13 @@ package com.khangse616.serverfashionrs.controllers.impl;
 import com.khangse616.serverfashionrs.controllers.IFlashSaleProductController;
 import com.khangse616.serverfashionrs.controllers.IProductController;
 import com.khangse616.serverfashionrs.mappers.impl.FlashSaleCardDTOMapper;
+import com.khangse616.serverfashionrs.models.FlashSale;
 import com.khangse616.serverfashionrs.models.FlashSaleProduct;
 import com.khangse616.serverfashionrs.models.dto.FlashSaleCardDTO;
+import com.khangse616.serverfashionrs.models.dto.InputAddProductFlashSale;
 import com.khangse616.serverfashionrs.models.dto.ProductDetailDTO;
 import com.khangse616.serverfashionrs.repositories.FlashSaleProductRepository;
+import com.khangse616.serverfashionrs.repositories.FlashSaleRepository;
 import com.khangse616.serverfashionrs.repositories.ProductRepository;
 import com.khangse616.serverfashionrs.services.IFlashSaleProductService;
 import com.khangse616.serverfashionrs.services.IImageDataService;
@@ -37,6 +40,9 @@ public class FlashSaleProductController implements IFlashSaleProductController {
     @Autowired
     private IProductController productController;
 
+    @Autowired
+    private FlashSaleRepository flashSaleRepository;
+
     @Override
     public List<FlashSaleCardDTO> getListProductFlashSaleForMobile(int id, int page, int pageSize) {
         return flashSaleProductService.getListProductFlashSaleForMobile(id, page, pageSize).stream().map(v->new FlashSaleCardDTOMapper().mapRow(v, imageDataService)).collect(Collectors.toList());
@@ -51,7 +57,7 @@ public class FlashSaleProductController implements IFlashSaleProductController {
     public void autoCreateProductFlashSale() {
         List<Integer> listId = productRepository.getListIdProductRandom();
         Random rd = new Random();
-        for(int i =5;i<16;i++){
+        for(int i =16;i<18;i++){
             int n_rd = 18 + rd.nextInt(25);
             for (int j = 0; j<n_rd;j++){
                 FlashSaleProduct flashSaleProduct = new FlashSaleProduct();
@@ -70,5 +76,30 @@ public class FlashSaleProductController implements IFlashSaleProductController {
     @Override
     public int countListProductFlashSaleForAdmin(int id, String search) {
         return flashSaleProductService.countListProductFlashSaleForAdmin(id, search);
+    }
+
+    @Override
+    public String deleteFlashSaleProductById(int id) {
+        flashSaleProductRepository.deleteById(id);
+        return "Xoá thành công";
+    }
+
+    @Override
+    public String addProductFlashSale(int id, InputAddProductFlashSale input) {
+        for(int idP: input.getListProductId()){
+            FlashSaleProduct flashSaleProduct = new FlashSaleProduct();
+            flashSaleProduct.setQuantity(input.getQuantity());
+            flashSaleProduct.setPercentDiscount(input.getPercent());
+            flashSaleProduct.setProduct(productRepository.findById(idP));
+            FlashSale flashSale =  flashSaleRepository.findById(id).orElse(null);
+            if(flashSale!=null){
+                flashSaleProduct.setFlashSale(flashSale);
+            }
+
+            flashSaleProductRepository.save(flashSaleProduct);
+        }
+
+
+        return "Cập nhật thành công!";
     }
 }

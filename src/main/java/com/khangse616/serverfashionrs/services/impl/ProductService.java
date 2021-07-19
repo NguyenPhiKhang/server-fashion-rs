@@ -114,7 +114,7 @@ public class ProductService implements IProductService {
 
         List<Product> list = productRepository.getProductsVisibilityTrue();
 
-        HashMap<Product, Double> listProductSearch = RecommendSystemUtil.calcCosineSimilarityText(textTest, list);
+        HashMap<Product, Double> listProductSearch = RecommendSystemUtil.calcCosineSimilarityText(textTest, list, "all");
 
         System.out.println(listProductSearch.size());
 
@@ -140,9 +140,9 @@ public class ProductService implements IProductService {
 
         System.out.println(page);
 
-        return RecommendSystemUtil.calcCosineSimilarityText(search, list).entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-                .skip(page * 15L)
-                .limit(15)
+        return RecommendSystemUtil.calcCosineSimilarityText(search, list, "category").entrySet().stream().sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
+                .skip(page * 14L)
+                .limit(14)
                 .map(entry -> new SearchProductDTOMapper().mapRow(entry, imageDataService))
                 .collect(Collectors.toList());
     }
@@ -152,21 +152,33 @@ public class ProductService implements IProductService {
         return productRepository.findById(id);
     }
 
+
+//    public List<Product> getListProductSimilarityCategory(int id){
+//        String categoryName = productRepository.findNameCategoryByProduct(id);
+//
+//
+//        return null;
+//    }
+
     @Override
     public List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService, int page) {
-        String shortDescOrName = productRepository.getShortDescriptionOrName(id);
-        List<Product> list = productRepository.getProductAndShortDescriptionExceptProduct(id);
+//        String shortDescOrName = productRepository.getShortDescriptionOrName(id);
+//        String categoryName = productRepository.findNameCategoryByProduct(id);
+        String productName = productRepository.getNameProduct(id);
 
-        return RecommendSystemUtil.calcCosineSimilarityText(shortDescOrName, list).entrySet().stream()
+        List<Product> list = productRepository.getProductAndShortDescriptionExceptProduct(id);
+//        List<Product> listProduct = new ArrayList<>(RecommendSystemUtil.calcCosineSimilarityText(categoryName, list, "category").keySet());
+
+        return RecommendSystemUtil.calcCosineSimilarityText(productName, list, "category").entrySet().stream()
                 .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-                .skip(page * 15L)
-                .limit(15)
+                .skip(page * 14L)
+                .limit(14)
                 .map(v -> new ProductItemDTOMapper().mapRow(v.getKey(), imageDataService))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page) {
+    public List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page, String sameFor) {
         List<Integer> listIdProduct = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 10);
         Page<Object[]> pageSeen = productRepository.getShortDescriptionOrNameByUser(userId, pageable);
@@ -184,7 +196,7 @@ public class ProductService implements IProductService {
         DocumentProperties[] docProperties = new DocumentProperties[noOfDocs];
         SortedSet<String> wordList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         for (int i = 0; i < noOfDocs; i++) {
-            docProperties[i] = TfidfObj.calculateTF(list.get(i), wordList);
+            docProperties[i] = TfidfObj.calculateTF(list.get(i), wordList, sameFor);
         }
 
         //calculating InverseDocument frequency
@@ -228,8 +240,8 @@ public class ProductService implements IProductService {
 
         return listProductAlsoLike.entrySet().stream()
                 .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
-                .skip(page * 15L)
-                .limit(15)
+                .skip(page * 14L)
+                .limit(14)
                 .map(v -> new ProductItemDTOMapper().mapRow(v.getKey(), imageDataService))
                 .collect(Collectors.toList());
     }

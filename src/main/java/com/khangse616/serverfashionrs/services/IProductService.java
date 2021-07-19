@@ -26,7 +26,7 @@ public interface IProductService {
     List<HashMap<String, Double>> calcContentBasedTest(String textTest);
     List<SearchProductDTO> getProductSearch(String search, IImageDataService imageDataService, int page);
     List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService, int page);
-    List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page);
+    List<ProductItemDTO> getProductsAlsoLike(int userId, IImageDataService imageDataService, int page, String sameFor);
     void reviewProduct(int userId, InputReviewProductDTO inputReview);
     Product save(Product product);
     Page<Product> getProductByCategoryOrderPopular(int id, Pageable pageable);

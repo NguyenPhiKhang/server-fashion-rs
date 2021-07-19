@@ -663,7 +663,7 @@ public class ProductController implements IProductController {
 
     @Override
     public List<ProductItemDTO> productsMightAlsoLike(int userId, int page) {
-        return productService.getProductsAlsoLike(userId, imageDataService, page);
+        return productService.getProductsAlsoLike(userId, imageDataService, page, "all");
     }
 
     @Override

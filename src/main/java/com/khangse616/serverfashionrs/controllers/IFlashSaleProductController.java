@@ -1,6 +1,7 @@
 package com.khangse616.serverfashionrs.controllers;
 
 import com.khangse616.serverfashionrs.models.dto.FlashSaleCardDTO;
+import com.khangse616.serverfashionrs.models.dto.InputAddProductFlashSale;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,4 +26,10 @@ public interface IFlashSaleProductController {
     @GetMapping("/flashsale/{id}/count-product-fs-admin")
     int countListProductFlashSaleForAdmin(@PathVariable("id") int id,
                                           @RequestParam(value = "s", defaultValue = "") String search);
+
+    @DeleteMapping("flashsale/{id}/remove-product-flashsale")
+    String deleteFlashSaleProductById(@PathVariable("id")int id);
+
+    @PostMapping("/flashsale/{id}/add-product-flashsale")
+    String addProductFlashSale(@PathVariable("id") int id, @RequestBody InputAddProductFlashSale input);
 }

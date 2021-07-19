@@ -112,7 +112,26 @@ public class ProductItemDTOMapper implements RowMapper<ProductItemDTO, Product> 
                     if (imageData != null) {
                         if (imageData.getData() != null)
                             productItemDTO.setImgUrl("http://localhost:8080/api/v1/image/" + imageData.getId());
-                        else if (imageData.getLink() == null || imageData.getLink().isEmpty()) {
+                        else if (imageData.            if (optionProductImg != null) {
+                            if (optionProductImg.getValue() == null || optionProductImg.getValue().isEmpty())
+                                productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
+                            else if (optionProductImg.getValue().contains("http")) {
+                                productItemDTO.setImgUrl(optionProductImg.getValue());
+                            } else {
+                                ImageData imageData = imageDataService.findImageById(optionProductImg.getValue());
+
+                                if (imageData != null) {
+                                    if (imageData.getData() != null)
+                                        productItemDTO.setImgUrl("http://localhost:8080/api/v1/image/" + imageData.getId());
+                                    else if (imageData.getLink() == null || imageData.getLink().isEmpty()) {
+                                        productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
+                                    } else productItemDTO.setImgUrl("http:" + imageData.getLink().replace("fill_size", "255x298"));
+                                } else {
+                                    productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
+                                }
+                            }
+                        } else
+                            productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");getLink() == null || imageData.getLink().isEmpty()) {
                             productItemDTO.setImgUrl("https://developers.google.com/maps/documentation/streetview/images/error-image-generic.png?hl=vi");
                         } else productItemDTO.setImgUrl("http:" + imageData.getLink().replace("fill_size", "255x298"));
                     } else {

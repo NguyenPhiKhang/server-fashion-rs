@@ -61,6 +61,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query(value = "call get_shortdesc_name(:productId)", nativeQuery = true)
     String getShortDescriptionOrName(@Param("productId") int productId);
 
+    @Query("select p.name from Product p where p.visibility=true and p.id = :id")
+    String getNameProduct(@Param("id") int id);
+
 //    @Query(value = "call get_shortdesc_name_product_seen(:userId)", nativeQuery = true)
 //    List<String> getShortDescriptionOrNameByUser(@Param("userId") int userId);
 
@@ -95,4 +98,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "SELECT id FROM fashionshop_db.products where visibility = 1 order by material desc limit 400", nativeQuery = true)
     List<Integer> getListIdProductRandom();
+
+    @Query(value = "Select c.name from products p join categories c on p.category_id = c.id where p.id=:id", nativeQuery = true)
+    String findNameCategoryByProduct(@Param("id") int id);
 }

@@ -45,14 +45,14 @@ public class TfidfCalculation {
                 wordCount++;
                 continue;
             }
-            double temp = 1/ wordCount;
+            double temp = 1 / wordCount;
             double idf = 1 + Math.log(temp);
             InverseDocFreqMap.put(word, idf);
         }
         return InverseDocFreqMap;
     }
 
-    public HashMap<String, Double> calculateTFIDF(DocumentProperties documentProperty, HashMap<String, Double> inverseDocFreqMap){
+    public HashMap<String, Double> calculateTFIDF(DocumentProperties documentProperty, HashMap<String, Double> inverseDocFreqMap) {
         HashMap<String, Double> tfIDF = new HashMap<>();
         double tfIdfValue = 0.0;
         double idfVal = 0.0;
@@ -72,6 +72,14 @@ public class TfidfCalculation {
         return tfIDF;
     }
 
+    private DocumentProperties getDocumentProperties(HashMap<String, Integer> wordCount) {
+        DocumentProperties docProperty = new DocumentProperties();
+        docProperty.setWordCountMap(wordCount);
+        HashMap<String, Double> termFrequency = calculateTermFrequency(docProperty.getWordCountMap());
+        docProperty.setTermFreqMap(termFrequency);
+        return docProperty;
+    }
+
     public DocumentProperties calculateTF(List<DescriptionCountDTO> listDescription, SortedSet<String> wordList) {
         HashMap<String, Integer> wordCount = getTerms(listDescription, wordList);
         return getDocumentProperties(wordCount);
@@ -82,17 +90,22 @@ public class TfidfCalculation {
         return getDocumentProperties(wordCount);
     }
 
-    private DocumentProperties getDocumentProperties(HashMap<String, Integer> wordCount){
+    public DocumentProperties calculateTF(Product product, SortedSet<String> wordList, String sameFor) {
         DocumentProperties docProperty = new DocumentProperties();
-        docProperty.setWordCountMap(wordCount);
-        HashMap<String, Double> termFrequency = calculateTermFrequency(docProperty.getWordCountMap());
-        docProperty.setTermFreqMap(termFrequency);
-        return docProperty;
-    }
-
-    public DocumentProperties calculateTF(Product product, SortedSet<String> wordList) {
-        DocumentProperties docProperty = new DocumentProperties();
-        HashMap<String, Integer> wordCount = getTerms(product.getShortDescription(), wordList);
+        String docProduct = "";
+        if (sameFor.equals("all")) {
+            if (product.getShortDescription() == null || product.getShortDescription().isEmpty())
+                docProduct = product.getName();
+            else docProduct = product.getShortDescription();
+        } else {
+            if(sameFor.equals("name"))
+                docProduct = product.getName();
+            else if(sameFor.equals("description")) {
+                docProduct = product.getShortDescription();
+            }else if(sameFor.equals("category"))
+                docProduct = product.getCategory().getName();
+        }
+        HashMap<String, Integer> wordCount = getTerms(docProduct, wordList);
         docProperty.setWordCountMap(wordCount);
         HashMap<String, Double> termFrequency = calculateTermFrequency(docProperty.getWordCountMap());
         docProperty.setTermFreqMap(termFrequency);
@@ -161,7 +174,7 @@ public class TfidfCalculation {
         HashMap<String, Integer> WordCount = new HashMap<String, Integer>();
         HashMap<String, Integer> finalMap = new HashMap<>();
 
-        for(DescriptionCountDTO description: listDescription){
+        for (DescriptionCountDTO description : listDescription) {
             String[] words = description.getDescOrName().toLowerCase().split(" ");
             for (String term : words) {
                 //cleaning up the term ie removing .,:"
@@ -176,7 +189,7 @@ public class TfidfCalculation {
                 String removeAccentTerm = VNCharacterUtil.removeAccent(term);
                 wordList.add(removeAccentTerm);
                 if (WordCount.containsKey(removeAccentTerm)) {
-                    WordCount.put(removeAccentTerm, WordCount.get(removeAccentTerm) + description.getCount()>5?5:description.getCount());
+                    WordCount.put(removeAccentTerm, WordCount.get(removeAccentTerm) + description.getCount() > 5 ? 5 : description.getCount());
                 } else {
                     WordCount.put(removeAccentTerm, Math.min(description.getCount(), 5));
                 }

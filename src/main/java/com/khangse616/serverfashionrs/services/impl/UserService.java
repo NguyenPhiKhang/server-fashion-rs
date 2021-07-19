@@ -101,7 +101,9 @@ public class UserService implements IUserService {
         user.setEmail(input_user.getEmail());
         user.setTimeUpdated(new Timestamp(System.currentTimeMillis()));
         user.setPhoneNumber(input_user.getPhoneNumber());
-        user.setBirthday(StringUtil.convertStringToDate(input_user.getBirthday(), "yyyy-MM-dd"));
+        if(!(input_user.getBirthday() == null || input_user.getBirthday().isEmpty()))
+            user.setBirthday(StringUtil.convertStringToDate(input_user.getBirthday(), "yyyy-MM-dd"));
+        user.setSex(input_user.getSex());
 
 //        if (user.getImageAvatar() == null) {
 //            if (input_user.getImage() != null) {

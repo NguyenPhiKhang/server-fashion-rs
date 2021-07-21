@@ -162,14 +162,14 @@ public class ProductService implements IProductService {
 
     @Override
     public List<ProductItemDTO> getProductsSimilarity(int id, IImageDataService imageDataService, int page) {
-//        String shortDescOrName = productRepository.getShortDescriptionOrName(id);
-//        String categoryName = productRepository.findNameCategoryByProduct(id);
-        String productName = productRepository.getNameProduct(id);
+        String shortDescOrName = productRepository.getShortDescriptionOrName(id);
+        String categoryName = productRepository.findNameCategoryByProduct(id);
+//        String productName = productRepository.getNameProduct(id);
 
         List<Product> list = productRepository.getProductAndShortDescriptionExceptProduct(id);
-//        List<Product> listProduct = new ArrayList<>(RecommendSystemUtil.calcCosineSimilarityText(categoryName, list, "category").keySet());
+        List<Product> listProduct = new ArrayList<>(RecommendSystemUtil.calcCosineSimilarityText(shortDescOrName, list, "all").keySet());
 
-        return RecommendSystemUtil.calcCosineSimilarityText(productName, list, "category").entrySet().stream()
+        return RecommendSystemUtil.calcCosineSimilarityText(categoryName, listProduct, "category").entrySet().stream()
                 .sorted(Map.Entry.<Product, Double>comparingByValue().reversed())
                 .skip(page * 14L)
                 .limit(14)

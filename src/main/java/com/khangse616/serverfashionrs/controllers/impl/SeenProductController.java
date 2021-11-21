@@ -24,7 +24,7 @@ public class SeenProductController implements ISeenProductController {
     @Override
     public String createOrUpdateSeenProduct(int userId, int productId) {
         seenProductService.createOrUpdateSeenProduct(userId, productId);
-        return "Đã cập nhật";
+        return "updated";
     }
 
     @Override

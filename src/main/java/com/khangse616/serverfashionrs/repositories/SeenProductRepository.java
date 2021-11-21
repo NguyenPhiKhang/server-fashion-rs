@@ -20,6 +20,4 @@ public interface SeenProductRepository extends JpaRepository<SeenProduct, Produc
 
     @Query(value = "SELECT * FROM fashionshop_db.seen_products where user_id = :id_userId and CURRENT_TIMESTAMP - last_time < 7000000 order by last_time desc limit 10", nativeQuery = true)
     List<SeenProduct> findSeenProductByUserAndLastTime(@Param("id_userId") int id_userId);
-
-
 }
